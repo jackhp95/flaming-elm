@@ -7,10 +7,7 @@ import Pages.Manifest as Manifest
 import Route exposing (Route)
 
 
-routes :
-    DataSource (List Route)
-    -> (Html Never -> String)
-    -> List (ApiRoute ApiRoute.Response)
+routes : DataSource (List Route) -> (Html Never -> String) -> List (ApiRoute ApiRoute.Response)
 routes getStaticRoutes htmlToString =
     []
 

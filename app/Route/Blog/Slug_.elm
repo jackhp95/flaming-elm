@@ -41,8 +41,7 @@ pages =
 
 
 type alias Data =
-    { something : String
-    }
+    { something : String }
 
 
 data : RouteParams -> DataSource Data
@@ -78,5 +77,5 @@ view :
     -> View Msg
 view maybeUrl sharedModel static =
     { title = "Placeholder - Blog.Slug_"
-    , body = [ Html.text "You're on the page Blog.Slug_" ]
+    , body = Html.text "You're on the page Blog.Slug_"
     }

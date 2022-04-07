@@ -2,7 +2,7 @@ module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 import DataSource
 import Effect exposing (Effect)
-import Html exposing (Html)
+import Html exposing (..)
 import Html.Events
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -37,8 +37,7 @@ type SharedMsg
 
 
 type alias Model =
-    { showMenu : Bool
-    }
+    { showMenu : Bool }
 
 
 init :
@@ -80,41 +79,8 @@ data =
     DataSource.succeed ()
 
 
-view :
-    Data
-    ->
-        { path : Path
-        , route : Maybe Route
-        }
-    -> Model
-    -> (Msg -> msg)
-    -> View msg
-    -> { body : Html msg, title : String }
+view : Data -> { path : Path, route : Maybe Route } -> Model -> (Msg -> msg) -> View msg -> { body : Html msg, title : String }
 view sharedData page model toMsg pageView =
-    { body =
-        Html.div []
-            [ Html.nav []
-                [ Html.button
-                    [ Html.Events.onClick MenuClicked ]
-                    [ Html.text
-                        (if model.showMenu then
-                            "Close Menu"
-
-                         else
-                            "Open Menu"
-                        )
-                    ]
-                , if model.showMenu then
-                    Html.ul []
-                        [ Html.li [] [ Html.text "Menu item 1" ]
-                        , Html.li [] [ Html.text "Menu item 2" ]
-                        ]
-
-                  else
-                    Html.text ""
-                ]
-                |> Html.map toMsg
-            , Html.main_ [] pageView.body
-            ]
+    { body = View.pageLayout pageView.body
     , title = pageView.title
     }

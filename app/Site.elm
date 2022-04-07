@@ -14,6 +14,5 @@ config =
 
 head : DataSource (List Head.Tag)
 head =
-    [ Head.sitemapLink "/sitemap.xml"
-    ]
+    [ Head.sitemapLink "/sitemap.xml" ]
         |> DataSource.succeed

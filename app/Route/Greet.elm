@@ -36,8 +36,7 @@ route =
 
 
 type alias Data =
-    { name : Maybe String
-    }
+    { name : Maybe String }
 
 
 data : RouteParams -> Request.Parser (DataSource (Response Data ErrorPage))
@@ -88,7 +87,7 @@ view :
 view maybeUrl sharedModel static =
     { title = "Greetings"
     , body =
-        [ Html.div []
+        Html.div []
             [ case static.data.name of
                 Just name ->
                     Html.text ("Hello " ++ name)
@@ -96,5 +95,4 @@ view maybeUrl sharedModel static =
                 Nothing ->
                     Html.text "Hello, I didn't find your name"
             ]
-        ]
     }

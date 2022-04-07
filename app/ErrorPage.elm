@@ -12,8 +12,7 @@ type Msg
 
 
 type alias Model =
-    { count : Int
-    }
+    { count : Int }
 
 
 init : ErrorPage -> ( Model, Effect Msg )
@@ -53,7 +52,7 @@ internalError =
 view : ErrorPage -> Model -> View Msg
 view error model =
     { body =
-        [ Html.div []
+        Html.div []
             [ Html.p [] [ Html.text "Page not found. Maybe try another URL?" ]
             , Html.div []
                 [ Html.button
@@ -66,7 +65,6 @@ view error model =
                     ]
                 ]
             ]
-        ]
     , title = "This is a NotFound Error"
     }
 
