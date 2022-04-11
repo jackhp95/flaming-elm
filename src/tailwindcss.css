@@ -1,3 +1,65 @@
 @tailwind base;
+
+[class*="focus:"] {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  
+  :where(details > summary) {
+    list-style: none;
+  }
+  :where(details > summary::-webkit-details-marker) {
+    display: none;
+  }
+  /* ===== Scrollbar CSS ===== */
+  
+  :root {
+    --scrollbar-thumb-border-color: black;
+    --scrollbar-thumb-border-width: 6px;
+    --scrollbar-thumb-rounded: 999px;
+    
+    --scrollbar-track-size: 1rem;
+    --scrollbar-track-color: black;
+    --scrollbar-track-border-color: black;
+  }
+  .thin-scrollbar {
+    --scrollbar-thumb-color: currentColor;
+    --scrollbar-thumb-border-color: transparent;
+    --scrollbar-thumb-border-width: 0px;
+    --scrollbar-track-color: transparent;
+    --scrollbar-track-size: 2px;
+    --scrollbar-thumb-rounded: 0;
+  }
+  
+  /* Firefox */
+  * {
+    accent-color: theme('colors.fuchsia.500');
+    scrollbar-width: var(--scrollbar-track-size);
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  }
+  
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: var(--scrollbar-track-size);
+    height: var(--scrollbar-track-size);
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+    border: var(--scrollbar-track-border-width) solid var(--scrollbar-track-border-color);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: theme('colors.neutral.700');
+  
+    background-attachment: local;
+    border-radius: var(--scrollbar-thumb-rounded);
+    border: var(--scrollbar-thumb-border-width) solid var(--scrollbar-thumb-border-color);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(to bottom left, theme('colors.rose.500'), theme('colors.fuchsia.500'));
+  }
+  
 @tailwind components;
 @tailwind utilities;
