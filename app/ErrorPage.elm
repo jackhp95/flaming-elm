@@ -82,9 +82,7 @@ errorPage =
                     [ href "/"
                     , class "inline-flex"
                     ]
-                    [ span
-                        [ class "sr-only" ]
-                        [ text "Workflow" ]
+                    [ span [ class "sr-only" ] [ text "Workflow" ]
                     , img
                         [ class "h-24 w-auto"
                         , src "${data.util.emojiDataUri()}"
@@ -99,17 +97,10 @@ errorPage =
                 [ div
                     [ class "text-center"
                     ]
-                    [ p
-                        [ class "text-sm font-semibold text-fuchsia-600 uppercase tracking-wide" ]
-                        [ text "404 error" ]
-                    , h1
-                        [ class "mt-2 text-4xl font-extrabold text-neutral-100 tracking-tight sm:text-5xl" ]
-                        [ text "Page not found." ]
-                    , p
-                        [ class "mt-2 text-base text-neutral-500" ]
-                        [ text "Sorry, we couldn’t find the page you’re looking for." ]
-                    , div
-                        [ class "mt-6" ]
+                    [ p [ class "text-sm font-semibold text-fuchsia-600 uppercase tracking-wide" ] [ text "404 error" ]
+                    , h1 [ class "mt-2 text-4xl font-extrabold text-neutral-100 tracking-tight sm:text-5xl" ] [ text "Page not found." ]
+                    , p [ class "mt-2 text-base text-neutral-500" ] [ text "Sorry, we couldn’t find the page you’re looking for." ]
+                    , div [ class "mt-6" ]
                         [ a
                             [ href "/"
                             , class "text-base font-medium text-fuchsia-600 hover:text-fuchsia-500"

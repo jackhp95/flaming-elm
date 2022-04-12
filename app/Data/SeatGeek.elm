@@ -348,8 +348,7 @@ announcements =
 
 encodeAnnouncements : Announcements -> Jenc.Value
 encodeAnnouncements x =
-    Jenc.object
-        []
+    Jenc.object []
 
 
 nameEnum : Jdec.Decoder NameEnum

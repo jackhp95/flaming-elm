@@ -51,9 +51,7 @@ data : RouteParams -> Request.Parser (DataSource (Response Data error))
 data { slug } =
     let
         endpoint =
-            crossOrigin "https://api.seatgeek.com"
-                [ "2", "events", slug ]
-                [ string "client_id" "MzUwNDE1NnwxNDgxNjA1ODM2" ]
+            crossOrigin "https://api.seatgeek.com" [ "2", "events", slug ] [ string "client_id" "MzUwNDE1NnwxNDgxNjA1ODM2" ]
     in
     SG.event
         |> Decode.map Response.render
@@ -135,8 +133,7 @@ eventPage event =
                 , div
                     [ class "flex items-center"
                     ]
-                    [ p
-                        [ class "text-lg opacity-90 sm:text-xl" ]
+                    [ p [ class "text-lg opacity-90 sm:text-xl" ]
                         [ DF.format
                             [ DF.monthNameFull
                             , DF.text " "
@@ -152,8 +149,7 @@ eventPage event =
                             event.datetimeLocal
                             |> text
                         ]
-                    , div
-                        [ class "ml-4 pl-4 border-l border-gray-300" ]
+                    , div [ class "ml-4 pl-4 border-l border-gray-300" ]
                         [ p
                             [ class "ml-2 text-sm opacity-50"
                             ]
@@ -165,17 +161,13 @@ eventPage event =
                 , div
                     [ class "mt-4 space-y-6"
                     ]
-                    [ p
-                        [ class "text-base opacity-50" ]
-                        [ text event.description ]
+                    [ p [ class "text-base opacity-50" ] [ text event.description ]
                     ]
                 , div
                     [ class "mt-6 flex items-center"
                     ]
                     [ Icon.solidCheck
-                    , p
-                        [ class "ml-2 text-sm opacity-50" ]
-                        [ text "In stock and ready to ship" ]
+                    , p [ class "ml-2 text-sm opacity-50" ] [ text "In stock and ready to ship" ]
                     ]
                 ]
             ]
@@ -209,8 +201,7 @@ eventPage event =
                     ]
                     [ text "Event options" ]
                 , Html.form []
-                    [ div
-                        [ class "sm:flex sm:justify-between" ]
+                    [ div [ class "sm:flex sm:justify-between" ]
                         [ {- Size selector -}
                           fieldset []
                             [ legend
@@ -264,8 +255,7 @@ eventPage event =
                                 )
                             ]
                         ]
-                    , div
-                        [ class "mt-4" ]
+                    , div [ class "mt-4" ]
                         [ a
                             [ href "#"
                             , class "group inline-flex text-sm opacity-50 hover:opacity-70"
@@ -274,16 +264,14 @@ eventPage event =
                             , Icon.solidQuestionMarkCircle
                             ]
                         ]
-                    , div
-                        [ class "mt-10" ]
+                    , div [ class "mt-10" ]
                         [ a
                             [ href event.url
                             , class "w-full bg-white border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-neutral-900 hover:bg-opacity-80 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-fuchsia-500"
                             ]
                             [ text "Buy Tickets" ]
                         ]
-                    , div
-                        [ class "mt-6 text-center" ]
+                    , div [ class "mt-6 text-center" ]
                         [ a
                             [ href "#"
                             , class "group inline-flex text-base font-medium"

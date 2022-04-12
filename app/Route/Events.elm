@@ -137,8 +137,7 @@ eventCard event =
             , div
                 [ class "flex-1 flex flex-col justify-end"
                 ]
-                [ p [ class "text-sm italic opacity-50" ]
-                    [ text event.venue.name ]
+                [ p [ class "text-sm italic opacity-50" ] [ text event.venue.name ]
                 , p [ class "text-base font-medium opacity-90" ]
                     [ output []
                         [ DF.format

@@ -14,6 +14,7 @@
   /* ===== Scrollbar CSS ===== */
   
   :root {
+    background-color: black;
     --scrollbar-thumb-border-color: black;
     --scrollbar-thumb-border-width: 6px;
     --scrollbar-thumb-rounded: 999px;

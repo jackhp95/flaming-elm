@@ -159,9 +159,7 @@ navbar =
                                 , attribute "aria-expanded" "false"
                                 , attribute "aria-haspopup" "true"
                                 ]
-                                [ span
-                                    [ class "sr-only"
-                                    ]
+                                [ span [ class "sr-only" ]
                                     [ text "Open user menu" ]
                                 , img
                                     [ class "h-8 w-8 rounded-full"
