@@ -65,7 +65,7 @@ navbar =
                                 ]
                                 []
                             , span
-                                [ class "text-base font-bold bg-clip-text bg-gradient-to-tl transition from-rose-500 to-fuchsia-500"
+                                [ class "hidden md:inline text-base font-bold bg-clip-text bg-gradient-to-tl transition from-rose-500 to-fuchsia-500"
                                 ]
                                 [ text "FlamingleSocial.com" ]
                             ]
@@ -109,7 +109,7 @@ navbar =
                                 , input
                                     [ id "search"
                                     , name "search"
-                                    , class "block w-full pl-10 pr-3 py-2 border border-opacity-30 border-white rounded-md leading-5 bg-neutral-900 placeholder-gray-500 focus:placeholder-gray-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm"
+                                    , class "block w-full pl-10 pr-3 py-2 border border-opacity-30 border-white rounded-md leading-5 bg-neutral-900 placeholder-neutral-500 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm"
                                     , Attr.placeholder "Search"
                                     , type_ "search"
                                     ]

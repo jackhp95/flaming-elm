@@ -89,12 +89,12 @@ view maybeUrl sharedModel static =
     { title = "Events in " ++ static.data.meta.geolocation.displayName ++ " | Flamingle"
     , body =
         div
-            [ class "max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
+            [ class "max-w-2xl mx-auto sm:py-16 sm:px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
             ]
             [ h2 [ class "sr-only" ] [ text "Events" ]
             , static.data.events
                 |> List.map eventCard
-                |> div [ class "grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8" ]
+                |> div [ class "grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8" ]
             ]
     }
 
@@ -104,9 +104,10 @@ eventCard event =
     a
         [ href <| String.fromInt event.id
         , id <| String.fromInt event.id
-        , class "group relative focus:ring-2 transition-all  ring-1 ring-white focus:ring-fuchsia-500 hover:ring-opacity-100 ring-opacity-20 rounded-lg flex flex-col overflow-hidden"
+        , class "group relative focus:ring-2 transition-all pb-6 sm:pb-0 ring-1 ring-white focus:ring-fuchsia-500 hover:ring-opacity-100 ring-opacity-10 sm:ring-opacity-20 sm:rounded-lg flex flex-col overflow-hidden"
         ]
         [ event.performers
+            |> List.filter ((\{ image } -> String.contains "/generic-" image) >> not)
             |> List.map
                 (\performer ->
                     img
@@ -120,7 +121,7 @@ eventCard event =
         , div
             [ class "flex-1 p-4 space-y-2 flex flex-col"
             ]
-            [ h3 [ class "text-lg font-medium opacity-90" ] [ text event.shortTitle ]
+            [ h3 [ class "font-medium opacity-90" ] [ text event.shortTitle ]
 
             -- , div
             --     [ class "flex -space-x-2 relative z-0 overflow-hidden p-2"
@@ -138,7 +139,7 @@ eventCard event =
                 [ class "flex-1 flex flex-col justify-end"
                 ]
                 [ p [ class "text-sm italic opacity-50" ] [ text event.venue.name ]
-                , p [ class "text-base font-medium opacity-90" ]
+                , p [ class "text-sm font-medium opacity-70" ]
                     [ output []
                         [ DF.format
                             [ DF.monthNameFull
@@ -155,7 +156,7 @@ eventCard event =
                             event.datetimeLocal
                             |> text
                         ]
-                    , text " • "
+                    , text " "
                     , output []
                         [ relativeTime event.datetimeLocal event.datetimeUTC
                             |> text
