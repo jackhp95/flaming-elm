@@ -101,23 +101,28 @@ view maybeUrl sharedModel static =
 
 eventCard : SG.Event -> Html msg
 eventCard event =
+    let
+        imageList =
+            event.performers
+                -- remove generic seatgeek default images
+                |> List.filter ((\{ image } -> String.contains "/generic-" image) >> not)
+                |> List.map
+                    (\performer ->
+                        img
+                            [ src performer.image
+                            , alt performer.name
+                            , class "snap-center flex-none w-full h-full object-center object-cover"
+                            ]
+                            []
+                    )
+    in
     a
         [ href <| String.fromInt event.id
         , id <| String.fromInt event.id
         , class "group relative focus:ring-2 transition-all pb-6 sm:pb-0 ring-1 ring-white focus:ring-fuchsia-500 hover:ring-opacity-100 ring-opacity-10 sm:ring-opacity-20 sm:rounded-lg flex flex-col overflow-hidden"
+        , classList [ ( "row-span-3", (not << List.isEmpty) imageList ) ]
         ]
-        [ event.performers
-            |> List.filter ((\{ image } -> String.contains "/generic-" image) >> not)
-            |> List.map
-                (\performer ->
-                    img
-                        [ src performer.image
-                        , alt performer.name
-                        , class "snap-center flex-none w-full h-full object-center object-cover"
-                        ]
-                        []
-                )
-            |> div [ class "bg-opacity-20 opacity-90 group-hover:opacity-100 overflow-x-scroll thin-scrollbar flex snap-x snap-mandatory" ]
+        [ div [ class "bg-opacity-20 opacity-90 group-hover:opacity-100 overflow-x-scroll thin-scrollbar flex snap-x snap-mandatory" ] imageList
         , div
             [ class "flex-1 p-4 space-y-2 flex flex-col"
             ]

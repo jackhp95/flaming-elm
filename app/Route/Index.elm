@@ -74,7 +74,7 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    { title = "elm-pages is running"
+    { title = "Flamingle | Find Events, Make Friends"
     , body = homePage
     }
 
@@ -82,19 +82,21 @@ view maybeUrl sharedModel static =
 homePage : Html msg
 homePage =
     div
-        [ class "relative flex-auto max-w-5xl flex flex-col justify-center pt-20 mx-auto sm:py-24 lg:py-32"
+        [ class "relative flex-auto max-w-md flex flex-col justify-center pt-20 mx-auto px-4 sm:py-24 lg:py-32"
         ]
         [ h1
-            [ class "text-4xl font-extrabold tracking-tight text-center text-neutral-100 sm:text-5xl lg:text-6xl"
+            [ id "hi"
+            , class "text-4xl font-bold tracking-tight whitespace-pre-wrap text-neutral-100 sm:text-4xl md:text-5xl lg:text-6xl"
+            , class "text-opacity-100 target:text-opacity-0 bg-gradient-to-tl transition from-rose-500 to-fuchsia-500 bg-clip-text"
             ]
-            [ text "Discover Events, Find Friendships" ]
+            [ text "Find Events, \nMake Friends" ]
         , p
-            [ class "max-w-3xl mx-auto mt-6 text-lg text-center text-neutral-400"
+            [ class "max-w-3xl mx-auto mt-6 leading-relaxed text-sm text-neutral-300"
             ]
             [ text "Flamingle is a website for people who want to keep their pulse on exciting events happening in their town and meet new people who are going to those events." ]
         , Html.form
-            [ action "/form/"
-            , class "flex justify-center mt-6 text-sm sm:mt-10"
+            [ action "/events/"
+            , class "-mx-1 flex justify-center mt-6 text-sm"
             ]
             [ label
                 [ for "search"
@@ -102,7 +104,7 @@ homePage =
                 ]
                 [ text "Search" ]
             , div
-                [ class "relative"
+                [ class "flex-auto flex relative"
                 ]
                 [ div
                     [ class "absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
@@ -114,22 +116,14 @@ homePage =
                     , name "zip"
                     , pattern "[0-9]{5}"
                     , attribute "data-value" "zip"
-                    , class "block pl-12 pr-4 py-4 text-lg border border-opacity-30 border-white rounded-l-md leading-5 bg-neutral-900 placeholder-gray-500 focus:placeholder-gray-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500"
+                    , class "w-48 flex-auto block pl-12 pr-4 py-4 border hover:border-opacity-50 border-opacity-30 border-white rounded-l-md leading-5 bg-neutral-900 placeholder-neutral-500 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500"
                     , placeholder "Enter Zip"
                     , type_ "search"
                     ]
                     []
-                , input
-                    [ id "_date"
-                    , name "date"
-                    , attribute "data-value" "now"
-                    , type_ "date"
-                    , hidden True
-                    ]
-                    []
                 ]
             , button
-                [ class "block px-6 py-4 text-lg border border-opacity-30 border-white rounded-r-md leading-5 bg-neutral-900 placeholder-gray-500 focus:placeholder-gray-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500"
+                [ class "block px-6 py-4 border font-bold whitespace-nowrap hover:z-10 focus:z-10 -ml-px hover:border-opacity-50 border-opacity-30 border-white rounded-r-md leading-5 bg-neutral-900 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500"
                 , type_ "submit"
                 ]
                 [ text "Find Events" ]
