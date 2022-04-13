@@ -82,13 +82,8 @@ errorPage =
                     [ href "/"
                     , class "inline-flex"
                     ]
-                    [ span [ class "sr-only" ] [ text "Workflow" ]
-                    , img
-                        [ class "h-24 w-auto"
-                        , src "${data.util.emojiDataUri()}"
-                        , alt ""
-                        ]
-                        []
+                    [ span [ class "sr-only" ] [ text "Flamingle" ]
+                    , text "🦩"
                     ]
                 ]
             , div

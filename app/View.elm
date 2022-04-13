@@ -231,7 +231,7 @@ mobileMenu routes =
                 (\path ->
                     a
                         [ href ("/" ++ path ++ "#" ++ path)
-                        , class "border-transparent opacity-60 hover:bg-neutral-50 hover:border-neutral-300 hover:opacity-80 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                        , class "border-transparent opacity-60 capitalize hover:bg-neutral-50 hover:border-neutral-300 hover:opacity-80 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
                         ]
                         [ text path ]
                 )
