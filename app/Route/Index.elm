@@ -107,15 +107,15 @@ homePage =
                 [ class "flex-auto flex relative"
                 ]
                 [ div
-                    [ class "absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                    [ class "absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none mix-blend-difference z-50 text-white"
                     ]
                     [ Icon.solidSearch
                     ]
                 , input
-                    [ id "_zip"
+                    [ id "postal-code"
                     , name "zip"
+                    , Attr.attribute "autocomplete" "postal-code"
                     , pattern "[0-9]{5}"
-                    , attribute "data-value" "zip"
                     , class "w-48 flex-auto block pl-12 pr-4 py-4 border hover:border-opacity-50 border-opacity-30 border-white rounded-l-md leading-5 bg-neutral-900 placeholder-neutral-500 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500"
                     , placeholder "Enter Zip"
                     , type_ "search"

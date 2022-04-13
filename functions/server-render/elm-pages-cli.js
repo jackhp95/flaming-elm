@@ -10772,10 +10772,9 @@ return forceThunks(html);
                     $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$class_a0, "absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none")
                 ]), _List_fromArray([$author$project$Component$Icon$solidSearch])),
                 $elm$html$Html$input_fn(_List_fromArray([
-                    $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$id_a0, "_zip"),
-                    $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$name_a0, "zip"),
+                    $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$id_a0, "postal-code"),
+                    $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$name_a0, "postal-code"),
                     $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$pattern_a0, "[0-9]{5}"),
-                    $elm$virtual_dom$VirtualDom$attribute_fn("data-value", "zip"),
                     $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$class_a0, "w-48 flex-auto block pl-12 pr-4 py-4 border hover:border-opacity-50 border-opacity-30 border-white rounded-l-md leading-5 bg-neutral-900 placeholder-neutral-500 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500"),
                     $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$placeholder_a0, "Enter Zip"),
                     $elm$html$Html$Attributes$stringProperty_fn($elm$html$Html$Attributes$type__a0, "search")
