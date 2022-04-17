@@ -2,17 +2,16 @@ module Route.Index exposing (Data, Model, Msg, route)
 
 import Component.Icon as Icon
 import DataSource exposing (DataSource)
-import DataSource.Http
 import Head
 import Head.Seo as Seo
 import Html as Html exposing (..)
 import Html.Attributes as Attr exposing (..)
-import Json.Decode as Decode
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Path
 import RouteBuilder exposing (StatelessRoute, StaticPayload)
 import Shared
+import Site
 import View exposing (View)
 
 
@@ -52,20 +51,7 @@ head :
     StaticPayload Data RouteParams
     -> List Head.Tag
 head static =
-    Seo.summary
-        { canonicalUrlOverride = Nothing
-        , siteName = "elm-pages"
-        , image =
-            { url = [ "images", "icon-png.png" ] |> Path.join |> Pages.Url.fromPath
-            , alt = "elm-pages logo"
-            , dimensions = Nothing
-            , mimeType = Nothing
-            }
-        , description = "Welcome to elm-pages!"
-        , locale = Nothing
-        , title = "elm-pages is running"
-        }
-        |> Seo.website
+    Site.head
 
 
 view :

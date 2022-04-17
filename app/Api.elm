@@ -1,16 +1,27 @@
 module Api exposing (routes)
 
 import ApiRoute exposing (ApiRoute)
+import Color
 import DataSource exposing (DataSource)
+import Head
+import Head.Seo as Seo
+import Head.Twitter as Twitter
 import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
+import MimeType
 import Pages
 import Pages.Manifest as Manifest
+import Pages.Manifest.Category exposing (..)
+import Pages.Url
+import Path
 import Result.Extra
 import Route exposing (Route)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
+import Site
+import SiteConfig exposing (SiteConfig)
+import Util
 
 
 routes : DataSource (List Route) -> (Html Never -> String) -> List (ApiRoute.ApiRoute ApiRoute.Response)
@@ -18,6 +29,8 @@ routes getStaticRoutes htmlToString =
     [ events
     , requestPrinter
     , multipleContentTypes
+    , DataSource.succeed manifest
+        |> Manifest.generator Site.config.canonicalUrl
     ]
 
 
@@ -104,8 +117,27 @@ events =
 manifest : Manifest.Config
 manifest =
     Manifest.init
-        { name = "Site Name"
-        , description = "Description"
-        , startUrl = Route.Index |> Route.toPath
-        , icons = []
+        { name = "https://www.FlamingleSocial.com"
+        , description = "Flamingle is for people who want to keep their pulse on exciting events happening in their town and meet new people."
+        , startUrl = Path.fromString "./"
+        , icons =
+            [ { src = Util.logoIcon
+              , sizes =
+                    [ ( 16, 16 )
+                    , ( 32, 32 )
+                    , ( 96, 96 )
+                    , ( 180, 180 )
+                    , ( 300, 300 )
+                    , ( 512, 512 )
+                    ]
+              , mimeType = Just (MimeType.OtherImage "svg+xml")
+              , purposes = [ Manifest.IconPurposeAny, Manifest.IconPurposeMaskable ]
+              }
+            ]
         }
+        |> Manifest.withShortName "Flamingle"
+        |> Manifest.withCategories [ lifestyle, entertainment, music, social, sports, travel ]
+        |> Manifest.withThemeColor Color.white
+        -- (Color.rgb 244 63 94)
+        |> Manifest.withBackgroundColor Color.black
+        |> Manifest.withDisplayMode Manifest.Standalone

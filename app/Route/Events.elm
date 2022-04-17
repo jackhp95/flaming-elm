@@ -19,6 +19,7 @@ import RouteBuilder exposing (StatefulRoute, StatelessRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
+import Site
 import Time
 import Url.Builder exposing (crossOrigin, string)
 import View exposing (View)
@@ -68,20 +69,7 @@ data routeParams =
 
 head : StaticPayload Data RouteParams -> List Head.Tag
 head static =
-    Seo.summary
-        { canonicalUrlOverride = Nothing
-        , siteName = "elm-pages"
-        , image =
-            { url = Pages.Url.external "TODO"
-            , alt = "elm-pages logo"
-            , dimensions = Nothing
-            , mimeType = Nothing
-            }
-        , description = "TODO"
-        , locale = Nothing
-        , title = "TODO title" -- metadata.title -- TODO
-        }
-        |> Seo.website
+    Site.head
 
 
 view : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> View Msg

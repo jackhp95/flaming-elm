@@ -3,7 +3,6 @@ module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 import DataSource
 import Effect exposing (Effect)
 import Html exposing (..)
-import Html.Events
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)

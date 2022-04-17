@@ -6,6 +6,7 @@ import Json.Decode as Jdec
 import Json.Decode.Pipeline as Jpipe
 import Json.Encode as Jenc
 import List exposing (map)
+import String.Extra
 import Time exposing (Posix)
 
 
@@ -16,7 +17,7 @@ type alias Events =
 
 
 type alias Event =
-    { eventType : NameEnum
+    { eventType : UpperEnum
     , id : Int
     , datetimeUTC : Posix
     , venue : Venue
@@ -54,25 +55,13 @@ type alias Announcements =
     {}
 
 
-type NameEnum
-    = Baseball
-    | BroadwayTicketsNational
-    | Classical
-    | Comedy
-    | Concert
-    | Concerts
-    | PurpleNcaaBaseball
-    | PurpleTheater
-    | Sports
-
-
 type alias Performer =
-    { performerType : PerformerType
+    { performerType : UpperEnum
     , name : String
     , image : String
     , id : Int
     , images : PerformerImages
-    , divisions : ()
+    , divisions : List Division
     , hasUpcomingEvents : Bool
     , primary : Maybe Bool
     , stats : PerformerStats
@@ -84,7 +73,7 @@ type alias Performer =
     , homeVenueID : Maybe Int
     , shortName : String
     , numUpcomingEvents : Int
-    , colors : ()
+    , colors : Maybe Colors
     , imageLicense : Maybe String
     , genres : Maybe (List Genre)
     , popularity : Int
@@ -92,6 +81,16 @@ type alias Performer =
     , imageRightsMessage : String
     , homeTeam : Maybe Bool
     , awayTeam : Maybe Bool
+    }
+
+
+type alias Division =
+    { taxonomyId : Int
+    , shortName : Maybe String
+    , displayName : String
+    , displayType : String
+    , divisionLevel : Int
+    , slug : Maybe String
     }
 
 
@@ -155,23 +154,20 @@ type alias Location =
     }
 
 
-type PerformerType
-    = Band
-    | FluffyNcaaBaseball
-    | FluffyTheater
-    | TheaterBroadwayNationalTours
-    | TheaterClassical
-    | TheaterComedy
+type alias Colors =
+    { all : List String
+    , iconic : String
+    , primary : List String
+    }
 
 
 type alias PerformerStats =
-    { eventCount : Int
-    }
+    { eventCount : Int }
 
 
 type alias Taxonomy =
     { id : Int
-    , name : NameEnum
+    , name : UpperEnum
     , parentID : Maybe Int
     , documentSource : Maybe DocumentSource
     , rank : Int
@@ -181,14 +177,14 @@ type alias Taxonomy =
 type alias EventStats =
     { listingCount : Maybe Int
     , averagePrice : Maybe Int
-    , lowestPriceGoodDeals : ()
+    , lowestPriceGoodDeals : Maybe Int
     , lowestPrice : Maybe Int
     , highestPrice : Maybe Int
     , visibleListingCount : Maybe Int
     , dqBucketCounts : Maybe (List Int)
     , medianPrice : Maybe Int
     , lowestSgBasePrice : Maybe Int
-    , lowestSgBasePriceGoodDeals : ()
+    , lowestSgBasePriceGoodDeals : Maybe Int
     }
 
 
@@ -244,6 +240,10 @@ type alias Geolocation =
     }
 
 
+type UpperEnum
+    = Up String
+
+
 
 -- decoders and encoders
 
@@ -271,7 +271,7 @@ encodeEvents x =
 event : Jdec.Decoder Event
 event =
     Jdec.succeed Event
-        |> Jpipe.required "type" nameEnum
+        |> Jpipe.required "type" upperEnum
         |> Jpipe.required "id" Jdec.int
         |> Jpipe.required "datetime_utc" Iso8601.decoder
         |> Jpipe.required "venue" venue
@@ -307,7 +307,7 @@ event =
 encodeEvent : Event -> Jenc.Value
 encodeEvent x =
     Jenc.object
-        [ ( "type", encodeNameEnum x.eventType )
+        [ ( "type", encodeUpperEnum x.eventType )
         , ( "id", Jenc.int x.id )
         , ( "datetime_utc", Iso8601.encode x.datetimeUTC )
         , ( "venue", encodeVenue x.venue )
@@ -341,6 +341,29 @@ encodeEvent x =
         ]
 
 
+division : Jdec.Decoder Division
+division =
+    Jdec.succeed Division
+        |> Jpipe.required "taxonomy_id" Jdec.int
+        |> Jpipe.required "short_name" (Jdec.maybe Jdec.string)
+        |> Jpipe.required "display_name" Jdec.string
+        |> Jpipe.required "display_type" Jdec.string
+        |> Jpipe.required "division_level" Jdec.int
+        |> Jpipe.required "slug" (Jdec.maybe Jdec.string)
+
+
+encodeDivision : Division -> Jenc.Value
+encodeDivision x =
+    Jenc.object
+        [ ( "taxonomy_id", Jenc.int x.taxonomyId )
+        , ( "short_name", makeNullableEncoder Jenc.string x.shortName )
+        , ( "display_name", Jenc.string x.displayName )
+        , ( "display_type", Jenc.string x.displayType )
+        , ( "division_level", Jenc.int x.divisionLevel )
+        , ( "slug", makeNullableEncoder Jenc.string x.slug )
+        ]
+
+
 announcements : Jdec.Decoder Announcements
 announcements =
     Jdec.succeed Announcements
@@ -351,115 +374,36 @@ encodeAnnouncements x =
     Jenc.object []
 
 
-nameEnum : Jdec.Decoder NameEnum
-nameEnum =
+upperEnumFromString : String -> UpperEnum
+upperEnumFromString =
+    String.Extra.humanize >> String.toUpper >> Up
+
+
+upperEnum : Jdec.Decoder UpperEnum
+upperEnum =
     Jdec.string
-        |> Jdec.andThen
-            (\str ->
-                case str of
-                    "baseball" ->
-                        Jdec.succeed Baseball
-
-                    "broadway_tickets_national" ->
-                        Jdec.succeed BroadwayTicketsNational
-
-                    "classical" ->
-                        Jdec.succeed Classical
-
-                    "comedy" ->
-                        Jdec.succeed Comedy
-
-                    "concert" ->
-                        Jdec.succeed Concert
-
-                    "concerts" ->
-                        Jdec.succeed Concerts
-
-                    "ncaa_baseball" ->
-                        Jdec.succeed PurpleNcaaBaseball
-
-                    "theater" ->
-                        Jdec.succeed PurpleTheater
-
-                    "sports" ->
-                        Jdec.succeed Sports
-
-                    somethingElse ->
-                        Jdec.fail <| "Invalid NameEnum: " ++ somethingElse
-            )
+        |> Jdec.map upperEnumFromString
 
 
-encodeNameEnum : NameEnum -> Jenc.Value
-encodeNameEnum x =
-    case x of
-        Baseball ->
-            Jenc.string "baseball"
-
-        BroadwayTicketsNational ->
-            Jenc.string "broadway_tickets_national"
-
-        Classical ->
-            Jenc.string "classical"
-
-        Comedy ->
-            Jenc.string "comedy"
-
-        Concert ->
-            Jenc.string "concert"
-
-        Concerts ->
-            Jenc.string "concerts"
-
-        PurpleNcaaBaseball ->
-            Jenc.string "ncaa_baseball"
-
-        PurpleTheater ->
-            Jenc.string "theater"
-
-        Sports ->
-            Jenc.string "sports"
+upperEnumToString : UpperEnum -> String
+upperEnumToString (Up enum) =
+    String.toLower enum |> String.Extra.underscored
 
 
-nameEnumAsString : NameEnum -> String
-nameEnumAsString x =
-    case x of
-        Baseball ->
-            "Baseball"
-
-        BroadwayTicketsNational ->
-            "Broadway Tickets National"
-
-        Classical ->
-            "Classical"
-
-        Comedy ->
-            "Comedy"
-
-        Concert ->
-            "Concert"
-
-        Concerts ->
-            "Concerts"
-
-        PurpleNcaaBaseball ->
-            "NCAA Baseball"
-
-        PurpleTheater ->
-            "Theater"
-
-        Sports ->
-            "Sports"
+encodeUpperEnum : UpperEnum -> Jenc.Value
+encodeUpperEnum =
+    upperEnumToString >> Jenc.string
 
 
 performer : Jdec.Decoder Performer
 performer =
     Jdec.succeed Performer
-        |> Jpipe.required "type" performerType
+        |> Jpipe.required "type" upperEnum
         |> Jpipe.required "name" Jdec.string
         |> Jpipe.required "image" Jdec.string
         |> Jpipe.required "id" Jdec.int
         |> Jpipe.required "images" performerImages
-        |> Jpipe.optional "divisions" (Jdec.null ()) ()
+        |> Jpipe.optional "divisions" (Jdec.list division) []
         |> Jpipe.required "has_upcoming_events" Jdec.bool
         |> Jpipe.optional "primary" (Jdec.nullable Jdec.bool) Nothing
         |> Jpipe.required "stats" performerStats
@@ -471,7 +415,7 @@ performer =
         |> Jpipe.optional "home_venue_id" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.required "short_name" Jdec.string
         |> Jpipe.required "num_upcoming_events" Jdec.int
-        |> Jpipe.optional "colors" (Jdec.null ()) ()
+        |> Jpipe.optional "colors" (Jdec.nullable colors) Nothing
         |> Jpipe.optional "image_license" (Jdec.nullable Jdec.string) Nothing
         |> Jpipe.optional "genres" (Jdec.nullable (Jdec.list genre)) Nothing
         |> Jpipe.required "popularity" Jdec.int
@@ -484,12 +428,12 @@ performer =
 encodePerformer : Performer -> Jenc.Value
 encodePerformer x =
     Jenc.object
-        [ ( "type", encodePerformerType x.performerType )
+        [ ( "type", encodeUpperEnum x.performerType )
         , ( "name", Jenc.string x.name )
         , ( "image", Jenc.string x.image )
         , ( "id", Jenc.int x.id )
         , ( "images", encodePerformerImages x.images )
-        , ( "divisions", always Jenc.null x.divisions )
+        , ( "divisions", Jenc.list encodeDivision x.divisions )
         , ( "has_upcoming_events", Jenc.bool x.hasUpcomingEvents )
         , ( "primary", makeNullableEncoder Jenc.bool x.primary )
         , ( "stats", encodePerformerStats x.stats )
@@ -673,55 +617,21 @@ encodeLocation x =
         ]
 
 
-performerType : Jdec.Decoder PerformerType
-performerType =
-    Jdec.string
-        |> Jdec.andThen
-            (\str ->
-                case str of
-                    "band" ->
-                        Jdec.succeed Band
-
-                    "ncaa_baseball" ->
-                        Jdec.succeed FluffyNcaaBaseball
-
-                    "theater" ->
-                        Jdec.succeed FluffyTheater
-
-                    "theater_broadway_national_tours" ->
-                        Jdec.succeed TheaterBroadwayNationalTours
-
-                    "theater_classical" ->
-                        Jdec.succeed TheaterClassical
-
-                    "theater_comedy" ->
-                        Jdec.succeed TheaterComedy
-
-                    somethingElse ->
-                        Jdec.fail <| "Invalid PerformerType: " ++ somethingElse
-            )
+colors : Jdec.Decoder Colors
+colors =
+    Jdec.succeed Colors
+        |> Jpipe.required "all" (Jdec.list Jdec.string)
+        |> Jpipe.required "iconic" Jdec.string
+        |> Jpipe.required "primary" (Jdec.list Jdec.string)
 
 
-encodePerformerType : PerformerType -> Jenc.Value
-encodePerformerType x =
-    case x of
-        Band ->
-            Jenc.string "band"
-
-        FluffyNcaaBaseball ->
-            Jenc.string "ncaa_baseball"
-
-        FluffyTheater ->
-            Jenc.string "theater"
-
-        TheaterBroadwayNationalTours ->
-            Jenc.string "theater_broadway_national_tours"
-
-        TheaterClassical ->
-            Jenc.string "theater_classical"
-
-        TheaterComedy ->
-            Jenc.string "theater_comedy"
+encodeColors : Colors -> Jenc.Value
+encodeColors x =
+    Jenc.object
+        [ ( "all", Jenc.list Jenc.string x.all )
+        , ( "iconic", Jenc.string x.iconic )
+        , ( "primary", Jenc.list Jenc.string x.primary )
+        ]
 
 
 performerStats : Jdec.Decoder PerformerStats
@@ -741,7 +651,7 @@ taxonomy : Jdec.Decoder Taxonomy
 taxonomy =
     Jdec.succeed Taxonomy
         |> Jpipe.required "id" Jdec.int
-        |> Jpipe.required "name" nameEnum
+        |> Jpipe.required "name" upperEnum
         |> Jpipe.optional "parent_id" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "document_source" (Jdec.nullable documentSource) Nothing
         |> Jpipe.required "rank" Jdec.int
@@ -751,7 +661,7 @@ encodeTaxonomy : Taxonomy -> Jenc.Value
 encodeTaxonomy x =
     Jenc.object
         [ ( "id", Jenc.int x.id )
-        , ( "name", encodeNameEnum x.name )
+        , ( "name", encodeUpperEnum x.name )
         , ( "parent_id", makeNullableEncoder Jenc.int x.parentID )
         , ( "document_source", makeNullableEncoder encodeDocumentSource x.documentSource )
         , ( "rank", Jenc.int x.rank )
@@ -763,14 +673,14 @@ eventStats =
     Jdec.succeed EventStats
         |> Jpipe.optional "listing_count" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "average_price" (Jdec.nullable Jdec.int) Nothing
-        |> Jpipe.optional "lowest_price_good_deals" (Jdec.null ()) ()
+        |> Jpipe.optional "lowest_price_good_deals" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "lowest_price" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "highest_price" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "visible_listing_count" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "dq_bucket_counts" (Jdec.nullable (Jdec.list Jdec.int)) Nothing
         |> Jpipe.optional "median_price" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "lowest_sg_base_price" (Jdec.nullable Jdec.int) Nothing
-        |> Jpipe.optional "lowest_sg_base_price_good_deals" (Jdec.null ()) ()
+        |> Jpipe.optional "lowest_sg_base_price_good_deals" (Jdec.nullable Jdec.int) Nothing
 
 
 encodeEventStats : EventStats -> Jenc.Value
@@ -778,14 +688,14 @@ encodeEventStats x =
     Jenc.object
         [ ( "listing_count", makeNullableEncoder Jenc.int x.listingCount )
         , ( "average_price", makeNullableEncoder Jenc.int x.averagePrice )
-        , ( "lowest_price_good_deals", always Jenc.null x.lowestPriceGoodDeals )
+        , ( "lowest_price_good_deals", makeNullableEncoder Jenc.int x.lowestPriceGoodDeals )
         , ( "lowest_price", makeNullableEncoder Jenc.int x.lowestPrice )
         , ( "highest_price", makeNullableEncoder Jenc.int x.highestPrice )
         , ( "visible_listing_count", makeNullableEncoder Jenc.int x.visibleListingCount )
         , ( "dq_bucket_counts", makeNullableEncoder (makeListEncoder Jenc.int) x.dqBucketCounts )
         , ( "median_price", makeNullableEncoder Jenc.int x.medianPrice )
         , ( "lowest_sg_base_price", makeNullableEncoder Jenc.int x.lowestSgBasePrice )
-        , ( "lowest_sg_base_price_good_deals", always Jenc.null x.lowestSgBasePriceGoodDeals )
+        , ( "lowest_sg_base_price_good_deals", makeNullableEncoder Jenc.int x.lowestSgBasePriceGoodDeals )
         ]
 
 
