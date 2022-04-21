@@ -122,7 +122,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -148,7 +148,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -174,7 +174,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -200,7 +200,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -236,7 +236,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -262,7 +262,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -288,7 +288,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -314,7 +314,7 @@ mobileMenu =
                                     []
                                 ]
                             , a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "mt-6 block text-sm font-medium text-gray-900"
                                 ]
                                 [ span
@@ -335,13 +335,13 @@ mobileMenu =
             , div [ class "border-t border-gray-200 py-6 px-4 space-y-6" ]
                 [ div [ class "flow-root" ]
                     [ a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "-m-2 p-2 block font-medium text-gray-900"]
                         [ text "Company" ]
                     ]
                 , div [ class "flow-root" ]
                     [ a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "-m-2 p-2 block font-medium text-gray-900"]
                         [ text "Stores" ]
                     ]
@@ -349,13 +349,13 @@ mobileMenu =
             , div [ class "border-t border-gray-200 py-6 px-4 space-y-6" ]
                 [ div [ class "flow-root" ]
                     [ a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "-m-2 p-2 block font-medium text-gray-900"]
                         [ text "Create an account" ]
                     ]
                 , div [ class "flow-root" ]
                     [ a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "-m-2 p-2 block font-medium text-gray-900"]
                         [ text "Sign in" ]
                     ]
@@ -463,12 +463,12 @@ topNav =
                 ]
             , div [ class "flex items-center space-x-6" ]
                 [ a
-                    [ href "#"
+                    [ Util.asHref Route.Index
                     , class "text-sm font-medium text-white hover:text-gray-100"
                     ]
                     [ text "Sign in" ]
                 , a
-                    [ href "#"
+                    [ Util.asHref Route.Index
                     , class "text-sm font-medium text-white hover:text-gray-100"
                     ]
                     [ text "Create an account" ]
@@ -484,7 +484,7 @@ mainNav =
             [ div [ class "h-16 flex items-center justify-between" ]
                 [ {- Logo (lg+) -}
                   div [ class "hidden lg:flex-1 lg:flex lg:items-center" ]
-                    [ a [ href "#" ]
+                    [ a [ Util.asHref Route.Index ]
                         [ span [ class "sr-only" ] [ text "Workflow" ]
                         , img
                             [ class "h-8 w-auto"
@@ -520,7 +520,7 @@ mainNav =
                             ]]
                     , {- Search -}
                       a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "ml-2 p-2 text-white"]
                         [ span [ class "sr-only" ] [ text "Search" ]
                         , {- Heroicon name: outline/search -}
@@ -542,7 +542,7 @@ mainNav =
                     ]
                 , {- Logo (lg-) -}
                   a
-                    [ href "#"
+                    [ Util.asHref Route.Index
                     , class "lg:hidden"
                     ]
                     [ span [ class "sr-only" ] [ text "Workflow" ]
@@ -554,13 +554,13 @@ mainNav =
                     ]
                 , div [ class "flex-1 flex items-center justify-end" ]
                     [ a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "hidden text-sm font-medium text-white lg:block"]
                         [ text "Search" ]
                     , div [ class "flex items-center lg:ml-8" ]
                         [ {- Help -}
                           a
-                            [ href "#"
+                            [ Util.asHref Route.Index
                             , class "p-2 text-white lg:hidden"
                             ]
                             [ span [ class "sr-only" ] [ text "Help" ]
@@ -582,14 +582,14 @@ mainNav =
                                 ]
                             ]
                         , a
-                            [ href "#"
+                            [ Util.asHref Route.Index
                             , class "hidden text-sm font-medium text-white lg:block"
                             ]
                             [ text "Help" ]
                         , {- Cart -}
                           div [ class "ml-4 flow-root lg:ml-8" ]
                             [ a
-                                [ href "#"
+                                [ Util.asHref Route.Index
                                 , class "group -m-2 p-2 flex items-center"
                                 ]
                                 [ {- Heroicon name: outline/shopping-bag -}
@@ -669,7 +669,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -695,7 +695,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -721,7 +721,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -747,7 +747,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -812,7 +812,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -838,7 +838,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -864,7 +864,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -890,7 +890,7 @@ flyoutMenus =
                                                 []
                                             ]
                                         , a
-                                            [ href "#"
+                                            [ Util.asHref Route.Index
                                             , class "mt-4 block font-medium text-gray-900"
                                             ]
                                             [ span
@@ -911,12 +911,12 @@ flyoutMenus =
                             ]]
                     ]
                 , a
-                    [ href "#"
+                    [ Util.asHref Route.Index
                     , class "flex items-center text-sm font-medium text-white"
                     ]
                     [ text "Company" ]
                 , a
-                    [ href "#"
+                    [ Util.asHref Route.Index
                     , class "flex items-center text-sm font-medium text-white"
                     ]
                     [ text "Stores" ]
@@ -948,35 +948,35 @@ foot =
                                 ]
                                 [ li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Bags" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Tees" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Objects" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Home Goods" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Accessories" ]
@@ -991,42 +991,42 @@ foot =
                                 ]
                                 [ li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Who we are" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Sustainability" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Press" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Careers" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Terms & Conditions" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Privacy" ]
@@ -1042,21 +1042,21 @@ foot =
                                 ]
                                 [ li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Manage Account" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Returns & Exchanges" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Redeem a Gift Card" ]
@@ -1071,28 +1071,28 @@ foot =
                                 ]
                                 [ li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Contact Us" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Twitter" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Instagram" ]
                                     ]
                                 , li [ class "text-sm" ]
                                     [ a
-                                        [ href "#"
+                                        [ Util.asHref Route.Index
                                         , class "text-gray-300 hover:text-white"
                                         ]
                                         [ text "Pinterest" ]

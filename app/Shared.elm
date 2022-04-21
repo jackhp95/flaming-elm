@@ -24,7 +24,6 @@ template =
 
 type Msg
     = SharedMsg SharedMsg
-    | MenuClicked
 
 
 type alias Data =
@@ -61,11 +60,8 @@ init flags maybePagePath =
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        SharedMsg globalMsg ->
+        SharedMsg _ ->
             ( model, Effect.none )
-
-        MenuClicked ->
-            ( { model | showMenu = not model.showMenu }, Effect.none )
 
 
 subscriptions : Path -> Model -> Sub Msg

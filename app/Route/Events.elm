@@ -1,21 +1,16 @@
 module Route.Events exposing (Data, Model, Msg, route)
 
-import Component.Icon as Icon
 import Data.SeatGeek as SG exposing (Events)
 import DataSource exposing (DataSource)
 import DataSource.Http
 import DateFormat as DF
 import DateFormat.Relative exposing (relativeTime)
-import ErrorPage exposing (ErrorPage)
 import Head
-import Head.Seo as Seo
-import Html as Html exposing (..)
-import Html.Attributes as Attr exposing (..)
-import Json.Decode as Decode exposing (Decoder)
-import Maybe.Extra as Maybe
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Json.Decode as Decode
 import Pages.PageUrl exposing (PageUrl)
-import Pages.Url
-import RouteBuilder exposing (StatefulRoute, StatelessRoute, StaticPayload)
+import RouteBuilder exposing (StatelessRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
@@ -58,7 +53,7 @@ data routeParams =
                 [ "2", "events" ]
                 [ string "client_id" "MzUwNDE1NnwxNDgxNjA1ODM2"
                 , string "postal_code" "65203"
-                , string "per_page" "30"
+                , string "per_page" "300"
                 ]
     in
     SG.events
@@ -74,15 +69,28 @@ head static =
 
 view : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> View Msg
 view maybeUrl sharedModel static =
+    let
+        layout =
+            columnLayout
+
+        gridLayout =
+            List.map eventCard
+                >> div
+                    [ class "grid-cols-[repeat(auto-fit,minmax(clamp(140px,18vw,210px),1fr))]"
+                    , class "grid gap-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8"
+                    ]
+
+        columnLayout =
+            List.map (eventCard >> List.singleton >> li [ class "p-2 break-inside-avoid" ])
+                >> ol [ class "columns-2 sm:columns-[12rem] gap-0" ]
+    in
     { title = "Events in " ++ static.data.meta.geolocation.displayName ++ " | Flamingle"
     , body =
         div
-            [ class "max-w-2xl mx-auto sm:py-16 sm:px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
+            [ class "max-w-2xl mx-auto px-2 py-5 sm:py-16 sm:px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
             ]
             [ h2 [ class "sr-only" ] [ text "Events" ]
-            , static.data.events
-                |> List.map eventCard
-                |> div [ class "grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8" ]
+            , gridLayout static.data.events
             ]
     }
 
@@ -99,7 +107,7 @@ eventCard event =
                         img
                             [ src performer.image
                             , alt performer.name
-                            , class "snap-center flex-none w-full h-full object-center object-cover"
+                            , class "snap-center flex-none object-center object-cover"
                             ]
                             []
                     )
@@ -107,14 +115,14 @@ eventCard event =
     a
         [ href <| String.fromInt event.id
         , id <| String.fromInt event.id
-        , class "group relative focus:ring-2 transition-all pb-6 sm:pb-0 ring-1 ring-white focus:ring-fuchsia-500 hover:ring-opacity-100 ring-opacity-10 sm:ring-opacity-20 sm:rounded-lg flex flex-col overflow-hidden"
-        , classList [ ( "row-span-3", (not << List.isEmpty) imageList ) ]
+        , class "group relative focus:ring-2 transition-all sm:pb-0 ring-1 ring-white focus:ring-fuchsia-500 hover:ring-opacity-100 ring-opacity-10 sm:ring-opacity-20 rounded sm:rounded-lg flex flex-col overflow-hidden"
+        , classList [ ( "row-span-2", (not << List.isEmpty) imageList ) ]
         ]
         [ div [ class "bg-opacity-20 opacity-90 group-hover:opacity-100 overflow-x-scroll thin-scrollbar flex snap-x snap-mandatory" ] imageList
         , div
             [ class "flex-1 p-4 space-y-2 flex flex-col"
             ]
-            [ h3 [ class "font-medium opacity-90" ] [ text event.shortTitle ]
+            [ h3 [ class "font-medium opacity-90 text-sm" ] [ text event.shortTitle ]
 
             -- , div
             --     [ class "flex -space-x-2 relative z-0 overflow-hidden p-2"
@@ -129,10 +137,10 @@ eventCard event =
             --         )
             --     )
             , div
-                [ class "flex-1 flex flex-col justify-end"
+                [ class "flex-1 flex flex-col justify-end text-xs"
                 ]
-                [ p [ class "text-sm italic opacity-50" ] [ text event.venue.name ]
-                , p [ class "text-sm font-medium opacity-70" ]
+                [ p [ class "italic opacity-50" ] [ text event.venue.name ]
+                , p [ class "font-medium opacity-70" ]
                     [ output []
                         [ DF.format
                             [ DF.monthNameFull
@@ -149,11 +157,12 @@ eventCard event =
                             event.datetimeLocal
                             |> text
                         ]
-                    , text " "
-                    , output []
-                        [ relativeTime event.datetimeLocal event.datetimeUTC
-                            |> text
-                        ]
+
+                    -- , text " "
+                    -- , output []
+                    --     [ relativeTime event.datetimeLocal event.datetimeUTC
+                    --         |> text
+                    --     ]
                     ]
                 ]
             ]

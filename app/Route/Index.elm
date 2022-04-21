@@ -3,12 +3,9 @@ module Route.Index exposing (Data, Model, Msg, route)
 import Component.Icon as Icon
 import DataSource exposing (DataSource)
 import Head
-import Head.Seo as Seo
-import Html as Html exposing (..)
+import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
 import Pages.PageUrl exposing (PageUrl)
-import Pages.Url
-import Path
 import RouteBuilder exposing (StatelessRoute, StaticPayload)
 import Shared
 import Site
@@ -93,7 +90,7 @@ homePage =
                 [ class "flex-auto flex relative"
                 ]
                 [ div
-                    [ class "absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none mix-blend-difference z-50 text-white"
+                    [ class "absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none mix-blend-difference text-white"
                     ]
                     [ Icon.solidSearch
                     ]

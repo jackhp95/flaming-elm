@@ -1,7 +1,7 @@
 module Component.Icon exposing (..)
 
 import Html.Attributes exposing (attribute)
-import Svg as Svg exposing (path, svg)
+import Svg exposing (path, svg)
 import Svg.Attributes as SvgAttr
 
 

@@ -1,24 +1,30 @@
 module Util exposing (..)
 
-import Color
-import DataSource exposing (DataSource)
 import Head
 import Head.Seo as Seo
 import Head.Twitter as Twitter
+import Html
+import Html.Attributes exposing (href)
 import MimeType
-import Pages.Manifest as Manifest
-import Pages.Manifest.Category exposing (..)
 import Pages.Url
-import Path
-import SiteConfig exposing (SiteConfig)
+import Route exposing (Route)
+import Url.Builder
 
 
+logoAppleIcon : Pages.Url.Url
 logoAppleIcon =
     Pages.Url.external "/logo.svg"
 
 
+logoIcon : Pages.Url.Url
 logoIcon =
     Pages.Url.external "/logo.svg"
+
+
+asHref : Route -> Html.Attribute msg
+asHref route =
+    Url.Builder.absolute (Route.routeToPath route) []
+        |> href
 
 
 head : List Head.Tag

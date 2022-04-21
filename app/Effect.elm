@@ -1,8 +1,6 @@
 module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 
 import Browser.Navigation
-import Http
-import Json.Decode as Decode
 
 
 type Effect msg

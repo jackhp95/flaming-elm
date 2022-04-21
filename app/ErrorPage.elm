@@ -1,10 +1,10 @@
 module ErrorPage exposing (ErrorPage(..), Model, Msg, head, init, internalError, notFound, statusCode, update, view)
 
 import Effect exposing (Effect)
-import Head
-import Html as Html exposing (..)
-import Html.Attributes as Attr exposing (..)
-import Html.Events exposing (onClick)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Route
+import Util
 import View exposing (View)
 
 
@@ -14,6 +14,10 @@ type Msg
 
 type alias Model =
     { count : Int }
+
+
+head =
+    Util.head
 
 
 init : ErrorPage -> ( Model, Effect Msg )
@@ -28,11 +32,6 @@ update errPage msg model =
     case msg of
         Increment ->
             ( { model | count = model.count + 1 }, Effect.none )
-
-
-head : ErrorPage -> List Head.Tag
-head errPage =
-    []
 
 
 type ErrorPage
@@ -79,7 +78,7 @@ errorPage =
                 [ class "flex-shrink-0 flex justify-center"
                 ]
                 [ a
-                    [ href "/"
+                    [ Util.asHref Route.Index
                     , class "inline-flex"
                     ]
                     [ span [ class "sr-only" ] [ text "Flamingle" ]
@@ -97,7 +96,7 @@ errorPage =
                     , p [ class "mt-2 text-base text-neutral-500" ] [ text "Sorry, we couldn’t find the page you’re looking for." ]
                     , div [ class "mt-6" ]
                         [ a
-                            [ href "/"
+                            [ Util.asHref Route.Index
                             , class "text-base font-medium text-fuchsia-600 hover:text-fuchsia-500"
                             ]
                             [ text "Go back home"

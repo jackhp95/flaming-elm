@@ -54,7 +54,7 @@ hero =
             [ h1 [ class "text-4xl font-extrabold tracking-tight text-white lg:text-6xl" ] [ text "New arrivals are here" ]
             , p [ class "mt-4 text-xl text-white" ] [ text "The new arrivals have, well, newly arrived. Check out the latest options from our summer small-batch release while they're still in stock." ]
             , a
-                [ href "#"
+                [ Util.asHref Route.Index
                 , class "mt-8 inline-block bg-white border border-transparent rounded-md py-3 px-8 text-base font-medium text-gray-900 hover:bg-gray-100"
                 ]
                 [ text "Shop New Arrivals" ]
@@ -75,7 +75,7 @@ categorySection =
 
         card cardText =
             a
-                [ href "#"
+                [ Util.asHref Route.Index
                 , class "relative w-56 h-80 rounded-lg p-6 flex flex-col overflow-hidden hover:opacity-75 xl:w-auto"
                 ]
                 [ span
@@ -115,7 +115,7 @@ categorySection =
                 (List.map (card >> List.singleton >> li []) categories)
             ]
         , a
-            [ href "#"
+            [ Util.asHref Route.Index
             , class "block text-sm font-semibold p-4 ml-auto col-end-[-1] text-indigo-600 hover:text-indigo-500"
             ]
             [ text "Browse all categories"
@@ -149,7 +149,7 @@ teaserSection =
                         , span [ class "block sm:inline" ] [ text "your desk" ]]
                     , p [ class "mt-3 text-xl text-white" ] [ text "Make your desk beautiful and organized. Post a picture to social media and watch it get more likes than life-changing announcements. Reflect on the shallow nature of existence. At least you have a really nice desk setup." ]
                     , a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "mt-8 w-full block bg-white border border-transparent rounded-md py-3 px-8 text-base font-medium text-gray-900 hover:bg-gray-100 sm:w-auto"]
                         [ text "Shop Workspace" ]
                     ]
@@ -173,7 +173,7 @@ collectionSection =
         , p [ class "mt-4 text-base text-gray-500" ] [ text "Each season, we collaborate with world-class designers to create a collection inspired by the natural world." ]
         , div [ class "mt-10 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8" ]
             [ a
-                [ href "#"
+                [ Util.asHref Route.Index
                 , class "group block"
                 ]
                 [ div
@@ -190,7 +190,7 @@ collectionSection =
                 , p [ class "mt-2 text-sm text-gray-500" ] [ text "Keep your phone, keys, and wallet together, so you can lose everything at once." ]
                 ]
             , a
-                [ href "#"
+                [ Util.asHref Route.Index
                 , class "group block"
                 ]
                 [ div
@@ -207,7 +207,7 @@ collectionSection =
                 , p [ class "mt-2 text-sm text-gray-500" ] [ text "The rest of the house will still be a mess, but your desk will look great." ]
                 ]
             , a
-                [ href "#"
+                [ Util.asHref Route.Index
                 , class "group block"
                 ]
                 [ div
@@ -251,7 +251,7 @@ fetauredSection =
                         [ text "Simple productivity" ]
                     , p [ class "mt-3 text-xl text-white" ] [ text "Endless tasks, limited hours, a single piece of paper. Not really a haiku, but we're doing our best here. No kanban boards, burndown charts, or tangled flowcharts with our Focus system. Just the undeniable urge to fill empty circles." ]
                     , a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "mt-8 w-full block bg-white border border-transparent rounded-md py-3 px-8 text-base font-medium text-gray-900 hover:bg-gray-100 sm:w-auto"]
                         [ text "Shop Focus" ]
                     ]

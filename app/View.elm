@@ -1,8 +1,10 @@
 module View exposing (..)
 
 import Component.Icon as Icon
-import Html as Html exposing (..)
+import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
+import Route
+import Util
 
 
 type alias View msg =
@@ -63,13 +65,13 @@ navbar =
 logoSection : Html msg
 logoSection =
     a
-        [ href "/"
-        , class "flex-shrink-0 flex items-center gap-2 w-16 sm:w-auto justify-center text-neutral-300 hover:text-white focus:text-transparent"
+        [ Util.asHref Route.Index
+        , class "flex-shrink-0 group flex items-center gap-2 w-16 sm:w-auto justify-center text-neutral-300 hover:text-white focus:text-transparent"
         ]
         [ img
             [ src "/logo.svg"
             , alt ""
-            , class "w-8"
+            , class "w-8 transform transition group-focus:scale-110 hover:scale-110"
             ]
             []
         , span [ class "hidden md:inline hover:text-transparent focus:text-transparent text-base font-bold bg-clip-text bg-gradient-to-tl transition from-rose-500 to-fuchsia-500" ]
@@ -134,7 +136,7 @@ accountSection =
     div [ class "relative z-10 hidden lg:ml-4 lg:flex lg:items-center" ] <|
         if True then
             [ a
-                [ href "#"
+                [ Util.asHref Route.Auth
                 , class "flex-shrink-0 relative self-center inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white opacity-60 border border-white border-opacity-50 transition from-rose-500 to-fuchsia-500"
                 , class "hover:opacity-100 hover:text-opacity-100 hover:border-fuchsia-500 hover:bg-gradient-to-tl"
                 , class "focus:opacity-100 focus:text-opacity-100 focus:border-fuchsia-500 focus:bg-gradient-to-l focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
@@ -182,7 +184,7 @@ accountSection =
                     ]
                     [ {- Active: "bg-opacity-10", Not Active: "" -}
                       a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "block px-4 py-2 text-sm opacity-70"
                         , attribute "role" "menuitem"
                         , tabindex -1
@@ -190,7 +192,7 @@ accountSection =
                         ]
                         [ text "Your Profile" ]
                     , a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "block px-4 py-2 text-sm opacity-70"
                         , attribute "role" "menuitem"
                         , tabindex -1
@@ -198,7 +200,7 @@ accountSection =
                         ]
                         [ text "Settings" ]
                     , a
-                        [ href "#"
+                        [ Util.asHref Route.Index
                         , class "block px-4 py-2 text-sm opacity-70"
                         , attribute "role" "menuitem"
                         , tabindex -1
@@ -215,18 +217,21 @@ mobileMenu routes =
     details [ class "lg:hidden contents group" ]
         [ summary [ class "flex-none w-16 justify-center flex items-center" ]
             [ div
-                [ class "group-open:flex group-open:bg-opacity-90  group-open:pointer-events-auto"
-                , class "pointer-events-none bg-opacity-0 absolute top-0 right-0 h-screen w-full backdrop-blur-md bg-black transition"
+                [ class "group-open:pointer-events-auto group-open:flex group-open:bg-opacity-90 group-open:backdrop-blur-md"
+                , class "pointer-events-none bg-opacity-0 absolute top-0 right-0 h-screen w-full bg-black transition"
                 ]
                 []
-            , div [ class "relative inline-flex items-center justify-center p-2 rounded-md opacity-40 hover:opacity-50 hover:bg-opacity-10 group-open:ring-2 group-open:ring-inset group-open:ring-fuchsia-500" ]
+            , div
+                [ class "relative inline-flex items-center justify-center p-2 rounded-md opacity-40 hover:opacity-50 hover:bg-opacity-10 group-open:ring-2 group-open:ring-inset group-open:ring-fuchsia-500"
+                , class "border border-opacity-30 border-white rounded-md"
+                ]
                 [ span [ class "sr-only" ] [ text "Toggle main menu" ]
                 , div [ class "group-open:hidden flex" ] [ Icon.outlineMenu ]
                 , div [ class "group-open:flex hidden relative" ] [ Icon.outlineX ]
                 ]
             ]
         , div
-            [ class "absolute z-10 top-full right-0 bg-neutral-900 rounded-lg mx-4" ]
+            [ class "absolute z-20 top-full right-0 bg-neutral-900 rounded-lg mx-4" ]
             [ List.map
                 (\path ->
                     a
@@ -244,7 +249,7 @@ mobileMenu routes =
                 if True then
                     [ div [ class "flex justify-center mx-4" ]
                         [ a
-                            [ href "#"
+                            [ Util.asHref Route.Auth
                             , class "flex-shrink-0 relative self-center inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white opacity-60 border border-white border-opacity-50 transition from-rose-500 to-fuchsia-500"
                             , class "hover:opacity-100 hover:text-opacity-100 hover:border-fuchsia-500 hover:bg-gradient-to-tl"
                             , class "focus:opacity-100 focus:text-opacity-100 focus:border-fuchsia-500 focus:bg-gradient-to-l focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
@@ -294,17 +299,17 @@ mobileMenu routes =
                         [ class "mt-3 space-y-1"
                         ]
                         [ a
-                            [ href "#"
+                            [ Util.asHref Route.Index
                             , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
                             ]
                             [ text "Your Profile" ]
                         , a
-                            [ href "#"
+                            [ Util.asHref Route.Index
                             , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
                             ]
                             [ text "Settings" ]
                         , a
-                            [ href "#"
+                            [ Util.asHref Route.Index
                             , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
                             ]
                             [ text "Sign out" ]

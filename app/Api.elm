@@ -3,24 +3,18 @@ module Api exposing (routes)
 import ApiRoute exposing (ApiRoute)
 import Color
 import DataSource exposing (DataSource)
-import Head
-import Head.Seo as Seo
-import Head.Twitter as Twitter
+import DataSource.Http
 import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import MimeType
-import Pages
 import Pages.Manifest as Manifest
 import Pages.Manifest.Category exposing (..)
-import Pages.Url
 import Path
-import Result.Extra
 import Route exposing (Route)
 import Server.Request as Request
-import Server.Response as Response exposing (Response)
+import Server.Response as Response
 import Site
-import SiteConfig exposing (SiteConfig)
 import Util
 
 
@@ -28,10 +22,52 @@ routes : DataSource (List Route) -> (Html Never -> String) -> List (ApiRoute.Api
 routes getStaticRoutes htmlToString =
     [ events
     , requestPrinter
+    , signUpForm
     , multipleContentTypes
     , DataSource.succeed manifest
         |> Manifest.generator Site.config.canonicalUrl
     ]
+
+
+signUpForm : ApiRoute ApiRoute.Response
+signUpForm =
+    Request.expectFormPost
+        (\{ field, optionalField } ->
+            Request.map2
+                -- Send User Request to Supabase
+                (\email password ->
+                    DataSource.Http.request
+                        { url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/signup"
+                        , method = "POST"
+                        , headers =
+                            [ ( "apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxNTMwMCwiZXhwIjoxOTU4OTkxMzAwfQ.7FNpzHXTJ0EHz2nVfodpdu4mw05Mik1BH8aEQpE6XAU" )
+                            , ( "Content-Type", "application/json" )
+                            ]
+                        , body =
+                            [ ( "email", Encode.string email )
+                            , ( "password", Encode.string password )
+                            ]
+                                |> Encode.object
+                                |> DataSource.Http.jsonBody
+                        }
+                        -- Response from Supabase
+                        (DataSource.Http.expectJson Decode.value)
+                        -- Respond to User
+                        -- TODO: Redirect them to the correct place?!?!?!
+                        |> DataSource.map Response.json
+                )
+                (field "email")
+                (field "password")
+        )
+        -- Build Path
+        |> ApiRoute.succeed
+        |> ApiRoute.literal "api"
+        |> ApiRoute.slash
+        |> ApiRoute.literal "form"
+        |> ApiRoute.slash
+        |> ApiRoute.literal "sign-up"
+        -- End Builder
+        |> ApiRoute.serverRender
 
 
 multipleContentTypes : ApiRoute ApiRoute.Response
@@ -92,13 +128,13 @@ events =
     ApiRoute.succeed
         (Request.oneOf
             [ Request.expectFormPost
-                (\{ field, optionalField } ->
+                (\{ field } ->
                     field "first"
                 )
             , Request.expectJsonBody (Decode.field "first" Decode.string)
             , Request.expectQueryParam "first"
             , Request.expectMultiPartFormPost
-                (\{ field, optionalField } ->
+                (\{ field } ->
                     field "first"
                 )
             ]
@@ -141,3 +177,21 @@ manifest =
         -- (Color.rgb 244 63 94)
         |> Manifest.withBackgroundColor Color.black
         |> Manifest.withDisplayMode Manifest.Standalone
+
+
+
+-- requestEmailSignUp : String -> String -> Cmd Msg
+-- requestEmailSignUp email password =
+--     Http.request
+--         { method = "POST"
+--         , headers = [ Http.header "apikey" "SUPABASE_KEY", Http.header "Content-Type" "application/json" ]
+--         , url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/signup"
+--         , body =
+--             (Json.Encode.object >> Http.jsonBody)
+--                 [ ( "email", Json.Encode.string email )
+--                 , ( "password", Json.Encode.string password )
+--                 ]
+--         , expect = Http.expectWhatever SignedUp
+--         , timeout = Nothing
+--         , tracker = Nothing
+--         }

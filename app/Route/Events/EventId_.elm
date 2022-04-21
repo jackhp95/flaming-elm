@@ -1,4 +1,4 @@
-module Route.Events.Slug_ exposing (Data, Model, Msg, route)
+module Route.Events.EventId_ exposing (Data, Model, Msg, route)
 
 import Component.Icon as Icon
 import Data.SeatGeek as SG exposing (Event)
@@ -6,13 +6,13 @@ import DataSource exposing (DataSource)
 import DataSource.Http
 import DateFormat as DF
 import DateFormat.Relative exposing (relativeTime)
+import Dict
 import Head
-import Head.Seo as Seo
-import Html as Html exposing (..)
-import Html.Attributes as Attr exposing (..)
-import Json.Decode as Decode exposing (Decoder)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Json.Decode as Decode
 import Pages.PageUrl exposing (PageUrl)
-import Pages.Url
+import Route
 import RouteBuilder exposing (StatelessRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
@@ -20,6 +20,7 @@ import Shared
 import Site
 import Time
 import Url.Builder exposing (crossOrigin, string)
+import Util
 import View exposing (View)
 
 
@@ -36,7 +37,7 @@ type alias Data =
 
 
 type alias RouteParams =
-    { slug : String }
+    { eventId : String }
 
 
 route : StatelessRoute RouteParams Data
@@ -49,10 +50,10 @@ route =
 
 
 data : RouteParams -> Request.Parser (DataSource (Response Data error))
-data { slug } =
+data { eventId } =
     let
         endpoint =
-            crossOrigin "https://api.seatgeek.com" [ "2", "events", slug ] [ string "client_id" "MzUwNDE1NnwxNDgxNjA1ODM2" ]
+            crossOrigin "https://api.seatgeek.com" [ "2", "events", eventId ] [ string "client_id" "MzUwNDE1NnwxNDgxNjA1ODM2" ]
     in
     SG.event
         |> Decode.map Response.render
@@ -78,6 +79,7 @@ view maybeUrl sharedModel static =
     }
 
 
+eventPage : SG.Event -> Html msg
 eventPage event =
     div
         [ class "container mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8"
@@ -95,9 +97,9 @@ eventPage event =
                         (\item ->
                             a
                                 [ href <| String.fromInt item.id
-                                , class "font-medium opacity-50 hover:opacity-90"
+                                , class "font-medium opacity-50 hover:opacity-90 text-xs tracking-widest"
                                 ]
-                                [ text <| SG.upperEnumToString item.name ]
+                                [ item.name |> (\(SG.Up name) -> text name) ]
                         )
                     |> List.intersperse Icon.breadcrumbSlash
                 )
@@ -137,14 +139,15 @@ eventPage event =
                             event.datetimeLocal
                             |> text
                         ]
-                    , div [ class "ml-4 pl-4 border-l border-gray-300" ]
-                        [ p
-                            [ class "ml-2 text-sm opacity-50"
-                            ]
-                            [ relativeTime event.datetimeLocal event.datetimeUTC
-                                |> text
-                            ]
-                        ]
+
+                    -- , div [ class "ml-4 pl-4 border-l border-gray-300" ]
+                    --     [ p
+                    --         [ class "ml-2 text-sm opacity-50"
+                    --         ]
+                    --         [ relativeTime event.datetimeLocal event.datetimeUTC
+                    --             |> text
+                    --         ]
+                    --     ]
                     ]
                 , div
                     [ class "mt-4 space-y-6"
@@ -245,7 +248,7 @@ eventPage event =
                         ]
                     , div [ class "mt-4" ]
                         [ a
-                            [ href "#"
+                            [ Util.asHref Route.Index
                             , class "group inline-flex text-sm opacity-50 hover:opacity-70"
                             ]
                             [ span [] [ text "What size should I buy?" ]
@@ -261,7 +264,7 @@ eventPage event =
                         ]
                     , div [ class "mt-6 text-center" ]
                         [ a
-                            [ href "#"
+                            [ Util.asHref Route.Index
                             , class "group inline-flex text-base font-medium"
                             ]
                             [ Icon.outlineShieldCheck

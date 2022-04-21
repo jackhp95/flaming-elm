@@ -1,11 +1,10 @@
 module Data.SeatGeek exposing (..)
 
-import Dict exposing (Dict, map, toList)
+import Dict exposing (Dict, toList)
 import Iso8601
 import Json.Decode as Jdec
 import Json.Decode.Pipeline as Jpipe
 import Json.Encode as Jenc
-import List exposing (map)
 import String.Extra
 import Time exposing (Posix)
 
@@ -60,7 +59,7 @@ type alias Performer =
     , name : String
     , image : String
     , id : Int
-    , images : PerformerImages
+    , images : ImageGallery
     , divisions : List Division
     , hasUpcomingEvents : Bool
     , primary : Maybe Bool
@@ -75,7 +74,7 @@ type alias Performer =
     , numUpcomingEvents : Int
     , colors : Maybe Colors
     , imageLicense : Maybe String
-    , genres : Maybe (List Genre)
+    , genres : List Genre
     , popularity : Int
     , location : Maybe Location
     , imageRightsMessage : String
@@ -99,7 +98,7 @@ type alias Genre =
     , name : String
     , slug : String
     , primary : Bool
-    , images : GenreImages
+    , images : Dict String String
     , image : String
     , documentSource : DocumentSource
     }
@@ -119,33 +118,8 @@ type SourceType
     = Elastic
 
 
-type alias GenreImages =
-    { the1200X525 : String
-    , the1200X627 : String
-    , the136X136 : String
-    , the500_700 : String
-    , the800X320 : String
-    , banner : String
-    , block : String
-    , criteo130_160 : String
-    , criteo170_235 : String
-    , criteo205_100 : String
-    , criteo400_300 : String
-    , fb100X72 : String
-    , fb600_315 : String
-    , huge : String
-    , ipadEventModal : String
-    , ipadHeader : String
-    , ipadMiniExplore : String
-    , mongo : String
-    , squareMid : String
-    , triggitFbAd : String
-    }
-
-
-type alias PerformerImages =
-    { huge : String
-    }
+type alias ImageGallery =
+    Dict String String
 
 
 type alias Location =
@@ -181,7 +155,7 @@ type alias EventStats =
     , lowestPrice : Maybe Int
     , highestPrice : Maybe Int
     , visibleListingCount : Maybe Int
-    , dqBucketCounts : Maybe (List Int)
+    , dqBucketCounts : List Int
     , medianPrice : Maybe Int
     , lowestSgBasePrice : Maybe Int
     , lowestSgBasePriceGoodDeals : Maybe Int
@@ -402,7 +376,7 @@ performer =
         |> Jpipe.required "name" Jdec.string
         |> Jpipe.required "image" Jdec.string
         |> Jpipe.required "id" Jdec.int
-        |> Jpipe.required "images" performerImages
+        |> Jpipe.required "images" imageGallery
         |> Jpipe.optional "divisions" (Jdec.list division) []
         |> Jpipe.required "has_upcoming_events" Jdec.bool
         |> Jpipe.optional "primary" (Jdec.nullable Jdec.bool) Nothing
@@ -417,7 +391,7 @@ performer =
         |> Jpipe.required "num_upcoming_events" Jdec.int
         |> Jpipe.optional "colors" (Jdec.nullable colors) Nothing
         |> Jpipe.optional "image_license" (Jdec.nullable Jdec.string) Nothing
-        |> Jpipe.optional "genres" (Jdec.nullable (Jdec.list genre)) Nothing
+        |> Jpipe.optional "genres" (Jdec.list genre) []
         |> Jpipe.required "popularity" Jdec.int
         |> Jpipe.optional "location" (Jdec.nullable location) Nothing
         |> Jpipe.required "image_rights_message" Jdec.string
@@ -432,7 +406,7 @@ encodePerformer x =
         , ( "name", Jenc.string x.name )
         , ( "image", Jenc.string x.image )
         , ( "id", Jenc.int x.id )
-        , ( "images", encodePerformerImages x.images )
+        , ( "images", encodeImageGallery x.images )
         , ( "divisions", Jenc.list encodeDivision x.divisions )
         , ( "has_upcoming_events", Jenc.bool x.hasUpcomingEvents )
         , ( "primary", makeNullableEncoder Jenc.bool x.primary )
@@ -447,7 +421,7 @@ encodePerformer x =
         , ( "num_upcoming_events", Jenc.int x.numUpcomingEvents )
         , ( "colors", always Jenc.null x.colors )
         , ( "image_license", makeNullableEncoder Jenc.string x.imageLicense )
-        , ( "genres", makeNullableEncoder (makeListEncoder encodeGenre) x.genres )
+        , ( "genres", makeListEncoder encodeGenre x.genres )
         , ( "popularity", Jenc.int x.popularity )
         , ( "location", makeNullableEncoder encodeLocation x.location )
         , ( "image_rights_message", Jenc.string x.imageRightsMessage )
@@ -463,7 +437,7 @@ genre =
         |> Jpipe.required "name" Jdec.string
         |> Jpipe.required "slug" Jdec.string
         |> Jpipe.required "primary" Jdec.bool
-        |> Jpipe.required "images" genreImages
+        |> Jpipe.required "images" imageGallery
         |> Jpipe.required "image" Jdec.string
         |> Jpipe.required "document_source" documentSource
 
@@ -475,7 +449,7 @@ encodeGenre x =
         , ( "name", Jenc.string x.name )
         , ( "slug", Jenc.string x.slug )
         , ( "primary", Jenc.bool x.primary )
-        , ( "images", encodeGenreImages x.images )
+        , ( "images", encodeImageGallery x.images )
         , ( "image", Jenc.string x.image )
         , ( "document_source", encodeDocumentSource x.documentSource )
         ]
@@ -538,68 +512,14 @@ encodeSourceType x =
             Jenc.string "ELASTIC"
 
 
-genreImages : Jdec.Decoder GenreImages
-genreImages =
-    Jdec.succeed GenreImages
-        |> Jpipe.required "1200x525" Jdec.string
-        |> Jpipe.required "1200x627" Jdec.string
-        |> Jpipe.required "136x136" Jdec.string
-        |> Jpipe.required "500_700" Jdec.string
-        |> Jpipe.required "800x320" Jdec.string
-        |> Jpipe.required "banner" Jdec.string
-        |> Jpipe.required "block" Jdec.string
-        |> Jpipe.required "criteo_130_160" Jdec.string
-        |> Jpipe.required "criteo_170_235" Jdec.string
-        |> Jpipe.required "criteo_205_100" Jdec.string
-        |> Jpipe.required "criteo_400_300" Jdec.string
-        |> Jpipe.required "fb_100x72" Jdec.string
-        |> Jpipe.required "fb_600_315" Jdec.string
-        |> Jpipe.required "huge" Jdec.string
-        |> Jpipe.required "ipad_event_modal" Jdec.string
-        |> Jpipe.required "ipad_header" Jdec.string
-        |> Jpipe.required "ipad_mini_explore" Jdec.string
-        |> Jpipe.required "mongo" Jdec.string
-        |> Jpipe.required "square_mid" Jdec.string
-        |> Jpipe.required "triggit_fb_ad" Jdec.string
+encodeImageGallery : ImageGallery -> Jenc.Value
+encodeImageGallery =
+    Jenc.dict identity Jenc.string
 
 
-encodeGenreImages : GenreImages -> Jenc.Value
-encodeGenreImages x =
-    Jenc.object
-        [ ( "1200x525", Jenc.string x.the1200X525 )
-        , ( "1200x627", Jenc.string x.the1200X627 )
-        , ( "136x136", Jenc.string x.the136X136 )
-        , ( "500_700", Jenc.string x.the500_700 )
-        , ( "800x320", Jenc.string x.the800X320 )
-        , ( "banner", Jenc.string x.banner )
-        , ( "block", Jenc.string x.block )
-        , ( "criteo_130_160", Jenc.string x.criteo130_160 )
-        , ( "criteo_170_235", Jenc.string x.criteo170_235 )
-        , ( "criteo_205_100", Jenc.string x.criteo205_100 )
-        , ( "criteo_400_300", Jenc.string x.criteo400_300 )
-        , ( "fb_100x72", Jenc.string x.fb100X72 )
-        , ( "fb_600_315", Jenc.string x.fb600_315 )
-        , ( "huge", Jenc.string x.huge )
-        , ( "ipad_event_modal", Jenc.string x.ipadEventModal )
-        , ( "ipad_header", Jenc.string x.ipadHeader )
-        , ( "ipad_mini_explore", Jenc.string x.ipadMiniExplore )
-        , ( "mongo", Jenc.string x.mongo )
-        , ( "square_mid", Jenc.string x.squareMid )
-        , ( "triggit_fb_ad", Jenc.string x.triggitFbAd )
-        ]
-
-
-performerImages : Jdec.Decoder PerformerImages
-performerImages =
-    Jdec.succeed PerformerImages
-        |> Jpipe.required "huge" Jdec.string
-
-
-encodePerformerImages : PerformerImages -> Jenc.Value
-encodePerformerImages x =
-    Jenc.object
-        [ ( "huge", Jenc.string x.huge )
-        ]
+imageGallery : Jdec.Decoder ImageGallery
+imageGallery =
+    Jdec.dict Jdec.string
 
 
 location : Jdec.Decoder Location
@@ -677,7 +597,7 @@ eventStats =
         |> Jpipe.optional "lowest_price" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "highest_price" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "visible_listing_count" (Jdec.nullable Jdec.int) Nothing
-        |> Jpipe.optional "dq_bucket_counts" (Jdec.nullable (Jdec.list Jdec.int)) Nothing
+        |> Jpipe.optional "dq_bucket_counts" (Jdec.list Jdec.int) []
         |> Jpipe.optional "median_price" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "lowest_sg_base_price" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "lowest_sg_base_price_good_deals" (Jdec.nullable Jdec.int) Nothing
@@ -692,7 +612,7 @@ encodeEventStats x =
         , ( "lowest_price", makeNullableEncoder Jenc.int x.lowestPrice )
         , ( "highest_price", makeNullableEncoder Jenc.int x.highestPrice )
         , ( "visible_listing_count", makeNullableEncoder Jenc.int x.visibleListingCount )
-        , ( "dq_bucket_counts", makeNullableEncoder (makeListEncoder Jenc.int) x.dqBucketCounts )
+        , ( "dq_bucket_counts", makeListEncoder Jenc.int x.dqBucketCounts )
         , ( "median_price", makeNullableEncoder Jenc.int x.medianPrice )
         , ( "lowest_sg_base_price", makeNullableEncoder Jenc.int x.lowestSgBasePrice )
         , ( "lowest_sg_base_price_good_deals", makeNullableEncoder Jenc.int x.lowestSgBasePriceGoodDeals )
@@ -836,7 +756,7 @@ makeListEncoder =
 
 makeDictEncoder : (a -> Jenc.Value) -> Dict String a -> Jenc.Value
 makeDictEncoder f dict =
-    Jenc.object (toList (Dict.map (\k -> f) dict))
+    Jenc.object (toList (Dict.map (\_ -> f) dict))
 
 
 makeNullableEncoder : (a -> Jenc.Value) -> Maybe a -> Jenc.Value
