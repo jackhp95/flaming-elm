@@ -65,7 +65,7 @@ imagesToString r =
 
 images : Jdec.Decoder Images
 images =
-    Jpipe.decode Images
+    Jpipe.succeed Images
         |> Jpipe.required "search_metadata" searchMetadata
         |> Jpipe.required "search_parameters" searchParameters
         |> Jpipe.required "search_information" searchInformation
@@ -84,7 +84,7 @@ encodeImages x =
 
 imagesResult : Jdec.Decoder ImagesResult
 imagesResult =
-    Jpipe.decode ImagesResult
+    Jpipe.succeed ImagesResult
         |> Jpipe.required "position" Jdec.int
         |> Jpipe.required "thumbnail" Jdec.string
         |> Jpipe.required "source" Jdec.string
@@ -109,7 +109,7 @@ encodeImagesResult x =
 
 searchInformation : Jdec.Decoder SearchInformation
 searchInformation =
-    Jpipe.decode SearchInformation
+    Jpipe.succeed SearchInformation
         |> Jpipe.required "image_results_state" Jdec.string
         |> Jpipe.required "query_displayed" Jdec.string
 
@@ -124,7 +124,7 @@ encodeSearchInformation x =
 
 searchMetadata : Jdec.Decoder SearchMetadata
 searchMetadata =
-    Jpipe.decode SearchMetadata
+    Jpipe.succeed SearchMetadata
         |> Jpipe.required "id" Jdec.string
         |> Jpipe.required "status" Jdec.string
         |> Jpipe.required "json_endpoint" Jdec.string
@@ -151,7 +151,7 @@ encodeSearchMetadata x =
 
 searchParameters : Jdec.Decoder SearchParameters
 searchParameters =
-    Jpipe.decode SearchParameters
+    Jpipe.succeed SearchParameters
         |> Jpipe.required "engine" Jdec.string
         |> Jpipe.required "q" Jdec.string
         |> Jpipe.required "google_domain" Jdec.string
@@ -170,27 +170,3 @@ encodeSearchParameters x =
         , ( "device", Jenc.string x.device )
         , ( "tbm", Jenc.string x.tbm )
         ]
-
-
-
---- encoder helpers
-
-
-makeListEncoder : (a -> Jenc.Value) -> List a -> Jenc.Value
-makeListEncoder f arr =
-    Jenc.list (List.map f arr)
-
-
-makeDictEncoder : (a -> Jenc.Value) -> Dict String a -> Jenc.Value
-makeDictEncoder f dict =
-    Jenc.object (toList (Dict.map (\k -> f) dict))
-
-
-makeNullableEncoder : (a -> Jenc.Value) -> Maybe a -> Jenc.Value
-makeNullableEncoder f m =
-    case m of
-        Just x ->
-            f x
-
-        Nothing ->
-            Jenc.null

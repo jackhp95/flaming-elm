@@ -11,6 +11,7 @@ import Head
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Json.Decode as Decode
+import Maybe.Extra as Maybe
 import Pages.PageUrl exposing (PageUrl)
 import Route
 import RouteBuilder exposing (StatelessRoute, StaticPayload)
@@ -75,12 +76,12 @@ view :
     -> View Msg
 view maybeUrl sharedModel static =
     { title = static.data.shortTitle ++ " | Flamingle"
-    , body = eventPage static.data
+    , body = eventPage sharedModel static.data
     }
 
 
-eventPage : SG.Event -> Html msg
-eventPage event =
+eventPage : Shared.Model -> SG.Event -> Html msg
+eventPage { time, zone } event =
     div
         [ class "container mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8"
         ]
@@ -139,15 +140,15 @@ eventPage event =
                             event.datetimeLocal
                             |> text
                         ]
-
-                    -- , div [ class "ml-4 pl-4 border-l border-gray-300" ]
-                    --     [ p
-                    --         [ class "ml-2 text-sm opacity-50"
-                    --         ]
-                    --         [ relativeTime event.datetimeLocal event.datetimeUTC
-                    --             |> text
-                    --         ]
-                    --     ]
+                    , div [ class "ml-4 pl-4 border-l border-gray-300" ]
+                        [ p
+                            [ class "ml-2 text-sm opacity-50"
+                            ]
+                            [ Maybe.map relativeTime time
+                                |> Maybe.unwrap "" (\fn -> fn event.datetimeUTC)
+                                |> text
+                            ]
+                        ]
                     ]
                 , div
                     [ class "mt-4 space-y-6"
@@ -246,15 +247,41 @@ eventPage event =
                                 )
                             ]
                         ]
-                    , div [ class "mt-4" ]
-                        [ a
-                            [ Util.asHref Route.Index
-                            , class "group inline-flex text-sm opacity-50 hover:opacity-70"
-                            ]
-                            [ span [] [ text "What size should I buy?" ]
-                            , Icon.solidQuestionMarkCircle
-                            ]
-                        ]
+                    , [ ( "eventType", SG.upperEnumToString event.eventType )
+                      , ( "id", String.fromInt event.id )
+
+                      --   , ( "datetimeUTC", event.datetimeUTC )
+                      --   , ( "venue", event.venue )
+                      --   , ( "datetimeTbd", event.datetimeTbd )
+                      --   , ( "performers", event.performers )
+                      --   , ( "isOpen", event.isOpen )
+                      --   , ( "links", event.links )
+                      --   , ( "datetimeLocal", event.datetimeLocal )
+                      --   , ( "timeTbd", event.timeTbd )
+                      --   , ( "shortTitle", event.shortTitle )
+                      --   , ( "visibleUntilUTC", event.visibleUntilUTC )
+                      --   , ( "stats", event.stats )
+                      --   , ( "taxonomies", event.taxonomies )
+                      --   , ( "url", event.url )
+                      --   , ( "score", event.score )
+                      --   , ( "announceDate", event.announceDate )
+                      --   , ( "createdAt", event.createdAt )
+                      --   , ( "dateTbd", event.dateTbd )
+                      --   , ( "title", event.title )
+                      --   , ( "popularity", event.popularity )
+                      --   , ( "description", event.description )
+                      --   , ( "status", event.status )
+                      --   , ( "accessMethod", event.accessMethod )
+                      --   , ( "eventPromotion", event.eventPromotion )
+                      --   , ( "announcements", event.announcements )
+                      --   , ( "conditional", event.conditional )
+                      --   , ( "enddatetimeUTC", event.enddatetimeUTC )
+                      --   , ( "themes", event.themes )
+                      --   , ( "domainInformation", event.domainInformation )
+                      --   , ( "generalAdmission", event.generalAdmission )
+                      ]
+                        |> List.map (\( t, d ) -> div [] [ dt [] [ text t ], dd [] [ text d ] ])
+                        |> dl [ class "mt-4" ]
                     , div [ class "mt-10" ]
                         [ a
                             [ href event.url

@@ -9,6 +9,7 @@ import Head
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Json.Decode as Decode
+import Maybe.Extra as Maybe
 import Pages.PageUrl exposing (PageUrl)
 import RouteBuilder exposing (StatelessRoute, StaticPayload)
 import Server.Request as Request
@@ -74,14 +75,14 @@ view maybeUrl sharedModel static =
             columnLayout
 
         gridLayout =
-            List.map eventCard
+            List.map (eventCard sharedModel)
                 >> div
                     [ class "grid-cols-[repeat(auto-fit,minmax(clamp(140px,18vw,210px),1fr))]"
                     , class "grid gap-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8"
                     ]
 
         columnLayout =
-            List.map (eventCard >> List.singleton >> li [ class "p-2 break-inside-avoid" ])
+            List.map (eventCard sharedModel >> List.singleton >> li [ class "p-2 break-inside-avoid" ])
                 >> ol [ class "columns-2 sm:columns-[12rem] gap-0" ]
     in
     { title = "Events in " ++ static.data.meta.geolocation.displayName ++ " | Flamingle"
@@ -95,8 +96,8 @@ view maybeUrl sharedModel static =
     }
 
 
-eventCard : SG.Event -> Html msg
-eventCard event =
+eventCard : Shared.Model -> SG.Event -> Html msg
+eventCard { time } event =
     let
         imageList =
             event.performers
@@ -108,6 +109,8 @@ eventCard event =
                             [ src performer.image
                             , alt performer.name
                             , class "snap-center flex-none object-center object-cover"
+                            , width 280
+                            , height 210
                             ]
                             []
                     )
@@ -157,12 +160,11 @@ eventCard event =
                             event.datetimeLocal
                             |> text
                         ]
-
-                    -- , text " "
-                    -- , output []
-                    --     [ relativeTime event.datetimeLocal event.datetimeUTC
-                    --         |> text
-                    --     ]
+                    , text " "
+                    , output []
+                        [ Maybe.unwrap "" (\t -> relativeTime t event.datetimeUTC) time
+                            |> text
+                        ]
                     ]
                 ]
             ]

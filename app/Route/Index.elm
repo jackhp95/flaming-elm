@@ -68,9 +68,8 @@ homePage =
         [ class "relative flex-auto max-w-md flex flex-col justify-center pt-20 mx-auto px-4 sm:py-24 lg:py-32"
         ]
         [ h1
-            [ id "hi"
-            , class "text-4xl font-bold tracking-tight whitespace-pre-wrap text-neutral-100 sm:text-4xl md:text-5xl lg:text-6xl"
-            , class "text-opacity-100 target:text-opacity-0 bg-gradient-to-tl transition from-rose-500 to-fuchsia-500 bg-clip-text"
+            [ class "text-4xl font-bold tracking-tight whitespace-pre-wrap md:text-5xl lg:text-6xl"
+            , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%] bg-clip-text text-transparent"
             ]
             [ text "Find Events, \nMake Friends" ]
         , p

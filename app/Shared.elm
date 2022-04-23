@@ -8,6 +8,8 @@ import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
+import Task
+import Time exposing (Posix, Zone)
 import View exposing (View)
 
 
@@ -24,6 +26,7 @@ template =
 
 type Msg
     = SharedMsg SharedMsg
+    | GotTime ( Posix, Zone )
 
 
 type alias Data =
@@ -35,7 +38,7 @@ type SharedMsg
 
 
 type alias Model =
-    { showMenu : Bool }
+    { time : Maybe Posix, zone : Maybe Zone }
 
 
 init :
@@ -52,8 +55,10 @@ init :
             }
     -> ( Model, Effect Msg )
 init flags maybePagePath =
-    ( { showMenu = False }
-    , Effect.none
+    ( { time = Nothing, zone = Nothing }
+    , Task.map2 Tuple.pair Time.now Time.here
+        |> Task.perform GotTime
+        |> Effect.Cmd
     )
 
 
@@ -62,6 +67,9 @@ update msg model =
     case msg of
         SharedMsg _ ->
             ( model, Effect.none )
+
+        GotTime ( time, zone ) ->
+            ( { model | time = Just time, zone = Just zone }, Effect.none )
 
 
 subscriptions : Path -> Model -> Sub Msg

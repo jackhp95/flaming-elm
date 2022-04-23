@@ -1,7 +1,18 @@
 module.exports = {
   content: ["./**/*.elm"],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        "move-bg": {
+          to: {
+            backgroundPosition: "400% 0",
+          },
+        },
+      },
+      animation: {
+        "move-bg": "move-bg 32s infinite linear",
+      },
+    },
   },
   plugins: [
     require("@tailwindcss/typography"),
@@ -10,4 +21,3 @@ module.exports = {
     require("@tailwindcss/aspect-ratio"),
   ],
 };
-

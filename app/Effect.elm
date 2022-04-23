@@ -1,6 +1,8 @@
 module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 
 import Browser.Navigation
+import Http
+import Url exposing (Url)
 
 
 type Effect msg
@@ -37,14 +39,14 @@ map fn effect =
             Batch (List.map (map fn) list)
 
 
-perform : (pageMsg -> msg) -> Browser.Navigation.Key -> Effect pageMsg -> Cmd msg
-perform fromPageMsg key effect =
+perform : { fetchRouteData : { body : Maybe { contentType : String, body : String }, path : Maybe String, toMsg : Result Http.Error Url -> userMsg } -> Cmd mappedMsg, fromPageMsg : userMsg -> mappedMsg, key : Browser.Navigation.Key } -> Effect userMsg -> Cmd mappedMsg
+perform rec effect =
     case effect of
         None ->
             Cmd.none
 
         Cmd cmd ->
-            Cmd.map fromPageMsg cmd
+            Cmd.map rec.fromPageMsg cmd
 
         Batch list ->
-            Cmd.batch (List.map (perform fromPageMsg key) list)
+            Cmd.batch (List.map (perform rec) list)
