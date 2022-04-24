@@ -11,6 +11,38 @@ import Route
 import Util
 
 
+type alias UserInfo =
+    { email : String
+    , password : String
+    , phone : String
+    , usersAccessToken : String
+    , data : Dict String String
+    , supabaseKey : String
+    }
+
+
+type alias GuestInfo =
+    Dict String String
+
+
+type Auth
+    = User UserInfo
+    | Guest GuestInfo
+
+
+
+-- userSignup
+-- userLogin
+-- magicLink
+-- phoneSignup
+-- verifyPin
+-- getUser
+-- passwordRecovery
+-- updateUser
+-- userLogout
+-- inviteUser
+
+
 signUpFormContents : List (Html msg)
 signUpFormContents =
     [ Html.form

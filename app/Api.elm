@@ -2,6 +2,7 @@ module Api exposing (routes)
 
 import ApiRoute exposing (ApiRoute)
 import Color
+import Data.Supabase exposing (supabase)
 import DataSource exposing (DataSource)
 import DataSource.Http
 import Html exposing (Html)
@@ -22,52 +23,54 @@ routes : DataSource (List Route) -> (Html Never -> String) -> List (ApiRoute.Api
 routes getStaticRoutes htmlToString =
     [ events
     , requestPrinter
-    , signUpForm
+
+    -- , signUpForm
     , multipleContentTypes
     , DataSource.succeed manifest
         |> Manifest.generator Site.config.canonicalUrl
     ]
 
 
-signUpForm : ApiRoute ApiRoute.Response
-signUpForm =
-    Request.expectFormPost
-        (\{ field, optionalField } ->
-            Request.map2
-                -- Send User Request to Supabase
-                (\email password ->
-                    DataSource.Http.request
-                        { url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/signup"
-                        , method = "POST"
-                        , headers =
-                            [ ( "apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxNTMwMCwiZXhwIjoxOTU4OTkxMzAwfQ.7FNpzHXTJ0EHz2nVfodpdu4mw05Mik1BH8aEQpE6XAU" )
-                            , ( "Content-Type", "application/json" )
-                            ]
-                        , body =
-                            [ ( "email", Encode.string email )
-                            , ( "password", Encode.string password )
-                            ]
-                                |> Encode.object
-                                |> DataSource.Http.jsonBody
-                        }
-                        -- Response from Supabase
-                        (DataSource.Http.expectJson Decode.value)
-                        -- Respond to User
-                        -- TODO: Redirect them to the correct place?!?!?!
-                        |> DataSource.map Response.json
-                )
-                (field "email")
-                (field "password")
-        )
-        -- Build Path
-        |> ApiRoute.succeed
-        |> ApiRoute.literal "api"
-        |> ApiRoute.slash
-        |> ApiRoute.literal "form"
-        |> ApiRoute.slash
-        |> ApiRoute.literal "sign-up"
-        -- End Builder
-        |> ApiRoute.serverRender
+
+-- signUpForm : ApiRoute ApiRoute.Response
+-- signUpForm =
+--     Request.expectFormPost
+--         (\{ field, optionalField } ->
+--             Request.map2
+--                 -- Send User Request to Supabase
+--                 (\email password ->
+--                     DataSource.Http.request
+--                         { url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/signup"
+--                         , method = "POST"
+--                         , headers =
+--                             [ ( "apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxNTMwMCwiZXhwIjoxOTU4OTkxMzAwfQ.7FNpzHXTJ0EHz2nVfodpdu4mw05Mik1BH8aEQpE6XAU" )
+--                             , ( "Content-Type", "application/json" )
+--                             ]
+--                         , body =
+--                             [ ( "email", Encode.string email )
+--                             , ( "password", Encode.string password )
+--                             ]
+--                                 |> Encode.object
+--                                 |> DataSource.Http.jsonBody
+--                         }
+--                         -- Response from Supabase
+--                         (DataSource.Http.expectJson Data.Supabase.supabase)
+--                         -- Respond to User
+--                         -- TODO: Redirect them to the correct place?!?!?!
+--                         |> DataSource.map (\ )
+--                 )
+--                 (field "email")
+--                 (field "password")
+--         )
+--         -- Build Path
+--         |> ApiRoute.succeed
+--         |> ApiRoute.literal "api"
+--         |> ApiRoute.slash
+--         |> ApiRoute.literal "form"
+--         |> ApiRoute.slash
+--         |> ApiRoute.literal "sign-up"
+--         -- End Builder
+--         |> ApiRoute.serverRender
 
 
 multipleContentTypes : ApiRoute ApiRoute.Response

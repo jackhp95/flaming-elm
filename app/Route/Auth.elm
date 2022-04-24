@@ -49,18 +49,12 @@ data =
             (DataSource.succeed "Hello!")
 
 
-head :
-    StaticPayload Data RouteParams
-    -> List Head.Tag
+head : StaticPayload Data RouteParams -> List Head.Tag
 head static =
     Site.head
 
 
-view :
-    Maybe PageUrl
-    -> Shared.Model
-    -> StaticPayload Data RouteParams
-    -> View Msg
+view : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> View Msg
 view maybeUrl sharedModel static =
     { title = "Flamingle | Find Events, Make Friends"
     , body = accountPage
