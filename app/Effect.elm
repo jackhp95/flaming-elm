@@ -39,7 +39,26 @@ map fn effect =
             Batch (List.map (map fn) list)
 
 
-perform : { fetchRouteData : { body : Maybe { contentType : String, body : String }, path : Maybe String, toMsg : Result Http.Error Url -> userMsg } -> Cmd mappedMsg, fromPageMsg : userMsg -> mappedMsg, key : Browser.Navigation.Key } -> Effect userMsg -> Cmd mappedMsg
+perform :
+    { fetchRouteData :
+        { body : Maybe { contentType : String, body : String }
+        , path : Maybe String
+        , toMsg : Result Http.Error Url -> userMsg
+        }
+        -> Cmd mappedMsg
+    , submit :
+        { values : List ( String, String )
+        , encType : Maybe String
+        , method : Maybe String
+        , path : Maybe String
+        , toMsg : Result Http.Error Url -> userMsg
+        }
+        -> Cmd mappedMsg
+    , fromPageMsg : userMsg -> mappedMsg
+    , key : Browser.Navigation.Key
+    }
+    -> Effect userMsg
+    -> Cmd mappedMsg
 perform rec effect =
     case effect of
         None ->
