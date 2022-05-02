@@ -32,43 +32,48 @@
   --scrollbar-thumb-rounded: 0;
 }
 
-/* Firefox */
-* {
-  accent-color: theme("colors.fuchsia.500");
-  scrollbar-width: var(--scrollbar-track-size);
-  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+@media (pointer: fine) {
+  /* Firefox */
+  * {
+    accent-color: theme("colors.fuchsia.500");
+    scrollbar-width: var(--scrollbar-track-size);
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: var(--scrollbar-track-size);
+    height: var(--scrollbar-track-size);
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+    border: var(--scrollbar-track-border-width) solid
+      var(--scrollbar-track-border-color);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: theme("colors.neutral.700");
+
+    background-attachment: local;
+    border-radius: var(--scrollbar-thumb-rounded);
+    border: var(--scrollbar-thumb-border-width) solid
+      var(--scrollbar-thumb-border-color);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(
+      to bottom left,
+      theme("colors.rose.500"),
+      theme("colors.fuchsia.500")
+    );
+  }
 }
 
-/* Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: var(--scrollbar-track-size);
-  height: var(--scrollbar-track-size);
+:where(.icon) {
+  height: 1em;
+  width: 1em;
 }
-
-*::-webkit-scrollbar-track {
-  background: var(--scrollbar-track-color);
-  border: var(--scrollbar-track-border-width) solid
-    var(--scrollbar-track-border-color);
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: theme("colors.neutral.700");
-
-  background-attachment: local;
-  border-radius: var(--scrollbar-thumb-rounded);
-  border: var(--scrollbar-thumb-border-width) solid
-    var(--scrollbar-thumb-border-color);
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background-image: linear-gradient(
-    to bottom left,
-    theme("colors.rose.500"),
-    theme("colors.fuchsia.500")
-  );
-}
-
-
 
 @tailwind components;
 @tailwind utilities;
