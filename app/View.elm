@@ -31,12 +31,12 @@ pageLayout : Html msg -> Html msg
 pageLayout pageContent =
     div
         [ class "bg-black border-r border-white border-opacity-20"
-        , class "min-h-screen w-full flex text-white"
+        , class "min-h-screen w-full max-w-full flex flex-col sm:flex-row-reverse gap-x-px text-white"
         ]
-        [ sidebar
+        [ div [ class "bg-neutral-900 bg-opacity-50 flex-grow-[99999]" ] [ pageContent ]
 
-        -- [ navbar
-        , div [ class "bg-neutral-900 bg-opacity-50 flex-auto" ] [ pageContent ]
+        -- , navbar
+        , sidebar
         ]
 
 
@@ -322,104 +322,83 @@ mobileMenu routes =
 
 sidebar : Html msg
 sidebar =
-    div
-        [ class "flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-gray-100"
+    footer
+        [ class "sm:max-w-[4rem] sm:h-screen sm:w-auto sm:flex-col lg:max-w-sm"
+        , class "sticky inset-0 w-full flex justify-between overflow-x-auto overflow-y-hidden sm:overflow-hidden"
+        , class "bg-black bg-opacity-75 backdrop-blur ring-1 ring-neutral-900"
+        , class "hover:text-opacity-100 text-opacity-70"
         ]
-        [ div
-            [ class "flex-1 flex flex-col pt-5 pb-4 overflow-y-auto"
-            ]
-            [ div
-                [ class "flex items-center flex-shrink-0 px-4"
-                ]
-                [ img
-                    [ class "h-8 w-auto"
-                    , src "https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-900-text.svg"
-                    , alt "Workflow"
+        [ [ ( Icon.outlineHome, "Dashboard", "/events/" )
+          , ( Icon.outlineUserGroup, "Chats", "/chats/" )
+          , ( Icon.outlineCalendar, "Calendar", "#" )
+          , ( Icon.outlineSearchCircle, "Directory", "#" )
+          , ( Icon.outlineSpeakerphone, "Notifications", "#" )
+          , ( Icon.outlineMap, "Office Map", "#" )
+          ]
+            |> List.map
+                (\( icon, txt, url ) ->
+                    a
+                        [ href url
+                        , class "p-5 lg:py-3 flex h-16 gap-x-4 items-center text-sm font-medium"
+                        , class "group focus:bg-opacity-5 hover:scale-105 active:scale-95 bg-white bg-opacity-0 transition"
+                        ]
+                        [ span
+                            [ class "text-2xl transition ease-out opacity-40 flex-grow flex-shrink-0 flex justify-center"
+                            , class "group-hover:opacity-100 group-hover:text-rose-500 group-active:text-white"
+                            ]
+                            [ icon ]
+                        , span
+                            [ class "w-28 transition ease-out opacity-60 grow-[99999] hidden lg:inline"
+                            , class "group-hover:opacity-100 group-hover:text-fuchsia-500 group-active:text-white"
+                            ]
+                            [ text txt ]
+                        ]
+                )
+            |> (::)
+                (a
+                    [ Util.asHref Route.Index
+                    , class "group"
+                    , class "p-3 flex overflow-hidden h-16 sm:h-32 sm:aspect-video items-center hover:scale-105 active:scale-95 transition ease-out"
                     ]
-                    []
-                ]
-            , nav
-                [ class "mt-5 flex-1"
-                , attribute "aria-label" "Sidebar"
-                ]
-                [ div
-                    [ class "px-2 space-y-1"
-                    ]
-                    [ a
-                        [ href "#"
-                        , class "bg-gray-200 text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                    [ span
+                        [ class "h-[1.5em] flex items-center flex-wrap gap-y-64 text-2xl sm:text-3xl font-bold sm:mr-6 transition ease-out"
+                        , class "text-neutral-300 group-focus:text-white group-hover:text-transparent group-focus:text-transparent group-active:bg-gradient-to-t"
+                        , class "bg-clip-text bg-gradient-to-tl transition from-rose-500 to-fuchsia-500"
                         ]
-                        [ Icon.outlineHome
-                        , text "Dashboard"
-                        ]
-                    , a
-                        [ href "#"
-                        , class "text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                        ]
-                        [ Icon.outlineCalendar
-                        , text "Calendar"
-                        ]
-                    , a
-                        [ href "#"
-                        , class "text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                        ]
-                        [ Icon.outlineUserGroup
-                        , text "Teams"
-                        ]
-                    , a
-                        [ href "#"
-                        , class "text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                        ]
-                        [ Icon.outlineSearchCircle
-                        , text "Directory"
-                        ]
-                    , a
-                        [ href "#"
-                        , class "text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                        ]
-                        [ Icon.outlineSpeakerphone
-                        , text "Announcements"
-                        ]
-                    , a
-                        [ href "#"
-                        , class "text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                        ]
-                        [ Icon.outlineMap
-                        , text "Office Map"
-                        ]
-                    ]
-                ]
-            ]
-        , div
-            [ class "flex-shrink-0 flex border-t border-gray-200 p-4"
-            ]
-            [ a
-                [ href "#"
-                , class "flex-shrink-0 w-full group block"
-                ]
-                [ div
-                    [ class "flex items-center"
-                    ]
-                    [ div []
                         [ img
-                            [ class "inline-block h-9 w-9 rounded-full"
-                            , src "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80"
+                            [ src "/logo.svg"
                             , alt ""
+                            , class "ml-4 sm:m-2 transform transition scale-125"
+                            , class "icon"
                             ]
                             []
+                        , span [ class "text-[0] sm:text-base" ] [ text "Flamingle" ]
+                        , span [ class "text-[0] sm:text-base" ] [ text "Social" ]
+                        , span [ class "text-[0] sm:text-base" ] [ text ".com" ]
                         ]
-                    , div
-                        [ class "ml-3"
-                        ]
-                        [ p
-                            [ class "text-sm font-medium text-gray-700 group-hover:text-gray-900"
-                            ]
-                            [ text "Whitney Francis" ]
-                        , p
-                            [ class "text-xs font-medium text-gray-500 group-hover:text-gray-700"
-                            ]
-                            [ text "View profile" ]
-                        ]
+                    ]
+                )
+            |> nav
+                [ class "sticky top-0 flex sm:flex-col flex-none"
+                , attribute "aria-label" "Sidebar"
+                ]
+        , a
+            [ href "#"
+            , class "flex-shrink-0 flex sm:w-full group sticky bottom-0 right-0"
+            , class "sm:border-t border-neutral-900 p-5 bg-gradient-to-l from-black to-transparent bg-opacity-50 backdrop-blur"
+            ]
+            [ div
+                [ class "flex justify-around items-center text-2xl"
+                ]
+                [ img
+                    [ class "icon rounded-full"
+                    , src "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80"
+                    , alt ""
+                    ]
+                    []
+                , div [ class "ml-3 hidden lg:flex flex-col" ]
+                    [ p [ class "text-sm font-medium opacity-80 h-[1.5em] overflow-hidden" ] [ text "Whitney Francis" ]
+                    , p [ class "text-xs font-medium opacity-60" ] [ text "View profile" ]
                     ]
                 ]
             ]

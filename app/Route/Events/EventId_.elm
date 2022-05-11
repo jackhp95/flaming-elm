@@ -169,14 +169,18 @@ eventPage { time, zone } event =
             ]
             [ div [ class "aspect-w-1 aspect-h-1 rounded-lg flex overflow-auto snap-x snap-mandatory" ]
                 (event.performers
-                    |> List.map
+                    |> List.filterMap
                         (\performer ->
-                            img
-                                [ src performer.image
-                                , alt performer.name
-                                , class "w-full h-full snap-center flex-none object-center object-cover"
-                                ]
-                                []
+                            Maybe.map
+                                (\image ->
+                                    img
+                                        [ src image
+                                        , alt performer.name
+                                        , class "w-full h-full snap-center flex-none object-center object-cover"
+                                        ]
+                                        []
+                                )
+                                performer.image
                         )
                 )
             ]
@@ -222,12 +226,16 @@ eventPage { time, zone } event =
                                                     , attribute "aria-describedby" "size-choice-0-description"
                                                     ]
                                                     []
-                                                , img
-                                                    [ src performer.image
-                                                    , alt ""
-                                                    , class "h-full w-16 aspect-square object-cover object-center"
-                                                    ]
-                                                    []
+                                                , Maybe.unwrap (text "")
+                                                    (\image ->
+                                                        img
+                                                            [ src image
+                                                            , alt ""
+                                                            , class "h-full w-16 aspect-square object-cover object-center"
+                                                            ]
+                                                            []
+                                                    )
+                                                    performer.image
                                                 , div
                                                     [ class "p-4"
                                                     ]

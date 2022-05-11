@@ -7,7 +7,7 @@ import Json.Decode.Pipeline as Jpipe
 import Json.Encode as Jenc
 import String.Extra
 import Time exposing (Posix)
-
+import Maybe.Extra as Maybe
 
 type alias Events =
     { events : List Event
@@ -39,11 +39,11 @@ type alias Event =
     , popularity : Float
     , description : String
     , status : Status
-    , accessMethod : ()
-    , eventPromotion : ()
+    , accessMethod : Maybe AccessMethod
+    , eventPromotion : Maybe EventPromotion
     , announcements : Announcements
     , conditional : Bool
-    , enddatetimeUTC : ()
+    , enddatetimeUTC : Maybe Posix
     , themes : List Jdec.Value
     , domainInformation : List Jdec.Value
     , generalAdmission : Maybe Bool
@@ -54,10 +54,22 @@ type alias Announcements =
     {}
 
 
+type alias EventPromotion =
+    { headline : String
+    , additionalInfo : String
+    , images : EventPromotionImages
+    }
+
+type alias EventPromotionImages =
+    { icon : String
+    , png2X : String
+    , png3X : String
+    }
+
 type alias Performer =
     { performerType : UpperEnum
     , name : String
-    , image : String
+    , image : Maybe String
     , id : Int
     , images : ImageGallery
     , divisions : List Division
@@ -185,7 +197,7 @@ type alias Venue =
     , extendedAddress : String
     , id : Int
     , popularity : Int
-    , accessMethod : ()
+    , accessMethod : Maybe AccessMethod
     , metroCode : Int
     , capacity : Int
     , displayLocation : String
@@ -268,11 +280,11 @@ event =
         |> Jpipe.required "popularity" Jdec.float
         |> Jpipe.required "description" Jdec.string
         |> Jpipe.required "status" status
-        |> Jpipe.optional "access_method" (Jdec.null ()) ()
-        |> Jpipe.optional "event_promotion" (Jdec.null ()) ()
+        |> Jpipe.optional "access_method" (Jdec.nullable accessMethod) Nothing
+        |> Jpipe.optional "event_promotion" (Jdec.nullable eventPromotion) Nothing
         |> Jpipe.required "announcements" announcements
         |> Jpipe.required "conditional" Jdec.bool
-        |> Jpipe.optional "enddatetime_utc" (Jdec.null ()) ()
+        |> Jpipe.optional "enddatetime_utc" (Jdec.nullable Iso8601.decoder) Nothing
         |> Jpipe.required "themes" (Jdec.list Jdec.value)
         |> Jpipe.required "domain_information" (Jdec.list Jdec.value)
         |> Jpipe.optional "general_admission" (Jdec.nullable Jdec.bool) Nothing
@@ -304,8 +316,8 @@ encodeEvent x =
         , ( "popularity", Jenc.float x.popularity )
         , ( "description", Jenc.string x.description )
         , ( "status", encodeStatus x.status )
-        , ( "access_method", always Jenc.null x.accessMethod )
-        , ( "event_promotion", always Jenc.null x.eventPromotion )
+        , ( "access_method", makeNullableEncoder encodeAccessMethod x.accessMethod )
+        , ( "event_promotion", makeNullableEncoder encodeEventPromotion x.eventPromotion )
         , ( "announcements", encodeAnnouncements x.announcements )
         , ( "conditional", Jenc.bool x.conditional )
         , ( "enddatetime_utc", always Jenc.null x.enddatetimeUTC )
@@ -374,7 +386,7 @@ performer =
     Jdec.succeed Performer
         |> Jpipe.required "type" upperEnum
         |> Jpipe.required "name" Jdec.string
-        |> Jpipe.required "image" Jdec.string
+        |> Jpipe.optional "image" (Jdec.nullable Jdec.string) Nothing
         |> Jpipe.required "id" Jdec.int
         |> Jpipe.required "images" imageGallery
         |> Jpipe.optional "divisions" (Jdec.list division) []
@@ -404,7 +416,7 @@ encodePerformer x =
     Jenc.object
         [ ( "type", encodeUpperEnum x.performerType )
         , ( "name", Jenc.string x.name )
-        , ( "image", Jenc.string x.image )
+        , ( "image", makeNullableEncoder Jenc.string x.image )
         , ( "id", Jenc.int x.id )
         , ( "images", encodeImageGallery x.images )
         , ( "divisions", Jenc.list encodeDivision x.divisions )
@@ -536,6 +548,38 @@ encodeLocation x =
         , ( "lon", Jenc.float x.lon )
         ]
 
+eventPromotionToString : EventPromotion -> String
+eventPromotionToString r = Jenc.encode 0 (encodeEventPromotion r)
+
+eventPromotion : Jdec.Decoder EventPromotion
+eventPromotion =
+    Jdec.succeed EventPromotion
+        |> Jpipe.required "headline" Jdec.string
+        |> Jpipe.required "additional_info" Jdec.string
+        |> Jpipe.required "images" eventPromotionImages
+
+encodeEventPromotion : EventPromotion -> Jenc.Value
+encodeEventPromotion x =
+    Jenc.object
+        [ ("headline", Jenc.string x.headline)
+        , ("additional_info", Jenc.string x.additionalInfo)
+        , ("images", encodeEventPromotionImages x.images)
+        ]
+
+eventPromotionImages : Jdec.Decoder EventPromotionImages
+eventPromotionImages =
+    Jdec.succeed EventPromotionImages
+        |> Jpipe.required "icon" Jdec.string
+        |> Jpipe.required "png@2x" Jdec.string
+        |> Jpipe.required "png@3x" Jdec.string
+
+encodeEventPromotionImages : EventPromotionImages -> Jenc.Value
+encodeEventPromotionImages x =
+    Jenc.object
+        [ ("icon", Jenc.string x.icon)
+        , ("png@2x", Jenc.string x.png2X)
+        , ("png@3x", Jenc.string x.png3X)
+        ]
 
 colors : Jdec.Decoder Colors
 colors =
@@ -661,7 +705,7 @@ venue =
         |> Jpipe.required "extended_address" Jdec.string
         |> Jpipe.required "id" Jdec.int
         |> Jpipe.required "popularity" Jdec.int
-        |> Jpipe.optional "access_method" (Jdec.null ()) ()
+        |> Jpipe.optional "access_method" (Jdec.nullable accessMethod) Nothing
         |> Jpipe.required "metro_code" Jdec.int
         |> Jpipe.required "capacity" Jdec.int
         |> Jpipe.required "display_location" Jdec.string
@@ -688,10 +732,34 @@ encodeVenue x =
         , ( "extended_address", Jenc.string x.extendedAddress )
         , ( "id", Jenc.int x.id )
         , ( "popularity", Jenc.int x.popularity )
-        , ( "access_method", always Jenc.null x.accessMethod )
+        , ( "access_method", makeNullableEncoder encodeAccessMethod x.accessMethod )
         , ( "metro_code", Jenc.int x.metroCode )
         , ( "capacity", Jenc.int x.capacity )
         , ( "display_location", Jenc.string x.displayLocation )
+        ]
+
+
+type alias AccessMethod =
+    { method : String
+    , createdAt : String
+    , employeeOnly : Bool
+    }
+
+
+accessMethod : Jdec.Decoder AccessMethod
+accessMethod =
+    Jdec.succeed AccessMethod
+        |> Jpipe.required "method" Jdec.string
+        |> Jpipe.required "created_at" Jdec.string
+        |> Jpipe.required "employee_only" Jdec.bool
+
+
+encodeAccessMethod : AccessMethod -> Jenc.Value
+encodeAccessMethod x =
+    Jenc.object
+        [ ( "method", Jenc.string x.method )
+        , ( "created_at", Jenc.string x.createdAt )
+        , ( "employee_only", Jenc.bool x.employeeOnly )
         ]
 
 

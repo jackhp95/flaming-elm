@@ -7,9 +7,7 @@ import Svg.Attributes as SvgAttr
 
 outlineMap =
     svg
-        [ SvgAttr.class "text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-        , attribute "x-description" "Heroicon name: outline/map"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.strokeWidth "2"
         , SvgAttr.stroke "currentColor"
@@ -26,9 +24,7 @@ outlineMap =
 
 outlineSpeakerphone =
     svg
-        [ SvgAttr.class "text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-        , attribute "x-description" "Heroicon name: outline/speakerphone"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.strokeWidth "2"
         , SvgAttr.stroke "currentColor"
@@ -45,9 +41,7 @@ outlineSpeakerphone =
 
 outlineSearchCircle =
     svg
-        [ SvgAttr.class "text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-        , attribute "x-description" "Heroicon name: outline/search-circle"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.strokeWidth "2"
         , SvgAttr.stroke "currentColor"
@@ -64,9 +58,7 @@ outlineSearchCircle =
 
 outlineUserGroup =
     svg
-        [ SvgAttr.class "text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-        , attribute "x-description" "Heroicon name: outline/user-group"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.strokeWidth "2"
         , SvgAttr.stroke "currentColor"
@@ -83,9 +75,7 @@ outlineUserGroup =
 
 outlineCalendar =
     svg
-        [ SvgAttr.class "text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6"
-        , attribute "x-description" "Heroicon name: outline/calendar"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.strokeWidth "2"
         , SvgAttr.stroke "currentColor"
@@ -102,9 +92,7 @@ outlineCalendar =
 
 outlineHome =
     svg
-        [ SvgAttr.class "text-gray-500 mr-3 h-6 w-6"
-        , attribute "x-description" "Heroicon name: outline/home"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.strokeWidth "2"
         , SvgAttr.stroke "currentColor"
@@ -121,8 +109,7 @@ outlineHome =
 
 outlineX =
     svg
-        [ SvgAttr.class "h-6 w-6"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.stroke "currentColor"
         , attribute "aria-hidden" "true"
@@ -139,8 +126,7 @@ outlineX =
 
 outlineBell =
     svg
-        [ SvgAttr.class "h-6 w-6"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.stroke "currentColor"
         , attribute "aria-hidden" "true"
@@ -157,8 +143,7 @@ outlineBell =
 
 gitHub =
     svg
-        [ SvgAttr.class "w-5 h-5"
-        , SvgAttr.fill "currentColor"
+        [ SvgAttr.fill "currentColor"
         , SvgAttr.viewBox "0 0 20 20"
         , attribute "aria-hidden" "true"
         ]
@@ -173,8 +158,7 @@ gitHub =
 
 twitter =
     svg
-        [ SvgAttr.class "w-5 h-5"
-        , SvgAttr.fill "currentColor"
+        [ SvgAttr.fill "currentColor"
         , SvgAttr.viewBox "0 0 20 20"
         , attribute "aria-hidden" "true"
         ]
@@ -187,8 +171,7 @@ twitter =
 
 facebook =
     svg
-        [ SvgAttr.class "w-5 h-5"
-        , SvgAttr.fill "currentColor"
+        [ SvgAttr.fill "currentColor"
         , SvgAttr.viewBox "0 0 20 20"
         , attribute "aria-hidden" "true"
         ]
@@ -203,8 +186,7 @@ facebook =
 
 outlineMenu =
     svg
-        [ SvgAttr.class "block h-6 w-6"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.stroke "currentColor"
         , attribute "aria-hidden" "true"
@@ -221,8 +203,7 @@ outlineMenu =
 
 outlineShieldCheck =
     svg
-        [ SvgAttr.class "flex-shrink-0 mr-2 h-6 w-6 opacity-40 group-hover:opacity-50"
-        , SvgAttr.fill "none"
+        [ SvgAttr.fill "none"
         , SvgAttr.viewBox "0 0 24 24"
         , SvgAttr.stroke "currentColor"
         , attribute "aria-hidden" "true"
@@ -239,8 +220,7 @@ outlineShieldCheck =
 
 solidSearch =
     svg
-        [ SvgAttr.class "h-5 w-5 opacity-40"
-        , SvgAttr.viewBox "0 0 20 20"
+        [ SvgAttr.viewBox "0 0 20 20"
         , SvgAttr.fill "currentColor"
         , attribute "aria-hidden" "true"
         ]
@@ -255,8 +235,7 @@ solidSearch =
 
 solidQuestionMarkCircle =
     svg
-        [ SvgAttr.class "flex-shrink-0 ml-2 h-5 w-5 opacity-40 group-hover:opacity-50"
-        , SvgAttr.viewBox "0 0 20 20"
+        [ SvgAttr.viewBox "0 0 20 20"
         , SvgAttr.fill "currentColor"
         , attribute "aria-hidden" "true"
         ]
@@ -271,8 +250,7 @@ solidQuestionMarkCircle =
 
 solidCheck =
     svg
-        [ SvgAttr.class "flex-shrink-0 w-5 h-5 text-green-500"
-        , SvgAttr.viewBox "0 0 20 20"
+        [ SvgAttr.viewBox "0 0 20 20"
         , SvgAttr.fill "currentColor"
         , attribute "aria-hidden" "true"
         ]
@@ -290,7 +268,6 @@ breadcrumbSlash =
         [ SvgAttr.viewBox "0 0 20 20"
         , SvgAttr.fill "currentColor"
         , attribute "aria-hidden" "true"
-        , SvgAttr.class "flex-shrink-0 h-5 w-5 opacity-30"
         ]
         [ path
             [ SvgAttr.d "M5.555 17.776l8-16 .894.448-8 16-.894-.448z"

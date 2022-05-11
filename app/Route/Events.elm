@@ -49,18 +49,22 @@ route =
 data : RouteParams -> Request.Parser (DataSource (Response Data error))
 data routeParams =
     let
-        endpoint =
+        endpoint zip =
             crossOrigin "https://api.seatgeek.com"
                 [ "2", "events" ]
                 [ string "client_id" "MzUwNDE1NnwxNDgxNjA1ODM2"
-                , string "postal_code" "65203"
+                , Maybe.withDefault "65203" zip
+                    |> string "postal_code"
                 , string "per_page" "300"
                 ]
     in
-    SG.events
-        |> Decode.map Response.render
-        |> DataSource.Http.get endpoint
-        |> Request.succeed
+    Request.queryParam "zip"
+        |> Request.map
+            (\zip ->
+                SG.events
+                    |> Decode.map Response.render
+                    |> DataSource.Http.get (endpoint zip)
+            )
 
 
 head : StaticPayload Data RouteParams -> List Head.Tag
@@ -88,7 +92,7 @@ view maybeUrl sharedModel static =
     { title = "Events in " ++ static.data.meta.geolocation.displayName ++ " | Flamingle"
     , body =
         div
-            [ class "max-w-2xl mx-auto px-2 py-5 sm:py-16 sm:px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"
+            [ class "max-w-2xl mx-auto px-2 py-5 sm:py-16 sm:px-4 md:py-24 md:px-6 lg:max-w-7xl lg:px-8"
             ]
             [ h2 [ class "sr-only" ] [ text "Events" ]
             , gridLayout static.data.events
@@ -102,17 +106,26 @@ eventCard { time } event =
         imageList =
             event.performers
                 -- remove generic seatgeek default images
-                |> List.filter ((\{ image } -> String.contains "/generic-" image) >> not)
-                |> List.map
+                |> List.filterMap
                     (\performer ->
-                        img
-                            [ src performer.image
-                            , alt performer.name
-                            , class "snap-center flex-none object-center object-cover"
-                            , width 280
-                            , height 210
-                            ]
-                            []
+                        Maybe.andThen
+                            (\image ->
+                                if String.contains "/generic-" image then
+                                    Nothing
+
+                                else
+                                    Just
+                                        (img
+                                            [ src image
+                                            , alt performer.name
+                                            , class "snap-center flex-none object-center object-cover"
+                                            , width 280
+                                            , height 210
+                                            ]
+                                            []
+                                        )
+                            )
+                            performer.image
                     )
     in
     a

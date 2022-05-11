@@ -1,5 +1,13 @@
 @tailwind base;
 
+* {
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border-style: solid;
+  border-color: currentColor;
+}
+
 [class*="focus:"] {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -70,10 +78,11 @@
   }
 }
 
-:where(.icon) {
+@tailwind components;
+
+:where(svg, .icon) {
   height: 1em;
   width: 1em;
 }
 
-@tailwind components;
 @tailwind utilities;
