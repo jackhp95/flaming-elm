@@ -1,4 +1,4 @@
-module Route.Chats exposing (Data, Model, Msg, route)
+module Route.Chats exposing (ActionData, Data, Model, Msg, route)
 
 import Component.Auth as Auth
 import Component.Icon as Icon
@@ -31,11 +31,15 @@ type alias RouteParams =
     {}
 
 
+type alias ActionData =
+    {}
+
+
 type alias Data =
     { message : String }
 
 
-route : StatelessRoute RouteParams Data
+route : StatelessRoute RouteParams Data action
 route =
     RouteBuilder.single
         { head = head
@@ -51,12 +55,12 @@ data =
             (DataSource.succeed "Hello!")
 
 
-head : StaticPayload Data RouteParams -> List Head.Tag
+head : StaticPayload Data action RouteParams -> List Head.Tag
 head static =
     Site.head
 
 
-view : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> View Msg
+view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View Msg
 view maybeUrl sharedModel static =
     { title = "Flamingle | Find Events, Make Friends"
     , body =
@@ -78,7 +82,7 @@ ringAvatar =
 
 chats : Html msg
 chats =
-    article [ class "snap-center overflow-y-auto flex-shrink-0 flex-auto w-full max-w-md flex flex-col items-stretch relative" ]
+    article [ class "snap-center overflow-y-auto overflow-x-hidden flex-shrink-0 flex-auto w-full max-w-md flex flex-col items-stretch relative" ]
         [ header [ class "z-10 bg-black bg-opacity-80 backdrop-blur sticky top-0 w-full p-4 flex text-lg font-bold justify-between" ]
             [ h1 [ class "leading-none" ] [ text "Inbox" ]
             , nav [ class "flex gap-2" ]
@@ -119,8 +123,7 @@ chats =
 
 
 type alias ChatPage =
-    { inputs : Dict String (Maybe String)
-    }
+    { inputs : Dict String (Maybe String) }
 
 
 chat : Html msg
@@ -132,7 +135,7 @@ chat =
             --     |> Maybe.withDefault
             "Compose Message"
     in
-    article [ class "snap-center overflow-y-auto flex-shrink-0 w-full max-w-md flex flex-col items-stretch" ]
+    article [ class "snap-center overflow-y-auto overflow-x-hidden flex-shrink-0 w-full max-w-md flex flex-col items-stretch" ]
         [ header [ class "z-10 bg-black bg-opacity-80 backdrop-blur sticky gap-4 top-0 w-full p-4 flex text-lg" ]
             [ a [ href "#", class "flex-none" ]
                 [ div [ class "bg-white bg-opacity-20 hover:bg-opacity-80 rounded-full aspect-square icon" ] []
@@ -158,30 +161,37 @@ chat =
                             modBy 2 i == 0
                     in
                     li
-                        [ class "max-w-[80%] px-4 py-3 rounded-xl bg-gradient-to-b bg-fixed leading-snug"
-                        , classList
-                            [ ( "from-neutral-700 to-neutral-900 self-end rounded-br-none", yourself )
-                            , ( "from-blue-500 to-blue-700 self-start rounded-bl-none", not yourself )
-                            ]
+                        [ class "max-w-[80%]"
+                        , classList [ ( "self-end", yourself ), ( "self-start", not yourself ) ]
                         ]
-                        [ text "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo neque laborum, illo sapiente eos optio doloremque! Corporis quisquam eius debitis provident voluptatibus alias. Soluta, veniam. Sequi quod saepe minima hic!" ]
+                        [ p
+                            [ class "px-4 py-3 rounded-xl bg-gradient-to-b bg-fixed leading-snug"
+                            , classList
+                                [ ( "from-neutral-700 to-neutral-900 rounded-br-none", yourself )
+                                , ( "from-blue-500 to-blue-700 rounded-bl-none", not yourself )
+                                ]
+                            ]
+                            [ text "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo neque laborum, illo sapiente eos optio doloremque! Corporis quisquam eius debitis provident voluptatibus alias. Soluta, veniam. Sequi quod saepe minima hic!" ]
+                        ]
                 )
             |> ol [ class "flex-auto flex flex-col gap-3 p-2 relative text-sm leading-tight" ]
         , footer [ class "z-10 sticky bottom-0 w-full bg-black bg-opacity-80 backdrop-blur flex justify-end" ]
-            [ menu [ class "p-4 gap-4 flex-auto flex" ]
-                [ div
-                    [ class "relative flex-auto rounded-lg overflow-hidden border border-opacity-40 border-white focus-within:border-opacity-100 focus-within:border-fuchsia-500 transition ease-out"
-                    , class "focus:border-opacity-60"
+            [ menu [ class "p-4 gap-2 flex-auto flex items-stretch" ]
+                [ a [ href "#", class "bg-white flex items-center justify-center flex-auto bg-opacity-20 hover:bg-opacity-80 rounded-lg" ] [ text "+" ]
+                , div
+                    [ class "relative flex-auto rounded-lg overflow-hidden border border-opacity-40 border-white transition ease-out"
+                    , class "text-sm w-full max-w-[80%] focus:border-opacity-60 focus-within:border-opacity-100 focus-within:border-fuchsia-500"
                     ]
                     [ textarea
-                        [ class "resize-none z-10 outline-none !appearance-none border-none border-0 outline-0 bg-neutral-900 transition ease-out bg-opacity-10"
-                        , class "absolute inset-0 px-4 py-3 m-0 h-full w-full focus:bg-opacity-100"
+                        [ class "resize-none z-10 text-sm outline-none !appearance-none border-none border-0 outline-0 bg-neutral-900 transition ease-out bg-opacity-10"
+                        , class "absolute inset-0 px-3 py-2 m-0 h-full w-full focus:bg-opacity-100"
 
                         -- , onInput (UpdateInput "compose_message")
                         ]
                         [ text composeMessageText ]
-                    , div [ class "min-h-[1em] px-4 py-3 opacity-40 pointer-events-none" ] [ text composeMessageText ]
+                    , div [ class "min-h-[1em] px-3 py-2 opacity-40 pointer-events-none" ] [ text composeMessageText ]
                     ]
+                , button [ type_ "button", class "bg-white flex items-center justify-center flex-auto bg-opacity-20 hover:bg-opacity-80 rounded-lg" ] [ text "send" ]
                 ]
             ]
         ]

@@ -1,4 +1,4 @@
-module Route.Index exposing (Data, Model, Msg, route)
+module Route.Index exposing (Data, Model, Msg, ActionData, route)
 
 import Component.Icon as Icon
 import DataSource exposing (DataSource)
@@ -20,6 +20,9 @@ type alias Msg =
     ()
 
 
+type alias ActionData =
+    {}
+
 type alias RouteParams =
     {}
 
@@ -28,7 +31,7 @@ type alias Data =
     { message : String }
 
 
-route : StatelessRoute RouteParams Data
+route : StatelessRoute RouteParams Data action
 route =
     RouteBuilder.single
         { head = head
@@ -45,7 +48,7 @@ data =
 
 
 head :
-    StaticPayload Data RouteParams
+    StaticPayload Data action RouteParams
     -> List Head.Tag
 head static =
     Site.head
@@ -54,7 +57,7 @@ head static =
 view :
     Maybe PageUrl
     -> Shared.Model
-    -> StaticPayload Data RouteParams
+    -> StaticPayload Data action RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
     { title = "Flamingle | Find Events, Make Friends"

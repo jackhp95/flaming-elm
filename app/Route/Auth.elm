@@ -1,4 +1,4 @@
-module Route.Auth exposing (Data, Model, Msg, route)
+module Route.Auth exposing (Data, Model, Msg, ActionData, route)
 
 import Component.Auth as Auth
 import Component.Icon as Icon
@@ -24,6 +24,8 @@ type alias Model =
 type alias Msg =
     ()
 
+type alias ActionData =
+    {}
 
 type alias RouteParams =
     {}
@@ -33,7 +35,7 @@ type alias Data =
     { message : String }
 
 
-route : StatelessRoute RouteParams Data
+route : StatelessRoute RouteParams Data action
 route =
     RouteBuilder.single
         { head = head
@@ -49,12 +51,12 @@ data =
             (DataSource.succeed "Hello!")
 
 
-head : StaticPayload Data RouteParams -> List Head.Tag
+head : StaticPayload Data action RouteParams -> List Head.Tag
 head static =
     Site.head
 
 
-view : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> View Msg
+view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View Msg
 view maybeUrl sharedModel static =
     { title = "Flamingle | Find Events, Make Friends"
     , body = accountPage

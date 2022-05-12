@@ -2,6 +2,7 @@ module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 
 import Browser.Navigation
 import Http
+import Pages.Fetcher
 import Url exposing (Url)
 
 
@@ -9,6 +10,7 @@ type Effect msg
     = None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
+    | SubmitFetcher (Pages.Fetcher.Fetcher msg)
 
 
 none : Effect msg
@@ -38,6 +40,10 @@ map fn effect =
         Batch list ->
             Batch (List.map (map fn) list)
 
+        SubmitFetcher fetcher ->
+            fetcher
+                |> Pages.Fetcher.map fn
+                |> SubmitFetcher
 
 perform :
     { fetchRouteData :
@@ -54,18 +60,22 @@ perform :
         , toMsg : Result Http.Error Url -> userMsg
         }
         -> Cmd mappedMsg
+    , runFetcher : Pages.Fetcher.Fetcher userMsg -> Cmd mappedMsg
     , fromPageMsg : userMsg -> mappedMsg
     , key : Browser.Navigation.Key
     }
     -> Effect userMsg
     -> Cmd mappedMsg
-perform rec effect =
+perform ({ fromPageMsg, key } as helpers) effect =
     case effect of
         None ->
             Cmd.none
 
         Cmd cmd ->
-            Cmd.map rec.fromPageMsg cmd
+            Cmd.map fromPageMsg cmd
 
         Batch list ->
-            Cmd.batch (List.map (perform rec) list)
+            Cmd.batch (List.map (perform helpers) list)
+
+        SubmitFetcher record ->
+            helpers.runFetcher record

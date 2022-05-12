@@ -1,4 +1,4 @@
-module Route.Events exposing (Data, Model, Msg, route)
+module Route.Events exposing (ActionData, Data, Model, Msg, route)
 
 import Data.SeatGeek as SG exposing (Events)
 import DataSource exposing (DataSource)
@@ -33,14 +33,19 @@ type alias Data =
     Events
 
 
+type alias ActionData =
+    {}
+
+
 type alias RouteParams =
     {}
 
 
-route : StatelessRoute RouteParams Data
+route : StatelessRoute RouteParams Data action
 route =
     RouteBuilder.serverRender
         { head = head
+        , action = \_ -> Request.succeed (DataSource.fail "PLACEHOLDER ACTION")
         , data = data
         }
         |> RouteBuilder.buildNoState { view = view }
@@ -67,12 +72,12 @@ data routeParams =
             )
 
 
-head : StaticPayload Data RouteParams -> List Head.Tag
+head : StaticPayload Data action RouteParams -> List Head.Tag
 head static =
     Site.head
 
 
-view : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> View Msg
+view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View Msg
 view maybeUrl sharedModel static =
     let
         layout =
@@ -91,9 +96,7 @@ view maybeUrl sharedModel static =
     in
     { title = "Events in " ++ static.data.meta.geolocation.displayName ++ " | Flamingle"
     , body =
-        div
-            [ class "max-w-2xl mx-auto px-2 py-5 sm:py-16 sm:px-4 md:py-24 md:px-6 lg:max-w-7xl lg:px-8"
-            ]
+        div [ class "max-w-2xl mx-auto px-2 py-5 sm:py-16 sm:px-4 md:py-24 md:px-6 lg:max-w-7xl lg:px-8" ]
             [ h2 [ class "sr-only" ] [ text "Events" ]
             , gridLayout static.data.events
             ]
