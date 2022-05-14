@@ -25,8 +25,7 @@ type alias Model =
     {}
 
 
-type alias Msg =
-    ()
+type alias Msg = ()
 
 
 type alias Data =
@@ -77,7 +76,7 @@ head static =
     Site.head
 
 
-view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View Msg
+view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View msg
 view maybeUrl sharedModel static =
     let
         layout =
@@ -96,8 +95,15 @@ view maybeUrl sharedModel static =
     in
     { title = "Events in " ++ static.data.meta.geolocation.displayName ++ " | Flamingle"
     , body =
-        div [ class "max-w-2xl mx-auto px-2 py-5 sm:py-16 sm:px-4 md:py-24 md:px-6 lg:max-w-7xl lg:px-8" ]
-            [ h2 [ class "sr-only" ] [ text "Events" ]
+        div [ class "flex flex-col mx-auto p-2 sm:p-4 md:p-6 lg:p-8 gap-2 sm:gap-4 md:gap-6 lg:gap-8 lg:max-w-7xl" ]
+            [ h1 [ class "text-2xl relative flex flex-col p-2 sm:p-4 md:p-6 lg:p-8" ]
+                [ text "Upcoming Events in "
+                , input
+                    [ class "bg-transparent text-white font-bold text-4xl max-w-full focus:bg-neutral-900"
+                    , value static.data.meta.geolocation.displayName
+                    ]
+                    []
+                ]
             , gridLayout static.data.events
             ]
     }

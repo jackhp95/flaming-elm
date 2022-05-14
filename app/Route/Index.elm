@@ -15,9 +15,7 @@ import View exposing (View)
 type alias Model =
     {}
 
-
-type alias Msg =
-    ()
+type alias Msg = ()
 
 
 type alias ActionData =
@@ -58,7 +56,7 @@ view :
     Maybe PageUrl
     -> Shared.Model
     -> StaticPayload Data action RouteParams
-    -> View Msg
+    -> View msg
 view maybeUrl sharedModel static =
     { title = "Flamingle | Find Events, Make Friends"
     , body = homePage

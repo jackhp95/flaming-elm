@@ -20,9 +20,7 @@ import View exposing (View)
 type alias Model =
     {}
 
-
-type alias Msg =
-    ()
+type alias Msg = ()
 
 type alias ActionData =
     {}
@@ -56,7 +54,7 @@ head static =
     Site.head
 
 
-view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View Msg
+view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View msg
 view maybeUrl sharedModel static =
     { title = "Flamingle | Find Events, Make Friends"
     , body = accountPage
