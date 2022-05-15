@@ -21,7 +21,10 @@ import View exposing (View)
 
 type alias Model =
     {}
-type alias Msg = ()
+
+
+type alias Msg =
+    ()
 
 
 type alias RouteParams =

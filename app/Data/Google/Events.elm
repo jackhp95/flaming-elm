@@ -5,6 +5,7 @@ import Json.Decode as Jdec
 import Json.Decode.Pipeline as Jpipe
 import Json.Encode as Jenc
 import List exposing (map)
+import Url.Builder exposing (..)
 
 
 
@@ -16,6 +17,18 @@ import List exposing (map)
 --   -d gl="us" \
 --   -d hl="en" \
 --   -d api_key="secret_api_key"
+
+
+createEventHref : Event -> Url
+createEventHref event =
+    crossOrigin "https://www.google.com"
+        [ "calendar", "render" ]
+        [ string "action" "TEMPLATE"
+        , string "text" event.title
+        , string "details" event.description
+        , string "location" event.location
+        , string "dates" (event.startDate ++ "/" ++ event.endDate)
+        ]
 
 
 type alias Events =

@@ -1,4 +1,4 @@
-module Route.Events.EventId_ exposing (Data, Model, Msg, ActionData, route)
+module Route.Events.EventId_ exposing (ActionData, Data, Model, Msg, route)
 
 import Component.Icon as Icon
 import Data.SeatGeek as SG exposing (Event)
@@ -28,11 +28,14 @@ import View exposing (View)
 type alias Model =
     {}
 
-type alias Msg = ()
+
+type alias Msg =
+    ()
 
 
 type alias ActionData =
     {}
+
 
 type alias Data =
     Event
