@@ -1602,6 +1602,12 @@ select {
   min-width: 0px;
 }
 
+.min-w-max {
+  min-width: -webkit-max-content;
+  min-width: -moz-max-content;
+  min-width: max-content;
+}
+
 .max-w-3xl {
   max-width: 48rem;
 }
@@ -3202,6 +3208,10 @@ select {
   --tw-bg-opacity: 0.1;
 }
 
+.focus\:bg-opacity-50:focus {
+  --tw-bg-opacity: 0.5;
+}
+
 .focus\:bg-gradient-to-l:focus {
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
 }
@@ -3605,6 +3615,12 @@ select {
     display: grid;
   }
 
+  .md\:min-w-max {
+    min-width: -webkit-max-content;
+    min-width: -moz-max-content;
+    min-width: max-content;
+  }
+
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3644,6 +3660,11 @@ select {
   .md\:text-5xl {
     font-size: 3rem;
     line-height: 1;
+  }
+
+  .md\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
 }
 

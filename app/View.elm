@@ -323,7 +323,7 @@ mobileMenu routes =
 sidebar : Html msg
 sidebar =
     footer
-        [ class "sm:max-w-[4rem] sm:h-screen sm:w-auto sm:flex-col lg:max-w-sm"
+        [ class "sm:max-w-[4rem] sm:h-screen sm:w-auto sm:flex-col lg:max-w-sm min-w-max lg:min-w-auto"
         , class "sticky inset-0 w-full flex justify-between overflow-x-auto overflow-y-hidden sm:overflow-hidden"
         , class "bg-black bg-opacity-75 backdrop-blur ring-1 ring-neutral-900"
         , class "hover:text-opacity-100 text-opacity-70"
@@ -372,9 +372,9 @@ sidebar =
                             , class "icon"
                             ]
                             []
-                        , span [ class "text-[0] sm:text-base" ] [ text "Flamingle" ]
-                        , span [ class "text-[0] sm:text-base" ] [ text "Social" ]
-                        , span [ class "text-[0] sm:text-base" ] [ text ".com" ]
+                        , span [ class "text-[0] md:text-base" ] [ text "Flamingle" ]
+                        , span [ class "text-[0] md:text-base" ] [ text "Social" ]
+                        , span [ class "text-[0] md:text-base" ] [ text ".com" ]
                         ]
                     ]
                 )

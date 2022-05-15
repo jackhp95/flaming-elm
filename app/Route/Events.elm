@@ -99,7 +99,7 @@ view maybeUrl sharedModel static =
             [ h1 [ class "text-2xl relative flex flex-col p-2 sm:p-4 md:p-6 lg:p-8" ]
                 [ text "Upcoming Events in "
                 , input
-                    [ class "bg-transparent text-white font-bold text-4xl max-w-full focus:bg-neutral-900"
+                    [ class "bg-opacity-0 text-white font-bold text-4xl max-w-full bg-neutral-900 focus:bg-opacity-50"
                     , value static.data.meta.geolocation.displayName
                     ]
                     []
