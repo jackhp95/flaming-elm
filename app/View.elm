@@ -361,7 +361,7 @@ sidebar =
                     , class "p-3 flex overflow-hidden h-16 sm:h-32 sm:aspect-video items-center hover:scale-105 active:scale-95 transition ease-out"
                     ]
                     [ span
-                        [ class "h-[1.5em] flex items-center flex-wrap gap-y-64 text-2xl sm:text-3xl font-bold sm:mr-6 transition ease-out"
+                        [ class "h-[1.5em] flex items-center flex-wrap gap-y-64 text-2xl sm:text-3xl font-bold lg:mr-6 transition ease-out"
                         , class "text-neutral-300 group-focus:text-white group-hover:text-transparent group-focus:text-transparent group-active:bg-gradient-to-t"
                         , class "bg-clip-text bg-gradient-to-tl transition from-rose-500 to-fuchsia-500"
                         ]
@@ -372,9 +372,9 @@ sidebar =
                             , class "icon"
                             ]
                             []
-                        , span [ class "text-[0] md:text-base" ] [ text "Flamingle" ]
-                        , span [ class "text-[0] md:text-base" ] [ text "Social" ]
-                        , span [ class "text-[0] md:text-base" ] [ text ".com" ]
+                        , span [ class "text-[0] lg:text-base" ] [ text "Flamingle" ]
+                        , span [ class "text-[0] lg:text-base" ] [ text "Social" ]
+                        , span [ class "text-[0] lg:text-base" ] [ text ".com" ]
                         ]
                     ]
                 )
