@@ -33,7 +33,7 @@ pageLayout pageContent =
         [ class "bg-black border-r border-white border-opacity-20"
         , class "min-h-screen w-full max-w-full flex flex-col sm:flex-row-reverse gap-x-px text-white"
         ]
-        [ div [ class "bg-neutral-900 bg-opacity-50 flex-grow-[99999]" ] [ pageContent ]
+        [ div [ class "flex-grow-[99999]" ] [ pageContent ]
 
         -- , navbar
         , sidebar
@@ -325,7 +325,7 @@ sidebar =
     footer
         [ class "sm:max-w-[4rem] sm:h-screen sm:w-auto sm:flex-col lg:max-w-sm min-w-max lg:min-w-auto"
         , class "sticky inset-0 w-full flex justify-between overflow-x-auto overflow-y-hidden sm:overflow-hidden"
-        , class "bg-black bg-opacity-75 backdrop-blur ring-1 ring-neutral-900"
+        , class "bg-neutral-900 bg-opacity-75 backdrop-blur ring-1 ring-neutral-800"
         , class "hover:text-opacity-100 text-opacity-70"
         ]
         [ [ ( Icon.outlineHome, "Dashboard", "/events/" )
