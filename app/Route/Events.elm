@@ -90,7 +90,7 @@ view maybeUrl sharedModel static =
             columnLayout
 
         gridLayout =
-            List.map (eventCard sharedModel >> List.singleton >> li [ class "flex items-stretch" ])
+            List.map (eventCard sharedModel >> List.singleton >> li [ class "contents" ])
                 >> ol
                     [ class "grid-cols-[repeat(auto-fit,minmax(clamp(140px,18vw,210px),1fr))]"
                     , class "grid gap-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8"
