@@ -1430,6 +1430,10 @@ select {
   margin-left: -1px;
 }
 
+.box-border {
+  box-sizing: border-box;
+}
+
 .block {
   display: block;
 }
@@ -1602,6 +1606,18 @@ select {
   width: 3em;
 }
 
+.w-64 {
+  width: 16rem;
+}
+
+.w-0 {
+  width: 0px;
+}
+
+.w-5\/6 {
+  width: 83.333333%;
+}
+
 .min-w-0 {
   min-width: 0px;
 }
@@ -1642,6 +1658,12 @@ select {
 
 .max-w-\[80\%\] {
   max-width: 80%;
+}
+
+.max-w-max {
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
 }
 
 .flex-auto {
@@ -1952,6 +1974,10 @@ select {
   align-self: center;
 }
 
+.self-stretch {
+  align-self: stretch;
+}
+
 .overflow-auto {
   overflow: auto;
 }
@@ -2115,6 +2141,10 @@ select {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.\!border-transparent {
+  border-color: transparent !important;
 }
 
 .border-opacity-20 {
@@ -3195,8 +3225,46 @@ select {
   --tw-ring-opacity: 1;
 }
 
+.focus\:inset-0\.5:focus {
+  top: 0.125rem;
+  right: 0.125rem;
+  bottom: 0.125rem;
+  left: 0.125rem;
+}
+
+.focus\:inset-0:focus {
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
 .focus\:z-10:focus {
   z-index: 10;
+}
+
+.focus\:m-1:focus {
+  margin: 0.25rem;
+}
+
+.focus\:m-0\.5:focus {
+  margin: 0.125rem;
+}
+
+.focus\:m-0:focus {
+  margin: 0px;
+}
+
+.focus\:max-w-full:focus {
+  max-width: 100%;
+}
+
+.focus\:border:focus {
+  border-width: 1px;
+}
+
+.focus\:border-2:focus {
+  border-width: 2px;
 }
 
 .focus\:border-transparent:focus {
@@ -3240,6 +3308,10 @@ select {
 
 .focus\:bg-gradient-to-l:focus {
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
+}
+
+.focus\:p-1:focus {
+  padding: 0.25rem;
 }
 
 .focus\:px-4:focus {

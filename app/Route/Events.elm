@@ -103,7 +103,7 @@ view maybeUrl sharedModel static =
     { title = "Events in " ++ location ++ " | Flamingle"
     , body =
         div [ class "flex flex-col mx-auto p-2 sm:p-4 md:p-6 lg:p-8 gap-2 sm:gap-4 md:gap-6 lg:gap-8 lg:max-w-7xl" ]
-            [ header [ class "relative flex flex-col p-2 sm:p-4 md:p-6 lg:p-8 group" ]
+            [ header [ class "relative flex flex-col p-2 sm:p-4 md:p-6 lg:p-8 group max-w-full" ]
                 [ h1 [ class "pt-2 sm:pt-4 md:pt-6 lg:pt-8 mx-4 text-2xl group-focus-within:-translate-y-1 transition-all duration-300 ease-out"
                 , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%] bg-clip-text text-white group-focus-within:text-transparent" ]
                     [ text "Upcoming Events in "
@@ -111,18 +111,18 @@ view maybeUrl sharedModel static =
                     ]
                 , Html.form
                     [ action "/events/"
-                    , class "flex justify-center h-14 text-sm relative p-0"
+                    , class "flex h-14 text-sm relative w-full max-w-lg"
                     , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%]"
-                    , class "focus-within:rounded-lg rounded-md focus-within:p-0.5 transition-all duration-300 ease-out"
+                    , class "focus-within:rounded-lg rounded-md transition-all duration-300 ease-out"
                     ]
                     [ label [ for "search", class "sr-only" ] [ text "Search" ]
                     , input
                         [ id "postal-code"
                         , name "zip"
                         , Attr.attribute "autocomplete" "postal-code"
-                        , class "!ring-0 bg-black !leading-none border-0 p-0 m-0 transition-all duration-300 ease-out"
+                        , class "!ring-0 bg-black !leading-none p-0 m-0 border-none absolute inset-0 outline-none transition-all duration-300 ease-out max-w-full"
                         , class "placeholder-current focus:placeholder-transparent text-current block flex-auto text-5xl font-bold"
-                        , class "rounded-md focus:text-3xl focus:px-4 focus:py-3 focus:bg-neutral-900"
+                        , class "rounded-md focus:text-3xl focus:px-4 focus:py-3 focus:bg-neutral-900 focus:inset-0.5"
                         , placeholder location
                         , type_ "search"
                         ]
