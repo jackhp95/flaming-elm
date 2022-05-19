@@ -1,7 +1,9 @@
 module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 
 import Browser.Navigation
+import FormDecoder
 import Http
+import Json.Decode as Decode
 import Pages.Fetcher
 import Url exposing (Url)
 
@@ -10,7 +12,16 @@ type Effect msg
     = None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
+    | FetchRouteData
+        { data : Maybe FormDecoder.FormData
+        , toMsg : Result Http.Error Url -> msg
+        }
+    | Submit
+        { values : FormDecoder.FormData
+        , toMsg : Result Http.Error Url -> msg
+        }
     | SubmitFetcher (Pages.Fetcher.Fetcher msg)
+
 
 
 none : Effect msg
@@ -40,6 +51,18 @@ map fn effect =
         Batch list ->
             Batch (List.map (map fn) list)
 
+        FetchRouteData fetchInfo ->
+            FetchRouteData
+                { data = fetchInfo.data
+                , toMsg = fetchInfo.toMsg >> fn
+                }
+
+        Submit fetchInfo ->
+            Submit
+                { values = fetchInfo.values
+                , toMsg = fetchInfo.toMsg >> fn
+                }
+
         SubmitFetcher fetcher ->
             fetcher
                 |> Pages.Fetcher.map fn
@@ -48,25 +71,23 @@ map fn effect =
 
 perform :
     { fetchRouteData :
-        { body : Maybe { contentType : String, body : String }
-        , path : Maybe String
-        , toMsg : Result Http.Error Url -> userMsg
+        { data : Maybe FormDecoder.FormData
+        , toMsg : Result Http.Error Url -> pageMsg
         }
-        -> Cmd mappedMsg
+        -> Cmd msg
     , submit :
-        { values : List ( String, String )
-        , encType : Maybe String
-        , method : Maybe String
-        , path : Maybe String
-        , toMsg : Result Http.Error Url -> userMsg
+        { values : FormDecoder.FormData
+        , toMsg : Result Http.Error Url -> pageMsg
         }
-        -> Cmd mappedMsg
-    , runFetcher : Pages.Fetcher.Fetcher userMsg -> Cmd mappedMsg
-    , fromPageMsg : userMsg -> mappedMsg
+        -> Cmd msg
+    , runFetcher :
+        Pages.Fetcher.Fetcher pageMsg
+        -> Cmd msg
+    , fromPageMsg : pageMsg -> msg
     , key : Browser.Navigation.Key
     }
-    -> Effect userMsg
-    -> Cmd mappedMsg
+    -> Effect pageMsg
+    -> Cmd msg
 perform ({ fromPageMsg, key } as helpers) effect =
     case effect of
         None ->
@@ -77,6 +98,13 @@ perform ({ fromPageMsg, key } as helpers) effect =
 
         Batch list ->
             Cmd.batch (List.map (perform helpers) list)
+
+        FetchRouteData fetchInfo ->
+            helpers.fetchRouteData
+                fetchInfo
+
+        Submit record ->
+            helpers.submit record
 
         SubmitFetcher record ->
             helpers.runFetcher record
