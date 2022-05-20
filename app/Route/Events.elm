@@ -1,13 +1,13 @@
 module Route.Events exposing (ActionData, Data, Model, Msg, route)
 
 import Data.SeatGeek as SG exposing (Events)
-import DataSource exposing (DataSource)
+import DataSource exposing (DataSource, andThen)
 import DataSource.Http
 import DateFormat as DF
 import DateFormat.Relative exposing (relativeTime)
 import Head
 import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html.Attributes as Attr exposing (..)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Pages.PageUrl exposing (PageUrl)
@@ -16,6 +16,7 @@ import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
 import Site
+import String.Extra as String
 import Time
 import Url.Builder exposing (crossOrigin, string)
 import View exposing (View)
@@ -25,7 +26,8 @@ type alias Model =
     {}
 
 
-type alias Msg = ()
+type alias Msg =
+    ()
 
 
 type alias Data =
@@ -57,7 +59,9 @@ data routeParams =
             crossOrigin "https://api.seatgeek.com"
                 [ "2", "events" ]
                 [ string "client_id" "MzUwNDE1NnwxNDgxNjA1ODM2"
-                , Maybe.withDefault "65203" zip
+                , zip
+                    |> Maybe.filter (not << String.isBlank)
+                    |> Maybe.withDefault "65203"
                     |> string "postal_code"
                 , string "per_page" "300"
                 ]
@@ -79,12 +83,15 @@ head static =
 view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams -> View msg
 view maybeUrl sharedModel static =
     let
+        location =
+            static.data.meta.geolocation.displayName
+
         layout =
             columnLayout
 
         gridLayout =
-            List.map (eventCard sharedModel)
-                >> div
+            List.map (eventCard sharedModel >> List.singleton >> li [ class "contents" ])
+                >> ol
                     [ class "grid-cols-[repeat(auto-fit,minmax(clamp(140px,18vw,210px),1fr))]"
                     , class "grid gap-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8"
                     ]
@@ -93,16 +100,41 @@ view maybeUrl sharedModel static =
             List.map (eventCard sharedModel >> List.singleton >> li [ class "p-2 break-inside-avoid" ])
                 >> ol [ class "columns-2 sm:columns-[12rem] gap-0" ]
     in
-    { title = "Events in " ++ static.data.meta.geolocation.displayName ++ " | Flamingle"
+    { title = "Events in " ++ location ++ " | Flamingle"
     , body =
         div [ class "flex flex-col mx-auto p-2 sm:p-4 md:p-6 lg:p-8 gap-2 sm:gap-4 md:gap-6 lg:gap-8 lg:max-w-7xl" ]
-            [ h1 [ class "text-2xl relative flex flex-col p-2 sm:p-4 md:p-6 lg:p-8" ]
-                [ text "Upcoming Events in "
-                , input
-                    [ class "bg-transparent text-white font-bold text-4xl max-w-full focus:bg-neutral-900"
-                    , value static.data.meta.geolocation.displayName
+            [ header [ class "relative flex flex-col p-2 sm:p-4 md:p-6 lg:p-8 group max-w-full" ]
+                [ h1 [ class "pt-2 sm:pt-4 md:pt-6 lg:pt-8 mx-4 text-2xl group-focus-within:-translate-y-1 transition-all duration-300 ease-out"
+                , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%] bg-clip-text text-white group-focus-within:text-transparent" ]
+                    [ text "Upcoming Events in "
+                    , span [ class "sr-only" ] [ text location ]
                     ]
-                    []
+                , Html.form
+                    [ action "/events/"
+                    , class "flex h-14 text-sm relative w-full max-w-lg"
+                    , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%]"
+                    , class "focus-within:rounded-lg rounded-md transition-all duration-300 ease-out"
+                    ]
+                    [ label [ for "search", class "sr-only" ] [ text "Search" ]
+                    , input
+                        [ id "postal-code"
+                        , name "zip"
+                        , Attr.attribute "autocomplete" "postal-code"
+                        , class "!ring-0 bg-black !leading-none p-0 m-0 border-none absolute inset-0 outline-none transition-all duration-300 ease-out max-w-full"
+                        , class "placeholder-current focus:placeholder-transparent text-current block flex-auto text-5xl font-bold"
+                        , class "rounded-md focus:text-3xl focus:px-4 focus:py-3 focus:bg-neutral-900 focus:inset-0.5"
+                        , placeholder location
+                        , type_ "search"
+                        ]
+                        []
+                    -- , button
+                    --     [ class "absolute inset-y-0 right-0 font-bold whitespace-nowrap z-10 rounded-full flex items-center p-4"
+                    --     , class "opacity-0 pointer-events-none transition-all duration-300 ease-out"
+                    --     , class "group-focus-within:opacity-100 group-focus-within:pointer-events-auto"
+                    --     , type_ "submit"
+                    --     ]
+                    --     [ text "Find Events" ]
+                    ]
                 ]
             , gridLayout static.data.events
             ]

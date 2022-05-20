@@ -1,4 +1,4 @@
-module Route.Index exposing (Data, Model, Msg, ActionData, route)
+module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
 import Component.Icon as Icon
 import DataSource exposing (DataSource)
@@ -15,11 +15,14 @@ import View exposing (View)
 type alias Model =
     {}
 
-type alias Msg = ()
+
+type alias Msg =
+    ()
 
 
 type alias ActionData =
     {}
+
 
 type alias RouteParams =
     {}

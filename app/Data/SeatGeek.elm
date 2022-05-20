@@ -5,9 +5,10 @@ import Iso8601
 import Json.Decode as Jdec
 import Json.Decode.Pipeline as Jpipe
 import Json.Encode as Jenc
+import Maybe.Extra as Maybe
 import String.Extra
 import Time exposing (Posix)
-import Maybe.Extra as Maybe
+
 
 type alias Events =
     { events : List Event
@@ -60,11 +61,13 @@ type alias EventPromotion =
     , images : EventPromotionImages
     }
 
+
 type alias EventPromotionImages =
     { icon : String
     , png2X : String
     , png3X : String
     }
+
 
 type alias Performer =
     { performerType : UpperEnum
@@ -548,8 +551,11 @@ encodeLocation x =
         , ( "lon", Jenc.float x.lon )
         ]
 
+
 eventPromotionToString : EventPromotion -> String
-eventPromotionToString r = Jenc.encode 0 (encodeEventPromotion r)
+eventPromotionToString r =
+    Jenc.encode 0 (encodeEventPromotion r)
+
 
 eventPromotion : Jdec.Decoder EventPromotion
 eventPromotion =
@@ -558,13 +564,15 @@ eventPromotion =
         |> Jpipe.required "additional_info" Jdec.string
         |> Jpipe.required "images" eventPromotionImages
 
+
 encodeEventPromotion : EventPromotion -> Jenc.Value
 encodeEventPromotion x =
     Jenc.object
-        [ ("headline", Jenc.string x.headline)
-        , ("additional_info", Jenc.string x.additionalInfo)
-        , ("images", encodeEventPromotionImages x.images)
+        [ ( "headline", Jenc.string x.headline )
+        , ( "additional_info", Jenc.string x.additionalInfo )
+        , ( "images", encodeEventPromotionImages x.images )
         ]
+
 
 eventPromotionImages : Jdec.Decoder EventPromotionImages
 eventPromotionImages =
@@ -573,13 +581,15 @@ eventPromotionImages =
         |> Jpipe.required "png@2x" Jdec.string
         |> Jpipe.required "png@3x" Jdec.string
 
+
 encodeEventPromotionImages : EventPromotionImages -> Jenc.Value
 encodeEventPromotionImages x =
     Jenc.object
-        [ ("icon", Jenc.string x.icon)
-        , ("png@2x", Jenc.string x.png2X)
-        , ("png@3x", Jenc.string x.png3X)
+        [ ( "icon", Jenc.string x.icon )
+        , ( "png@2x", Jenc.string x.png2X )
+        , ( "png@3x", Jenc.string x.png3X )
         ]
+
 
 colors : Jdec.Decoder Colors
 colors =

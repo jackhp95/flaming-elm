@@ -1,4 +1,4 @@
-module Route.Auth exposing (Data, Model, Msg, ActionData, route)
+module Route.Auth exposing (ActionData, Data, Model, Msg, route)
 
 import Component.Auth as Auth
 import Component.Icon as Icon
@@ -20,10 +20,14 @@ import View exposing (View)
 type alias Model =
     {}
 
-type alias Msg = ()
+
+type alias Msg =
+    ()
+
 
 type alias ActionData =
     {}
+
 
 type alias RouteParams =
     {}
