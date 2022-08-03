@@ -65,7 +65,7 @@ imagesToString r =
 
 images : Jdec.Decoder Images
 images =
-    Jpipe.succeed Images
+    Jdec.succeed Images
         |> Jpipe.required "search_metadata" searchMetadata
         |> Jpipe.required "search_parameters" searchParameters
         |> Jpipe.required "search_information" searchInformation
@@ -78,13 +78,13 @@ encodeImages x =
         [ ( "search_metadata", encodeSearchMetadata x.searchMetadata )
         , ( "search_parameters", encodeSearchParameters x.searchParameters )
         , ( "search_information", encodeSearchInformation x.searchInformation )
-        , ( "images_results", makeListEncoder encodeImagesResult x.imagesResults )
+        , ( "images_results", (Jenc.list encodeImagesResult) x.imagesResults )
         ]
 
 
 imagesResult : Jdec.Decoder ImagesResult
 imagesResult =
-    Jpipe.succeed ImagesResult
+    Jdec.succeed ImagesResult
         |> Jpipe.required "position" Jdec.int
         |> Jpipe.required "thumbnail" Jdec.string
         |> Jpipe.required "source" Jdec.string
@@ -109,7 +109,7 @@ encodeImagesResult x =
 
 searchInformation : Jdec.Decoder SearchInformation
 searchInformation =
-    Jpipe.succeed SearchInformation
+    Jdec.succeed SearchInformation
         |> Jpipe.required "image_results_state" Jdec.string
         |> Jpipe.required "query_displayed" Jdec.string
 
@@ -124,7 +124,7 @@ encodeSearchInformation x =
 
 searchMetadata : Jdec.Decoder SearchMetadata
 searchMetadata =
-    Jpipe.succeed SearchMetadata
+    Jdec.succeed SearchMetadata
         |> Jpipe.required "id" Jdec.string
         |> Jpipe.required "status" Jdec.string
         |> Jpipe.required "json_endpoint" Jdec.string
@@ -151,7 +151,7 @@ encodeSearchMetadata x =
 
 searchParameters : Jdec.Decoder SearchParameters
 searchParameters =
-    Jpipe.succeed SearchParameters
+    Jdec.succeed SearchParameters
         |> Jpipe.required "engine" Jdec.string
         |> Jpipe.required "q" Jdec.string
         |> Jpipe.required "google_domain" Jdec.string

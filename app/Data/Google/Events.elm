@@ -1,11 +1,14 @@
 module Data.Google.Events exposing (Bottom, DetectedExtensions, Events, EventsResult, HeaderImage, Inline, KnowledgeGraph, LieuxDIntrt, Link, ListElement, LocalMap, OrganicResult, Pagination, RelatedResult, RelatedSearch, RichSnippet, SearchInformation, SearchMetadata, SearchParameters, Sitelinks, Title(..), events, eventsToString)
 
+import Data.SeatGeek exposing (Event)
 import Dict exposing (Dict, map, toList)
 import Json.Decode as Jdec
 import Json.Decode.Pipeline as Jpipe
 import Json.Encode as Jenc
 import List exposing (map)
+import Url exposing (Url)
 import Url.Builder exposing (..)
+import Iso8601 exposing (fromTime)
 
 
 
@@ -19,15 +22,22 @@ import Url.Builder exposing (..)
 --   -d api_key="secret_api_key"
 
 
-createEventHref : Event -> Url
+createEventHref : Event -> String
 createEventHref event =
     crossOrigin "https://www.google.com"
         [ "calendar", "render" ]
         [ string "action" "TEMPLATE"
         , string "text" event.title
         , string "details" event.description
-        , string "location" event.location
-        , string "dates" (event.startDate ++ "/" ++ event.endDate)
+        , string "location" event.venue.displayLocation
+        , string "dates"
+            (case event.enddatetimeUTC of
+                Just end ->
+                   fromTime event.datetimeUTC ++ "/" ++ fromTime end
+
+                Nothing ->
+                    fromTime event.datetimeUTC
+            )
         ]
 
 
@@ -235,7 +245,7 @@ eventsToString r =
 
 events : Jdec.Decoder Events
 events =
-    Jpipe.decode Events
+    Jdec.succeed Events
         |> Jpipe.required "search_metadata" searchMetadata
         |> Jpipe.required "search_parameters" searchParameters
         |> Jpipe.required "search_information" searchInformation
@@ -253,10 +263,10 @@ encodeEvents x =
         [ ( "search_metadata", encodeSearchMetadata x.searchMetadata )
         , ( "search_parameters", encodeSearchParameters x.searchParameters )
         , ( "search_information", encodeSearchInformation x.searchInformation )
-        , ( "events_results", makeListEncoder encodeEventsResult x.eventsResults )
+        , ( "events_results", Jenc.list encodeEventsResult x.eventsResults )
         , ( "knowledge_graph", encodeKnowledgeGraph x.knowledgeGraph )
-        , ( "organic_results", makeListEncoder encodeOrganicResult x.organicResults )
-        , ( "related_searches", makeListEncoder encodeRelatedSearch x.relatedSearches )
+        , ( "organic_results", Jenc.list encodeOrganicResult x.organicResults )
+        , ( "related_searches", Jenc.list encodeRelatedSearch x.relatedSearches )
         , ( "pagination", encodePagination x.pagination )
         , ( "serpapi_pagination", encodePagination x.serpapiPagination )
         ]
@@ -264,7 +274,7 @@ encodeEvents x =
 
 eventsResult : Jdec.Decoder EventsResult
 eventsResult =
-    Jpipe.decode EventsResult
+    Jdec.succeed EventsResult
         |> Jpipe.required "title" Jdec.string
         |> Jpipe.required "date" Jdec.string
         |> Jpipe.required "venue" Jdec.string
@@ -285,7 +295,7 @@ encodeEventsResult x =
 
 knowledgeGraph : Jdec.Decoder KnowledgeGraph
 knowledgeGraph =
-    Jpipe.decode KnowledgeGraph
+    Jdec.succeed KnowledgeGraph
         |> Jpipe.required "title" title
         |> Jpipe.required "type" Jdec.string
         |> Jpipe.required "header_images" (Jdec.list headerImage)
@@ -322,31 +332,31 @@ encodeKnowledgeGraph x =
     Jenc.object
         [ ( "title", encodeTitle x.title )
         , ( "type", Jenc.string x.knowledgeGraphType )
-        , ( "header_images", makeListEncoder encodeHeaderImage x.headerImages )
+        , ( "header_images", Jenc.list encodeHeaderImage x.headerImages )
         , ( "place_id", Jenc.string x.placeID )
         , ( "description", Jenc.string x.description )
         , ( "local_map", encodeLocalMap x.localMap )
         , ( "superficie", Jenc.string x.superficie )
-        , ( "superficie_links", makeListEncoder encodeLink x.superficieLinks )
+        , ( "superficie_links", Jenc.list encodeLink x.superficieLinks )
         , ( "altitude", Jenc.string x.altitude )
-        , ( "altitude_links", makeListEncoder encodeLink x.altitudeLinks )
+        , ( "altitude_links", Jenc.list encodeLink x.altitudeLinks )
         , ( "météo", Jenc.string x.mto )
-        , ( "météo_links", makeListEncoder encodeLink x.mtoLinks )
+        , ( "météo_links", Jenc.list encodeLink x.mtoLinks )
         , ( "heure_locale", Jenc.string x.heureLocale )
-        , ( "heure_locale_links", makeListEncoder encodeLink x.heureLocaleLinks )
+        , ( "heure_locale_links", Jenc.list encodeLink x.heureLocaleLinks )
         , ( "population", Jenc.string x.population )
-        , ( "population_links", makeListEncoder encodeLink x.populationLinks )
+        , ( "population_links", Jenc.list encodeLink x.populationLinks )
         , ( "maire", Jenc.string x.maire )
-        , ( "maire_links", makeListEncoder encodeLink x.maireLinks )
+        , ( "maire_links", Jenc.list encodeLink x.maireLinks )
         , ( "quartiers", Jenc.string x.quartiers )
-        , ( "quartiers_links", makeListEncoder encodeLink x.quartiersLinks )
-        , ( "organiser_un_voyage", makeListEncoder encodeLieuxDIntrt x.organiserUnVoyage )
-        , ( "lieux_d_intérêt", makeListEncoder encodeLieuxDIntrt x.lieuxDIntrt )
+        , ( "quartiers_links", Jenc.list encodeLink x.quartiersLinks )
+        , ( "organiser_un_voyage", Jenc.list encodeLieuxDIntrt x.organiserUnVoyage )
+        , ( "lieux_d_intérêt", Jenc.list encodeLieuxDIntrt x.lieuxDIntrt )
         , ( "lieux_d_intérêt_link", Jenc.string x.lieuxDIntrtLink )
-        , ( "universités", makeListEncoder encodeLieuxDIntrt x.universits )
+        , ( "universités", Jenc.list encodeLieuxDIntrt x.universits )
         , ( "universités_link", Jenc.string x.universitsLink )
         , ( "universités_stick", Jenc.string x.universitsStick )
-        , ( "recherches_associées", makeListEncoder encodeLieuxDIntrt x.recherchesAssocies )
+        , ( "recherches_associées", Jenc.list encodeLieuxDIntrt x.recherchesAssocies )
         , ( "recherches_associées_link", Jenc.string x.recherchesAssociesLink )
         , ( "recherches_associées_stick", Jenc.string x.recherchesAssociesStick )
         ]
@@ -354,7 +364,7 @@ encodeKnowledgeGraph x =
 
 link : Jdec.Decoder Link
 link =
-    Jpipe.decode Link
+    Jdec.succeed Link
         |> Jpipe.required "text" Jdec.string
         |> Jpipe.required "link" Jdec.string
 
@@ -369,7 +379,7 @@ encodeLink x =
 
 headerImage : Jdec.Decoder HeaderImage
 headerImage =
-    Jpipe.decode HeaderImage
+    Jdec.succeed HeaderImage
         |> Jpipe.required "source" Jdec.string
 
 
@@ -382,7 +392,7 @@ encodeHeaderImage x =
 
 lieuxDIntrt : Jdec.Decoder LieuxDIntrt
 lieuxDIntrt =
-    Jpipe.decode LieuxDIntrt
+    Jdec.succeed LieuxDIntrt
         |> Jpipe.required "name" Jdec.string
         |> Jpipe.required "link" Jdec.string
         |> Jpipe.required "serpapi_link" Jdec.string
@@ -401,7 +411,7 @@ encodeLieuxDIntrt x =
 
 localMap : Jdec.Decoder LocalMap
 localMap =
-    Jpipe.decode LocalMap
+    Jdec.succeed LocalMap
         |> Jpipe.required "image" Jdec.string
         |> Jpipe.required "link" Jdec.string
 
@@ -449,7 +459,7 @@ encodeTitle x =
 
 organicResult : Jdec.Decoder OrganicResult
 organicResult =
-    Jpipe.decode OrganicResult
+    Jdec.succeed OrganicResult
         |> Jpipe.required "position" Jdec.int
         |> Jpipe.required "title" Jdec.string
         |> Jpipe.required "link" Jdec.string
@@ -471,18 +481,18 @@ encodeOrganicResult x =
         , ( "link", Jenc.string x.link )
         , ( "displayed_link", Jenc.string x.displayedLink )
         , ( "snippet", Jenc.string x.snippet )
-        , ( "snippet_highlighted_words", makeListEncoder encodeTitle x.snippetHighlightedWords )
+        , ( "snippet_highlighted_words", Jenc.list encodeTitle x.snippetHighlightedWords )
         , ( "sitelinks", makeNullableEncoder encodeSitelinks x.sitelinks )
         , ( "cached_page_link", makeNullableEncoder Jenc.string x.cachedPageLink )
         , ( "related_pages_link", makeNullableEncoder Jenc.string x.relatedPagesLink )
-        , ( "related_results", makeNullableEncoder (makeListEncoder encodeRelatedResult) x.relatedResults )
+        , ( "related_results", makeNullableEncoder (Jenc.list encodeRelatedResult) x.relatedResults )
         , ( "rich_snippet", makeNullableEncoder encodeRichSnippet x.richSnippet )
         ]
 
 
 relatedResult : Jdec.Decoder RelatedResult
 relatedResult =
-    Jpipe.decode RelatedResult
+    Jdec.succeed RelatedResult
         |> Jpipe.required "position" Jdec.int
         |> Jpipe.required "title" Jdec.string
         |> Jpipe.required "link" Jdec.string
@@ -500,14 +510,14 @@ encodeRelatedResult x =
         , ( "link", Jenc.string x.link )
         , ( "displayed_link", Jenc.string x.displayedLink )
         , ( "snippet", Jenc.string x.snippet )
-        , ( "snippet_highlighted_words", makeListEncoder encodeTitle x.snippetHighlightedWords )
+        , ( "snippet_highlighted_words", Jenc.list encodeTitle x.snippetHighlightedWords )
         , ( "cached_page_link", Jenc.string x.cachedPageLink )
         ]
 
 
 richSnippet : Jdec.Decoder RichSnippet
 richSnippet =
-    Jpipe.decode RichSnippet
+    Jdec.succeed RichSnippet
         |> Jpipe.required "bottom" bottom
 
 
@@ -520,7 +530,7 @@ encodeRichSnippet x =
 
 bottom : Jdec.Decoder Bottom
 bottom =
-    Jpipe.decode Bottom
+    Jdec.succeed Bottom
         |> Jpipe.required "detected_extensions" detectedExtensions
         |> Jpipe.required "extensions" (Jdec.list Jdec.string)
 
@@ -529,13 +539,13 @@ encodeBottom : Bottom -> Jenc.Value
 encodeBottom x =
     Jenc.object
         [ ( "detected_extensions", encodeDetectedExtensions x.detectedExtensions )
-        , ( "extensions", makeListEncoder Jenc.string x.extensions )
+        , ( "extensions", Jenc.list Jenc.string x.extensions )
         ]
 
 
 detectedExtensions : Jdec.Decoder DetectedExtensions
 detectedExtensions =
-    Jpipe.decode DetectedExtensions
+    Jdec.succeed DetectedExtensions
         |> Jpipe.optional "mer_avr" (Jdec.nullable (Jdec.null ())) Nothing
         |> Jpipe.optional "juin" (Jdec.nullable Jdec.int) Nothing
         |> Jpipe.optional "juin_jobs_in_paris" (Jdec.nullable Jdec.int) Nothing
@@ -560,7 +570,7 @@ encodeDetectedExtensions x =
 
 sitelinks : Jdec.Decoder Sitelinks
 sitelinks =
-    Jpipe.decode Sitelinks
+    Jdec.succeed Sitelinks
         |> Jpipe.optional "inline" (Jdec.nullable (Jdec.list inline)) Nothing
         |> Jpipe.optional "list" (Jdec.nullable (Jdec.list listElement)) Nothing
 
@@ -568,14 +578,14 @@ sitelinks =
 encodeSitelinks : Sitelinks -> Jenc.Value
 encodeSitelinks x =
     Jenc.object
-        [ ( "inline", makeNullableEncoder (makeListEncoder encodeInline) x.inline )
-        , ( "list", makeNullableEncoder (makeListEncoder encodeListElement) x.list )
+        [ ( "inline", makeNullableEncoder (Jenc.list encodeInline) x.inline )
+        , ( "list", makeNullableEncoder (Jenc.list encodeListElement) x.list )
         ]
 
 
 inline : Jdec.Decoder Inline
 inline =
-    Jpipe.decode Inline
+    Jdec.succeed Inline
         |> Jpipe.required "title" Jdec.string
         |> Jpipe.required "link" Jdec.string
 
@@ -590,7 +600,7 @@ encodeInline x =
 
 listElement : Jdec.Decoder ListElement
 listElement =
-    Jpipe.decode ListElement
+    Jdec.succeed ListElement
         |> Jpipe.required "date" Jdec.string
 
 
@@ -603,7 +613,7 @@ encodeListElement x =
 
 pagination : Jdec.Decoder Pagination
 pagination =
-    Jpipe.decode Pagination
+    Jdec.succeed Pagination
         |> Jpipe.required "current" Jdec.int
         |> Jpipe.required "next" Jdec.string
         |> Jpipe.required "other_pages" (Jdec.dict Jdec.string)
@@ -622,7 +632,7 @@ encodePagination x =
 
 relatedSearch : Jdec.Decoder RelatedSearch
 relatedSearch =
-    Jpipe.decode RelatedSearch
+    Jdec.succeed RelatedSearch
         |> Jpipe.required "query" Jdec.string
         |> Jpipe.required "link" Jdec.string
 
@@ -637,7 +647,7 @@ encodeRelatedSearch x =
 
 searchInformation : Jdec.Decoder SearchInformation
 searchInformation =
-    Jpipe.decode SearchInformation
+    Jdec.succeed SearchInformation
         |> Jpipe.required "organic_results_state" Jdec.string
         |> Jpipe.required "query_displayed" Jdec.string
 
@@ -652,7 +662,7 @@ encodeSearchInformation x =
 
 searchMetadata : Jdec.Decoder SearchMetadata
 searchMetadata =
-    Jpipe.decode SearchMetadata
+    Jdec.succeed SearchMetadata
         |> Jpipe.required "id" Jdec.string
         |> Jpipe.required "status" Jdec.string
         |> Jpipe.required "json_endpoint" Jdec.string
@@ -679,7 +689,7 @@ encodeSearchMetadata x =
 
 searchParameters : Jdec.Decoder SearchParameters
 searchParameters =
-    Jpipe.decode SearchParameters
+    Jdec.succeed SearchParameters
         |> Jpipe.required "engine" Jdec.string
         |> Jpipe.required "q" Jdec.string
         |> Jpipe.required "google_domain" Jdec.string
@@ -702,11 +712,6 @@ encodeSearchParameters x =
 
 
 --- encoder helpers
-
-
-makeListEncoder : (a -> Jenc.Value) -> List a -> Jenc.Value
-makeListEncoder f arr =
-    Jenc.list (List.map f arr)
 
 
 makeDictEncoder : (a -> Jenc.Value) -> Dict String a -> Jenc.Value

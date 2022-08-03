@@ -1,6 +1,9 @@
 module Data.Supabase.Request exposing (..)
 
 import Data.Supabase exposing (Supabase)
+import DataSource exposing (DataSource)
+import DataSource.Http exposing (Expect)
+import Dict exposing (Dict)
 import Json.Encode as Jenc exposing (Value)
 
 
@@ -39,20 +42,22 @@ type alias GeneralRequest =
     }
 
 
-baseRequest : SupabaseRequest -> Request
+baseRequest : SupabaseRequest -> (Expect a -> DataSource a)
 baseRequest { path, method, headers, body } =
-    { url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/" ++ path
-    , method = method
-    , headers =
-        ( "apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxNTMwMCwiZXhwIjoxOTU4OTkxMzAwfQ.7FNpzHXTJ0EHz2nVfodpdu4mw05Mik1BH8aEQpE6XAU" )
-            :: headers
-    , body =
-        if List.isEmpty body then
-            Nothing
+    DataSource.Http.request
+        { url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/" ++ path
+        , method = method
+        , headers =
+            ( "apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxNTMwMCwiZXhwIjoxOTU4OTkxMzAwfQ.7FNpzHXTJ0EHz2nVfodpdu4mw05Mik1BH8aEQpE6XAU" )
+                :: headers
+        , body =
+            if List.isEmpty body then
+                DataSource.Http.emptyBody
 
-        else
-            Just <| Jenc.object body
-    }
+            else
+                Jenc.object body
+                    |> DataSource.Http.jsonBody
+        }
 
 
 typeJson : ( String, String )
@@ -71,7 +76,7 @@ authBearer token =
 -- After they have signed up, all interactions using the Supabase JS client will be performed as "that user".
 
 
-userSignup : { email : String, password : String } -> SupbaseRequest
+userSignup : { email : String, password : String } -> (Expect a -> DataSource a)
 userSignup { email, password } =
     baseRequest
         { method = "POST"
@@ -90,7 +95,7 @@ userSignup { email, password } =
 -- After they have logged in, all interactions using the Supabase JS client will be performed as "that user".
 
 
-userLogin : { email : String, password : String } -> SupbaseRequest
+userLogin : { email : String, password : String } -> (Expect a -> DataSource a)
 userLogin { email, password } =
     baseRequest
         { method = "POST"
@@ -109,7 +114,7 @@ userLogin { email, password } =
 -- After they have clicked the link, all interactions using the Supabase JS client will be performed as "that user".
 
 
-magicLink : { email : String } -> SupbaseRequest
+magicLink : { email : String } -> (Expect a -> DataSource a)
 magicLink { email } =
     baseRequest
         { method = "POST"
@@ -126,7 +131,7 @@ magicLink { email } =
 -- You must enter your own twilio credentials on the auth settings page to enable sms confirmations.
 
 
-phoneSignup : { phone : String, password : String } -> SupbaseRequest
+phoneSignup : { phone : String, password : String } -> (Expect a -> DataSource a)
 phoneSignup { phone, password } =
     baseRequest
         { method = "POST"
@@ -145,8 +150,8 @@ phoneSignup { phone, password } =
 -- You must enter your own twilio credentials on the auth settings page to enable SMS-based Logins.
 
 
-phoneLogin : SupbaseRequest
-phoneLogin =
+phoneLogin : { phone : String } -> (Expect a -> DataSource a)
+phoneLogin { phone } =
     baseRequest
         { method = "POST"
         , path = "otp"
@@ -161,7 +166,7 @@ phoneLogin =
 -- You must enter your own twilio credentials on the auth settings page to enable SMS-based OTP verification.
 
 
-verifyPin : { type_ : String, phone : String, token : String } -> SupbaseRequest
+verifyPin : { type_ : String, phone : String, token : String } -> (Expect a -> DataSource a)
 verifyPin { type_, phone, token } =
     baseRequest
         { method = "POST"
@@ -185,7 +190,7 @@ verifyPin { type_, phone, token } =
 -- Get the JSON object for the logged in user.
 
 
-getUser : String -> SupbaseRequest
+getUser : String -> (Expect a -> DataSource a)
 getUser userToken =
     baseRequest
         { method = "GET"
@@ -200,7 +205,7 @@ getUser userToken =
 -- Sends the user a log in link via email. Once logged in you should direct the user to a new password form. And use "Update User" below to save the new password.
 
 
-passwordRecovery : { email : String } -> SupbaseRequest
+passwordRecovery : { email : String } -> (Expect a -> DataSource a)
 passwordRecovery { email } =
     baseRequest
         { method = "POST"
@@ -215,7 +220,7 @@ passwordRecovery { email } =
 -- Update the user with a new email or password. Each key (email, password, and data) is optional
 
 
-updateUser : { usersAccessToken : String, email : String, password : String, data : Dict String String } -> SupbaseRequest
+updateUser : { usersAccessToken : String, email : String, password : String, data : Dict String String } -> (Expect a -> DataSource a)
 updateUser { usersAccessToken, email, password, data } =
     baseRequest
         { method = "PUT"
@@ -237,7 +242,7 @@ updateUser { usersAccessToken, email, password, data } =
 -- After calling log out, all interactions using the Supabase JS client will be "anonymous".
 
 
-userLogout : String -> SupbaseRequest
+userLogout : String -> (Expect a -> DataSource a)
 userLogout userToken =
     baseRequest
         { method = "POST"
@@ -257,7 +262,7 @@ userLogout userToken =
 -- This endpoint requires you use the service_role_key when initializing the client, and should only be invoked from the server, never from the client.
 
 
-inviteUser : { email : String, supabaseKey : String } -> SupbaseRequest
+inviteUser : { email : String, supabaseKey : String } -> (Expect a -> DataSource a)
 inviteUser { email, supabaseKey } =
     baseRequest
         { method = "POST"
