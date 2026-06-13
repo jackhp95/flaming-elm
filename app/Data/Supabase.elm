@@ -1,4 +1,4 @@
-module Data.Supabase exposing (AppMetadata, Identity, IdentityData, Supabase, UserMetadata, supabase, supabaseToString)
+module Data.Supabase exposing (AppMetadata, Identity, IdentityData, Supabase, UserMetadata, supabase, supabaseToString, encodeSupabase)
 
 import Dict exposing (Dict, map, toList)
 import Json.Decode as Jdec

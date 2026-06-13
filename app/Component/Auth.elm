@@ -4,11 +4,14 @@ import Component.Icon as Icon
 import Dict exposing (Dict)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onBlur, onInput)
 import Http
 import Json.Encode
 import Route
 import Util
+import Util.Native
+import Util.Native.Entry
+import Util.Native.Form
 
 
 type alias UserInfo =
@@ -116,7 +119,7 @@ signUpFormContents =
                 [ class "text-sm"
                 ]
                 [ a
-                    [ Util.asHref Route.Index
+                    [ href <| Route.toString Route.Index
                     , class "font-medium text-fuchsia-600 hover:text-fuchsia-500"
                     , class "rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
                     ]
@@ -160,7 +163,7 @@ signUpFormContents =
             ]
             [ div []
                 [ a
-                    [ Util.asHref Route.Index
+                    [ href <| Route.toString Route.Index
                     , class "w-full inline-flex justify-center py-2 px-4 border border-neutral-700 rounded-md shadow-sm bg-black text-sm font-medium text-neutral-500"
                     , class "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500 hover:bg-neutral-900"
                     ]
@@ -173,7 +176,7 @@ signUpFormContents =
                 ]
             , div []
                 [ a
-                    [ Util.asHref Route.Index
+                    [ href <| Route.toString Route.Index
                     , class "w-full inline-flex justify-center py-2 px-4 border border-neutral-700 rounded-md shadow-sm bg-black text-sm font-medium text-neutral-500"
                     , class "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500 hover:bg-neutral-900"
                     ]
@@ -186,7 +189,7 @@ signUpFormContents =
                 ]
             , div []
                 [ a
-                    [ Util.asHref Route.Index
+                    [ href <| Route.toString Route.Index
                     , class "w-full inline-flex justify-center py-2 px-4 border border-neutral-700 rounded-md shadow-sm bg-black text-sm font-medium text-neutral-500"
                     , class "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500 hover:bg-neutral-900"
                     ]

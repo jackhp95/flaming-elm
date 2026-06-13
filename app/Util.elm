@@ -21,12 +21,6 @@ logoIcon =
     Pages.Url.external "/logo.svg"
 
 
-asHref : Route -> Html.Attribute msg
-asHref route =
-    Url.Builder.absolute (Route.routeToPath route) []
-        |> href
-
-
 head : List Head.Tag
 head =
     Head.sitemapLink "/sitemap.xml"

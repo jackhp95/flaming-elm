@@ -5,6 +5,8 @@ import DataSource exposing (DataSource)
 import DataSource.Http exposing (Expect)
 import Dict exposing (Dict)
 import Json.Encode as Jenc exposing (Value)
+import Pages.StaticHttp.Request exposing (Request)
+import Pages.Internal.StaticHttpBody exposing (Body(..))
 
 
 
@@ -44,20 +46,18 @@ type alias GeneralRequest =
 
 baseRequest : SupabaseRequest -> (Expect a -> DataSource a)
 baseRequest { path, method, headers, body } =
-    DataSource.Http.request
-        { url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/" ++ path
-        , method = method
-        , headers =
-            ( "apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxNTMwMCwiZXhwIjoxOTU4OTkxMzAwfQ.7FNpzHXTJ0EHz2nVfodpdu4mw05Mik1BH8aEQpE6XAU" )
-                :: headers
-        , body =
-            if List.isEmpty body then
-                DataSource.Http.emptyBody
+    { url = "https://raoodzmoztwwwcjydatg.supabase.co/auth/v1/" ++ path
+    , method = method
+    , headers =
+        ( "apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxNTMwMCwiZXhwIjoxOTU4OTkxMzAwfQ.7FNpzHXTJ0EHz2nVfodpdu4mw05Mik1BH8aEQpE6XAU" )
+            :: headers
+    , body =
+        if List.isEmpty body then
+            EmptyBody
 
-            else
-                Jenc.object body
-                    |> DataSource.Http.jsonBody
-        }
+        else
+            JsonBody <| Jenc.object body
+    }
 
 
 typeJson : ( String, String )

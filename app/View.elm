@@ -66,7 +66,7 @@ navbar =
 logoSection : Html msg
 logoSection =
     a
-        [ Util.asHref Route.Index
+        [ href <| Route.toString Route.Index
         , class "flex-shrink-0 group flex items-center gap-2 w-16 sm:w-auto justify-center text-neutral-300 hover:text-white focus:text-transparent"
         ]
         [ img
@@ -137,7 +137,7 @@ accountSection =
     div [ class "relative z-10 hidden lg:ml-4 lg:flex lg:items-center" ] <|
         if True then
             [ a
-                [ Util.asHref Route.Auth
+                [ href <| Route.toString Route.Auth
                 , class "flex-shrink-0 relative self-center inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white opacity-60 border border-white border-opacity-50 transition from-rose-500 to-fuchsia-500"
                 , class "hover:opacity-100 hover:text-opacity-100 hover:border-fuchsia-500 hover:bg-gradient-to-tl"
                 , class "focus:opacity-100 focus:text-opacity-100 focus:border-fuchsia-500 focus:bg-gradient-to-l focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
@@ -185,7 +185,7 @@ accountSection =
                     ]
                     [ {- Active: "bg-opacity-10", Not Active: "" -}
                       a
-                        [ Util.asHref Route.Index
+                        [ href <| Route.toString Route.Index
                         , class "block px-4 py-2 text-sm opacity-70"
                         , attribute "role" "menuitem"
                         , tabindex -1
@@ -193,7 +193,7 @@ accountSection =
                         ]
                         [ text "Your Profile" ]
                     , a
-                        [ Util.asHref Route.Index
+                        [ href <| Route.toString Route.Index
                         , class "block px-4 py-2 text-sm opacity-70"
                         , attribute "role" "menuitem"
                         , tabindex -1
@@ -201,7 +201,7 @@ accountSection =
                         ]
                         [ text "Settings" ]
                     , a
-                        [ Util.asHref Route.Index
+                        [ href <| Route.toString Route.Index
                         , class "block px-4 py-2 text-sm opacity-70"
                         , attribute "role" "menuitem"
                         , tabindex -1
@@ -250,7 +250,7 @@ mobileMenu routes =
                 if True then
                     [ div [ class "flex justify-center mx-4" ]
                         [ a
-                            [ Util.asHref Route.Auth
+                            [ href <| Route.toString Route.Auth
                             , class "flex-shrink-0 relative self-center inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white opacity-60 border border-white border-opacity-50 transition from-rose-500 to-fuchsia-500"
                             , class "hover:opacity-100 hover:text-opacity-100 hover:border-fuchsia-500 hover:bg-gradient-to-tl"
                             , class "focus:opacity-100 focus:text-opacity-100 focus:border-fuchsia-500 focus:bg-gradient-to-l focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
@@ -300,17 +300,17 @@ mobileMenu routes =
                         [ class "mt-3 space-y-1"
                         ]
                         [ a
-                            [ Util.asHref Route.Index
+                            [ href <| Route.toString Route.Index
                             , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
                             ]
                             [ text "Your Profile" ]
                         , a
-                            [ Util.asHref Route.Index
+                            [ href <| Route.toString Route.Index
                             , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
                             ]
                             [ text "Settings" ]
                         , a
-                            [ Util.asHref Route.Index
+                            [ href <| Route.toString Route.Index
                             , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
                             ]
                             [ text "Sign out" ]
@@ -356,7 +356,7 @@ sidebar =
                 )
             |> (::)
                 (a
-                    [ Util.asHref Route.Index
+                    [ href <| Route.toString Route.Index
                     , class "group"
                     , class "p-3 flex overflow-hidden h-16 sm:h-32 sm:aspect-video items-center hover:scale-105 active:scale-95 transition ease-out"
                     ]
@@ -383,7 +383,7 @@ sidebar =
                 , attribute "aria-label" "Sidebar"
                 ]
         , a
-            [ href "#"
+            [ href <| Route.toString Route.Auth
             , class "flex-shrink-0 flex sm:w-full group sticky bottom-0 right-0"
             , class "sm:border-t border-neutral-900 p-5 bg-gradient-to-l from-black to-transparent bg-opacity-50 backdrop-blur"
             ]

@@ -64,6 +64,10 @@ init flags maybePagePath =
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
+    let
+        _ =
+            Debug.log "SharedUpdate" ""
+    in
     case msg of
         SharedMsg _ ->
             ( model, Effect.none )

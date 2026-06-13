@@ -304,7 +304,7 @@ eventPage { time, zone } event =
                         ]
                     , div [ class "mt-6 text-center" ]
                         [ a
-                            [ Util.asHref Route.Index
+                            [ href <| Route.toString Route.Index
                             , class "group inline-flex text-base font-medium"
                             ]
                             [ Icon.outlineShieldCheck

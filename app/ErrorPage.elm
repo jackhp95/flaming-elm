@@ -78,7 +78,7 @@ errorPage =
                 [ class "flex-shrink-0 flex justify-center"
                 ]
                 [ a
-                    [ Util.asHref Route.Index
+                    [ href <| Route.toString Route.Index
                     , class "inline-flex"
                     ]
                     [ span [ class "sr-only" ] [ text "Flamingle" ]
@@ -96,7 +96,7 @@ errorPage =
                     , p [ class "mt-2 text-base text-neutral-500" ] [ text "Sorry, we couldn’t find the page you’re looking for." ]
                     , div [ class "mt-6" ]
                         [ a
-                            [ Util.asHref Route.Index
+                            [ href <| Route.toString Route.Index
                             , class "text-base font-medium text-fuchsia-600 hover:text-fuchsia-500"
                             ]
                             [ text "Go back home"
