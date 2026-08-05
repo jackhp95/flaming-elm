@@ -4,7 +4,8 @@
     "postinstall": "elm-tooling install",
     "start": "elm-pages dev & tailwindcss -i ./src/tailwindcss.css -o ./style.css --watch",
     "build": "elm-pages build",
-    "generate:tailwind-class-order": "node scripts/generate-tailwind-class-order.mjs"
+    "generate:tailwind-class-order": "node scripts/generate-tailwind-class-order.mjs",
+    "review:tailwind": "elm-review app --config elm-pages/review --rules TailwindCss.NoUnknownClasses,TailwindCss.ConsistentClassOrder"
   },
   "devDependencies": {
     "elm-optimize-level-2": "^0.3.4",
