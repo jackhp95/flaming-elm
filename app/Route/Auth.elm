@@ -89,7 +89,7 @@ view maybeUrl sharedModel {} static =
 accountPage : Html Msg
 accountPage =
     div
-        [ class "min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8"
+        [ class "flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8"
         ]
         [ div
             [ class "sm:mx-auto sm:w-full sm:max-w-md"
@@ -111,7 +111,7 @@ accountPage =
                 , a
                     [ href <| Route.toString Route.Index
                     , class "font-medium text-fuchsia-600 hover:text-fuchsia-500"
-                    , class "rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
+                    , class "rounded focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                     ]
                     [ text "start your 14-day free trial" ]
                 ]
@@ -123,7 +123,7 @@ accountPage =
                 [ Util.Native.onInput
                     (Util.Native.Entry.decodeEntry Util.Native.entryExample)
                     (Debug.log "inline" >> NoOp)
-                , class "bg-black py-8 px-4 shadow sm:rounded-lg sm:px-10"
+                , class "bg-black px-4 py-8 shadow sm:rounded-lg sm:px-10"
                 ]
                 Auth.signUpFormContents
             ]

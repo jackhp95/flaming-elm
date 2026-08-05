@@ -69,13 +69,13 @@ statusCode error =
 errorPage : Html msg
 errorPage =
     div
-        [ class "min-h-full pt-16 pb-12 flex-auto flex flex-col"
+        [ class "flex min-h-full flex-auto flex-col pb-12 pt-16"
         ]
         [ main_
-            [ class "flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8"
+            [ class "mx-auto flex w-full max-w-7xl flex-grow flex-col justify-center px-4 sm:px-6 lg:px-8"
             ]
             [ div
-                [ class "flex-shrink-0 flex justify-center"
+                [ class "flex flex-shrink-0 justify-center"
                 ]
                 [ a
                     [ href <| Route.toString Route.Index
@@ -91,8 +91,8 @@ errorPage =
                 [ div
                     [ class "text-center"
                     ]
-                    [ p [ class "text-sm font-semibold text-fuchsia-600 uppercase tracking-wide" ] [ text "404 error" ]
-                    , h1 [ class "mt-2 text-4xl font-extrabold text-neutral-100 tracking-tight sm:text-5xl" ] [ text "Page not found." ]
+                    [ p [ class "text-sm font-semibold uppercase tracking-wide text-fuchsia-600" ] [ text "404 error" ]
+                    , h1 [ class "mt-2 text-4xl font-extrabold tracking-tight text-neutral-100 sm:text-5xl" ] [ text "Page not found." ]
                     , p [ class "mt-2 text-base text-neutral-500" ] [ text "Sorry, we couldn’t find the page you’re looking for." ]
                     , div [ class "mt-6" ]
                         [ a
@@ -110,7 +110,7 @@ errorPage =
                 ]
             ]
         , footer
-            [ class "flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8"
+            [ class "mx-auto w-full max-w-7xl flex-shrink-0 px-4 sm:px-6 lg:px-8"
             ]
             [ nav
                 [ class "flex justify-center space-x-4"

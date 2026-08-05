@@ -64,7 +64,7 @@ view : Maybe PageUrl -> Shared.Model -> StaticPayload Data action RouteParams ->
 view maybeUrl sharedModel static =
     { title = "Flamingle | Find Events, Make Friends"
     , body =
-        article [ class "snap-both snap-mandatory flex max-w-full overflow-x-auto max-h-[calc(100vh-4rem)] sm:max-h-screen pt-px items-stretch relative" ]
+        article [ class "relative flex max-h-[calc(100vh-4rem)] max-w-full snap-both snap-mandatory items-stretch overflow-x-auto pt-px sm:max-h-screen" ]
             [ chats
             , chat
             ]
@@ -73,27 +73,27 @@ view maybeUrl sharedModel static =
 
 ringAvatar : Html msg
 ringAvatar =
-    div [ class "hover:bg-gradient-to-t bg-gradient-to-tl from-rose-500 to-fuchsia-500 aspect-square w-[3em] h-[3em] rounded-full flex items-center justify-center hover:scale-100 scale-105 transition ease-out ring ring-black" ]
+    div [ class "flex h-[3em] w-[3em] scale-105 items-center justify-center rounded-full bg-gradient-to-tl from-rose-500 to-fuchsia-500 ring ring-black transition ease-out hover:scale-100 hover:bg-gradient-to-t" ]
         [ div
-            [ class "bg-neutral-700 rounded-full hover:ring ring-black aspect-square scale-90 ring-1 transition ease-out hover:scale-75 w-[3em] h-[3em]" ]
+            [ class "h-[3em] w-[3em] scale-90 rounded-full bg-neutral-700 ring-1 ring-black transition ease-out hover:scale-75 hover:ring" ]
             [ img [ src "", alt "" ] [] ]
         ]
 
 
 chats : Html msg
 chats =
-    article [ class "snap-center overflow-y-auto overflow-x-hidden flex-shrink-0 flex-auto w-full max-w-md flex flex-col items-stretch relative" ]
-        [ header [ class "z-10 bg-black bg-opacity-80 backdrop-blur sticky top-0 w-full p-4 flex text-lg font-bold justify-between" ]
+    article [ class "relative flex w-full max-w-md flex-auto flex-shrink-0 snap-center flex-col items-stretch overflow-y-auto overflow-x-hidden" ]
+        [ header [ class "sticky top-0 z-10 flex w-full justify-between bg-black bg-opacity-80 p-4 text-lg font-bold backdrop-blur" ]
             [ h1 [ class "leading-none" ] [ text "Inbox" ]
             , nav [ class "flex gap-2" ]
-                [ a [ href "#", class "bg-white bg-opacity-20 hover:bg-opacity-80 rounded-full aspect-square icon" ] []
-                , a [ href "#", class "bg-white bg-opacity-20 hover:bg-opacity-80 rounded-full aspect-square icon" ] []
+                [ a [ href "#", class "icon rounded-full bg-white bg-opacity-20 hover:bg-opacity-80" ] []
+                , a [ href "#", class "icon rounded-full bg-white bg-opacity-20 hover:bg-opacity-80" ] []
                 ]
             ]
         , a
             [ href "#"
-            , class "flex items-center mx-4 my-2 gap-2 px-4 py-3 border border-opacity-30 border-white rounded-md leading-5 bg-neutral-900 bg-opacity-10 opacity-80"
-            , class "focus:bg-opacity-100 placeholder-neutral-500 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm"
+            , class "mx-4 my-2 flex items-center gap-2 rounded-md border border-white border-opacity-30 bg-neutral-900 bg-opacity-10 px-4 py-3 leading-5 opacity-80"
+            , class "placeholder-neutral-500 focus:border-fuchsia-500 focus:bg-opacity-100 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
             ]
             [ Icon.solidSearch
             , text "Search Direct Messages"
@@ -106,19 +106,19 @@ chats =
             |> List.repeat 20
             |> List.map
                 (\{ name, id, headBubble, avatar } ->
-                    li [ class "max-w-full m-0 p-0 flex border-b border-opacity-10 border-white" ]
+                    li [ class "m-0 flex max-w-full border-b border-white border-opacity-10 p-0" ]
                         [ a [ href "#", class "flex-none p-4 pr-0 text-sm" ] [ ringAvatar ]
-                        , a [ href "#", class "p-4 flex-auto flex flex-col" ]
+                        , a [ href "#", class "flex flex-auto flex-col p-4" ]
                             [ h1 [ class "flex gap-2 whitespace-nowrap" ]
-                                [ span [ class "leading-tight font-bold" ] [ text name ]
+                                [ span [ class "font-bold leading-tight" ] [ text name ]
                                 , span [ class "leading-tight opacity-60" ] [ text "last event" ]
-                                , time [ class "leading-tight flex-auto text-right text-sm opacity-60", datetime headBubble.datetime ] [ text headBubble.datetime ]
+                                , time [ class "flex-auto text-right text-sm leading-tight opacity-60", datetime headBubble.datetime ] [ text headBubble.datetime ]
                                 ]
-                            , p [ class "leading-tight truncate opacity-60" ] [ text headBubble.text ]
+                            , p [ class "truncate leading-tight opacity-60" ] [ text headBubble.text ]
                             ]
                         ]
                 )
-            |> ol [ class "min-h-full flex flex-col p-0 m-0 relative" ]
+            |> ol [ class "relative m-0 flex min-h-full flex-col p-0" ]
         ]
 
 
@@ -135,22 +135,22 @@ chat =
             --     |> Maybe.withDefault
             "Compose Message"
     in
-    article [ class "snap-center overflow-y-auto overflow-x-hidden flex-shrink-0 w-full max-w-md flex flex-col items-stretch" ]
-        [ header [ class "z-10 bg-black bg-opacity-80 backdrop-blur sticky gap-4 top-0 w-full p-4 flex text-lg" ]
+    article [ class "flex w-full max-w-md flex-shrink-0 snap-center flex-col items-stretch overflow-y-auto overflow-x-hidden" ]
+        [ header [ class "sticky top-0 z-10 flex w-full gap-4 bg-black bg-opacity-80 p-4 text-lg backdrop-blur" ]
             [ a [ href "#", class "flex-none" ]
-                [ div [ class "bg-white bg-opacity-20 hover:bg-opacity-80 rounded-full aspect-square icon" ] []
+                [ div [ class "icon rounded-full bg-white bg-opacity-20 hover:bg-opacity-80" ] []
                 , div [ class "sr-only" ] [ text "back" ]
                 ]
-            , a [ href "#", class "flex-auto flex gap-2 items-center" ]
+            , a [ href "#", class "flex flex-auto items-center gap-2" ]
                 [ div [ class "-my-2 -mb-8 text-base" ] [ ringAvatar ]
-                , div [ class "text-sm flex-auto flex flex-col -my-2" ]
-                    [ h1 [ class "leading-tight font-bold" ] [ text "Person Name" ]
-                    , span [ class "leading-tight opacity-60 text-xs line-clamp-1" ] [ text "Common Events, Common Activities" ]
+                , div [ class "-my-2 flex flex-auto flex-col text-sm" ]
+                    [ h1 [ class "font-bold leading-tight" ] [ text "Person Name" ]
+                    , span [ class "line-clamp-1 text-xs leading-tight opacity-60" ] [ text "Common Events, Common Activities" ]
                     ]
                 ]
-            , nav [ class "flex-none flex gap-2" ]
-                [ a [ href "#", class "bg-white bg-opacity-20 hover:bg-opacity-80 rounded-full aspect-square icon" ] []
-                , a [ href "#", class "bg-white bg-opacity-20 hover:bg-opacity-80 rounded-full aspect-square icon" ] []
+            , nav [ class "flex flex-none gap-2" ]
+                [ a [ href "#", class "icon rounded-full bg-white bg-opacity-20 hover:bg-opacity-80" ] []
+                , a [ href "#", class "icon rounded-full bg-white bg-opacity-20 hover:bg-opacity-80" ] []
                 ]
             ]
         , List.repeat 50 ()
@@ -165,33 +165,33 @@ chat =
                         , classList [ ( "self-end", yourself ), ( "self-start", not yourself ) ]
                         ]
                         [ p
-                            [ class "px-4 py-3 rounded-xl bg-gradient-to-b bg-fixed leading-snug"
+                            [ class "rounded-xl bg-gradient-to-b bg-fixed px-4 py-3 leading-snug"
                             , classList
-                                [ ( "from-neutral-700 to-neutral-900 rounded-br-none", yourself )
-                                , ( "from-blue-500 to-blue-700 rounded-bl-none", not yourself )
+                                [ ( "rounded-br-none from-neutral-700 to-neutral-900", yourself )
+                                , ( "rounded-bl-none from-blue-500 to-blue-700", not yourself )
                                 ]
                             ]
                             [ text "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo neque laborum, illo sapiente eos optio doloremque! Corporis quisquam eius debitis provident voluptatibus alias. Soluta, veniam. Sequi quod saepe minima hic!" ]
                         ]
                 )
-            |> ol [ class "flex-auto flex flex-col gap-3 p-2 relative text-sm leading-tight" ]
-        , footer [ class "z-10 sticky bottom-0 w-full bg-black bg-opacity-80 backdrop-blur flex justify-end" ]
-            [ menu [ class "p-4 gap-2 flex-auto flex items-stretch" ]
-                [ a [ href "#", class "bg-white flex items-center justify-center flex-auto bg-opacity-20 hover:bg-opacity-80 rounded-lg" ] [ text "+" ]
+            |> ol [ class "relative flex flex-auto flex-col gap-3 p-2 text-sm leading-tight" ]
+        , footer [ class "sticky bottom-0 z-10 flex w-full justify-end bg-black bg-opacity-80 backdrop-blur" ]
+            [ menu [ class "flex flex-auto items-stretch gap-2 p-4" ]
+                [ a [ href "#", class "flex flex-auto items-center justify-center rounded-lg bg-white bg-opacity-20 hover:bg-opacity-80" ] [ text "+" ]
                 , div
-                    [ class "relative flex-auto rounded-lg overflow-hidden border border-opacity-40 border-white transition ease-out"
-                    , class "text-sm w-full max-w-[80%] focus:border-opacity-60 focus-within:border-opacity-100 focus-within:border-fuchsia-500"
+                    [ class "relative flex-auto overflow-hidden rounded-lg border border-white border-opacity-40 transition ease-out"
+                    , class "w-full max-w-[80%] text-sm focus-within:border-fuchsia-500 focus-within:border-opacity-100 focus:border-opacity-60"
                     ]
                     [ textarea
-                        [ class "resize-none z-10 text-sm outline-none !appearance-none border-none border-0 outline-0 bg-neutral-900 transition ease-out bg-opacity-10"
-                        , class "absolute inset-0 px-3 py-2 m-0 h-full w-full focus:bg-opacity-100"
+                        [ class "z-10 resize-none !appearance-none border-0 border-none bg-neutral-900 bg-opacity-10 text-sm outline-none outline-0 transition ease-out"
+                        , class "absolute inset-0 m-0 h-full w-full px-3 py-2 focus:bg-opacity-100"
 
                         -- , onInput (UpdateInput "compose_message")
                         ]
                         [ text composeMessageText ]
-                    , div [ class "min-h-[1em] px-3 py-2 opacity-40 pointer-events-none" ] [ text composeMessageText ]
+                    , div [ class "pointer-events-none min-h-[1em] px-3 py-2 opacity-40" ] [ text composeMessageText ]
                     ]
-                , button [ type_ "button", class "bg-white flex items-center justify-center flex-auto bg-opacity-20 hover:bg-opacity-80 rounded-lg" ] [ text "send" ]
+                , button [ type_ "button", class "flex flex-auto items-center justify-center rounded-lg bg-white bg-opacity-20 hover:bg-opacity-80" ] [ text "send" ]
                 ]
             ]
         ]

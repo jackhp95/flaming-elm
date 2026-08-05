@@ -68,8 +68,8 @@ signUpFormContents =
                     , type_ "email"
                     , attribute "autocomplete" "email"
                     , required True
-                    , class "appearance-none bg-transparent focus:bg-neutral-900 block w-full px-3 py-2 border border-neutral-700 rounded-md shadow-sm placeholder-neutral-600"
-                    , class "focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm"
+                    , class "block w-full appearance-none rounded-md border border-neutral-700 bg-transparent px-3 py-2 placeholder-neutral-600 shadow-sm focus:bg-neutral-900"
+                    , class "focus:border-fuchsia-500 focus:outline-none focus:ring-fuchsia-500 sm:text-sm"
                     ]
                     []
                 ]
@@ -89,8 +89,8 @@ signUpFormContents =
                     , type_ "password"
                     , attribute "autocomplete" "current-password"
                     , required True
-                    , class "appearance-none bg-transparent focus:bg-neutral-900 block w-full px-3 py-2 border border-neutral-700 rounded-md shadow-sm placeholder-neutral-600"
-                    , class "focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm"
+                    , class "block w-full appearance-none rounded-md border border-neutral-700 bg-transparent px-3 py-2 placeholder-neutral-600 shadow-sm focus:bg-neutral-900"
+                    , class "focus:border-fuchsia-500 focus:outline-none focus:ring-fuchsia-500 sm:text-sm"
                     ]
                     []
                 ]
@@ -105,8 +105,8 @@ signUpFormContents =
                     [ id "remember-me"
                     , name "remember-me"
                     , type_ "checkbox"
-                    , class "bg-transparent focus:bg-neutral-900 h-4 w-4 text-fuchsia-600 focus:ring-fuchsia-500 border-neutral-700 rounded"
-                    , class "focus:outline-none focus:ring-offset-black focus:ring-fuchsia-500"
+                    , class "h-4 w-4 rounded border-neutral-700 bg-transparent text-fuchsia-600 focus:bg-neutral-900 focus:ring-fuchsia-500"
+                    , class "focus:outline-none focus:ring-fuchsia-500 focus:ring-offset-black"
                     ]
                     []
                 , label
@@ -121,22 +121,22 @@ signUpFormContents =
                 [ a
                     [ href <| Route.toString Route.Index
                     , class "font-medium text-fuchsia-600 hover:text-fuchsia-500"
-                    , class "rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
+                    , class "rounded focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                     ]
                     [ text "Forgot your password?" ]
                 ]
             ]
-        , div [ class "bg-gradient-to-tl transition from-rose-500 to-fuchsia-500 rounded-md" ]
+        , div [ class "rounded-md bg-gradient-to-tl from-rose-500 to-fuchsia-500 transition" ]
             [ button
                 [ type_ "submit"
-                , class "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-white focus:bg-opacity-10 hover:bg-opacity-10 transition"
-                , class "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
+                , class "flex w-full justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-black shadow-sm transition hover:bg-opacity-10 focus:bg-opacity-10"
+                , class "focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                 ]
                 [ text "Sign in" ]
             ]
         ]
     , div
-        [ class "hidden mt-6"
+        [ class "mt-6 hidden"
         ]
         [ div
             [ class "relative"
@@ -153,7 +153,7 @@ signUpFormContents =
                 [ class "relative flex justify-center text-sm"
                 ]
                 [ span
-                    [ class "px-2 bg-black text-neutral-500"
+                    [ class "bg-black px-2 text-neutral-500"
                     ]
                     [ text "Or continue with" ]
                 ]
@@ -164,8 +164,8 @@ signUpFormContents =
             [ div []
                 [ a
                     [ href <| Route.toString Route.Index
-                    , class "w-full inline-flex justify-center py-2 px-4 border border-neutral-700 rounded-md shadow-sm bg-black text-sm font-medium text-neutral-500"
-                    , class "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500 hover:bg-neutral-900"
+                    , class "inline-flex w-full justify-center rounded-md border border-neutral-700 bg-black px-4 py-2 text-sm font-medium text-neutral-500 shadow-sm"
+                    , class "hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                     ]
                     [ span
                         [ class "sr-only"
@@ -177,8 +177,8 @@ signUpFormContents =
             , div []
                 [ a
                     [ href <| Route.toString Route.Index
-                    , class "w-full inline-flex justify-center py-2 px-4 border border-neutral-700 rounded-md shadow-sm bg-black text-sm font-medium text-neutral-500"
-                    , class "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500 hover:bg-neutral-900"
+                    , class "inline-flex w-full justify-center rounded-md border border-neutral-700 bg-black px-4 py-2 text-sm font-medium text-neutral-500 shadow-sm"
+                    , class "hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                     ]
                     [ span
                         [ class "sr-only"
@@ -190,8 +190,8 @@ signUpFormContents =
             , div []
                 [ a
                     [ href <| Route.toString Route.Index
-                    , class "w-full inline-flex justify-center py-2 px-4 border border-neutral-700 rounded-md shadow-sm bg-black text-sm font-medium text-neutral-500"
-                    , class "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500 hover:bg-neutral-900"
+                    , class "inline-flex w-full justify-center rounded-md border border-neutral-700 bg-black px-4 py-2 text-sm font-medium text-neutral-500 shadow-sm"
+                    , class "hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                     ]
                     [ span
                         [ class "sr-only"

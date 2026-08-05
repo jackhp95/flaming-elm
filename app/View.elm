@@ -30,8 +30,8 @@ placeholder moduleName =
 pageLayout : Html msg -> Html msg
 pageLayout pageContent =
     div
-        [ class "bg-black border-r border-white border-opacity-20"
-        , class "min-h-screen w-full max-w-full flex flex-col sm:flex-row-reverse gap-x-px text-white"
+        [ class "border-r border-white border-opacity-20 bg-black"
+        , class "flex min-h-screen w-full max-w-full flex-col gap-x-px text-white sm:flex-row-reverse"
         ]
         [ div [ class "flex-grow-[99999]" ] [ pageContent ]
 
@@ -46,10 +46,10 @@ navbar =
         routes =
             [ "events", "chats", "activities", "calendar" ]
     in
-    nav [ class "sticky top-0 w-full flex flex-col z-10 max-h-full" ]
-        [ div [ class "border-b border-white border-opacity-20 bg-black bg-opacity-70 backdrop-blur-lg flex-none" ]
-            [ div [ class "max-w-7xl mx-auto sm:px-4 lg:px-8" ]
-                [ div [ class "flex justify-between h-16" ]
+    nav [ class "sticky top-0 z-10 flex max-h-full w-full flex-col" ]
+        [ div [ class "flex-none border-b border-white border-opacity-20 bg-black bg-opacity-70 backdrop-blur-lg" ]
+            [ div [ class "mx-auto max-w-7xl sm:px-4 lg:px-8" ]
+                [ div [ class "flex h-16 justify-between" ]
                     [ div [ class "relative z-10 flex sm:px-2 lg:px-0" ]
                         [ logoSection
                         , routesSection routes
@@ -67,15 +67,15 @@ logoSection : Html msg
 logoSection =
     a
         [ href <| Route.toString Route.Index
-        , class "flex-shrink-0 group flex items-center gap-2 w-16 sm:w-auto justify-center text-neutral-300 hover:text-white focus:text-transparent"
+        , class "group flex w-16 flex-shrink-0 items-center justify-center gap-2 text-neutral-300 hover:text-white focus:text-transparent sm:w-auto"
         ]
         [ img
             [ src "/logo.svg"
             , alt ""
-            , class "w-8 transform transition group-focus:scale-110 hover:scale-110"
+            , class "w-8 transform transition hover:scale-110 group-focus:scale-110"
             ]
             []
-        , span [ class "hidden md:inline hover:text-transparent focus:text-transparent text-base font-bold bg-clip-text bg-gradient-to-tl transition from-rose-500 to-fuchsia-500" ]
+        , span [ class "hidden bg-gradient-to-tl from-rose-500 to-fuchsia-500 bg-clip-text text-base font-bold transition hover:text-transparent focus:text-transparent md:inline" ]
             [ text "FlamingleSocial.com" ]
         ]
 
@@ -89,7 +89,7 @@ routesSection =
                 , href <| "/" ++ r ++ "/#" ++ r
 
                 {- Current: "border-fuchsia-500 opacity-90", Default: "border-transparent opacity-50 hover:border-neutral-300 hover:opacity-70" -}
-                , class "target:border-fuchsia-500 border-transparent capitalize target:opacity-90 focus:border-current focus:text-fuchsia-500 focus:opacity-90 opacity-50 hover:border-neutral-300 hover:opacity-70 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                , class "inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium capitalize opacity-50 target:border-fuchsia-500 target:opacity-90 hover:border-neutral-300 hover:opacity-70 focus:border-current focus:text-fuchsia-500 focus:opacity-90"
                 ]
                 [ text r ]
         )
@@ -100,10 +100,10 @@ searchBar : Html msg
 searchBar =
     Html.form
         [ action "/events/"
-        , class "relative z-10 flex-1 flex items-center justify-center sm:px-2 lg:ml-6 lg:justify-end"
+        , class "relative z-10 flex flex-1 items-center justify-center sm:px-2 lg:ml-6 lg:justify-end"
         ]
         [ div
-            [ class "max-w-lg w-full lg:max-w-xs"
+            [ class "w-full max-w-lg lg:max-w-xs"
             ]
             [ label
                 [ for "search"
@@ -114,15 +114,15 @@ searchBar =
                 [ class "relative"
                 ]
                 [ div
-                    [ class "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                    [ class "pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
                     ]
                     [ Icon.solidSearch
                     ]
                 , input
                     [ id "search"
                     , name "search"
-                    , class "block w-full pl-10 pr-3 py-2 border border-opacity-30 border-white rounded-md leading-5 bg-neutral-900 bg-opacity-10"
-                    , class "focus:bg-opacity-100 placeholder-neutral-500 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 focus:border-fuchsia-500 sm:text-sm"
+                    , class "block w-full rounded-md border border-white border-opacity-30 bg-neutral-900 bg-opacity-10 py-2 pl-10 pr-3 leading-5"
+                    , class "placeholder-neutral-500 focus:border-fuchsia-500 focus:bg-opacity-100 focus:placeholder-neutral-400 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
                     , Attr.placeholder "Search"
                     , type_ "search"
                     ]
@@ -138,9 +138,9 @@ accountSection =
         if True then
             [ a
                 [ href <| Route.toString Route.Auth
-                , class "flex-shrink-0 relative self-center inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white opacity-60 border border-white border-opacity-50 transition from-rose-500 to-fuchsia-500"
-                , class "hover:opacity-100 hover:text-opacity-100 hover:border-fuchsia-500 hover:bg-gradient-to-tl"
-                , class "focus:opacity-100 focus:text-opacity-100 focus:border-fuchsia-500 focus:bg-gradient-to-l focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
+                , class "relative inline-flex flex-shrink-0 items-center self-center rounded-md border border-white border-opacity-50 from-rose-500 to-fuchsia-500 px-4 py-2 text-sm font-medium text-white opacity-60 transition"
+                , class "hover:border-fuchsia-500 hover:bg-gradient-to-tl hover:text-opacity-100 hover:opacity-100"
+                , class "focus:border-fuchsia-500 focus:bg-gradient-to-l focus:text-opacity-100 focus:opacity-100 focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                 ]
                 [ text "Account" ]
             ]
@@ -148,7 +148,7 @@ accountSection =
         else
             [ button
                 [ type_ "button"
-                , class "flex-shrink-0 bg-neutral-900 p-1 opacity-40 rounded-full hover:opacity-50 focus:ring-2 focus:ring-offset-2 ring-offset-neutral-900 ring-fuchsia-500"
+                , class "flex-shrink-0 rounded-full bg-neutral-900 p-1 opacity-40 ring-fuchsia-500 ring-offset-neutral-900 hover:opacity-50 focus:ring-2 focus:ring-offset-2"
                 ]
                 [ span
                     [ class "sr-only"
@@ -158,10 +158,10 @@ accountSection =
                 ]
             , {- Profile dropdown -}
               details
-                [ class "ml-4 relative flex-shrink-0 cursor-pointer"
+                [ class "relative ml-4 flex-shrink-0 cursor-pointer"
                 ]
                 [ summary
-                    [ class "bg-neutral-900 rounded-full flex text-sm focus:ring-2 focus:ring-offset-2 ring-offset-neutral-900 ring-fuchsia-500"
+                    [ class "flex rounded-full bg-neutral-900 text-sm ring-fuchsia-500 ring-offset-neutral-900 focus:ring-2 focus:ring-offset-2"
                     , id "user-menu-button"
                     , attribute "aria-expanded" "false"
                     , attribute "aria-haspopup" "true"
@@ -177,7 +177,7 @@ accountSection =
                     ]
                 , {- Dropdown menu, show/hide based on menu state. Entering: "transition ease-out duration-100" From: "transform opacity-0 scale-95" To: "transform opacity-100 scale-100" Leaving: "transition ease-in duration-75" From: "transform opacity-100 scale-100" To: "transform opacity-0 scale-95" -}
                   div
-                    [ class "origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-neutral-900 ring-1 ring-white ring-opacity-5"
+                    [ class "absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-neutral-900 py-1 shadow-lg ring-1 ring-white ring-opacity-5"
                     , attribute "role" "menu"
                     , attribute "aria-orientation" "vertical"
                     , attribute "aria-labelledby" "user-menu-button"
@@ -215,45 +215,45 @@ accountSection =
 
 mobileMenu : List String -> Html msg
 mobileMenu routes =
-    details [ class "lg:hidden contents group" ]
-        [ summary [ class "flex-none w-16 justify-center flex items-center" ]
+    details [ class "group contents lg:hidden" ]
+        [ summary [ class "flex w-16 flex-none items-center justify-center" ]
             [ div
                 [ class "group-open:pointer-events-auto group-open:flex group-open:bg-opacity-90 group-open:backdrop-blur-md"
-                , class "pointer-events-none bg-opacity-0 absolute top-0 right-0 h-screen w-full bg-black transition"
+                , class "pointer-events-none absolute right-0 top-0 h-screen w-full bg-black bg-opacity-0 transition"
                 ]
                 []
             , div
-                [ class "relative inline-flex items-center justify-center p-2 rounded-md opacity-40 hover:opacity-50 hover:bg-opacity-10 group-open:ring-2 group-open:ring-inset group-open:ring-fuchsia-500"
-                , class "border border-opacity-30 border-white rounded-md"
+                [ class "relative inline-flex items-center justify-center rounded-md p-2 opacity-40 hover:bg-opacity-10 hover:opacity-50 group-open:ring-2 group-open:ring-inset group-open:ring-fuchsia-500"
+                , class "rounded-md border border-white border-opacity-30"
                 ]
                 [ span [ class "sr-only" ] [ text "Toggle main menu" ]
-                , div [ class "group-open:hidden flex" ] [ Icon.outlineMenu ]
-                , div [ class "group-open:flex hidden relative" ] [ Icon.outlineX ]
+                , div [ class "flex group-open:hidden" ] [ Icon.outlineMenu ]
+                , div [ class "relative hidden group-open:flex" ] [ Icon.outlineX ]
                 ]
             ]
         , div
-            [ class "absolute z-20 top-full right-0 bg-neutral-900 rounded-lg mx-4" ]
+            [ class "absolute right-0 top-full z-20 mx-4 rounded-lg bg-neutral-900" ]
             [ List.map
                 (\path ->
                     a
                         [ href ("/" ++ path ++ "#" ++ path)
-                        , class "border-transparent opacity-60 capitalize hover:bg-neutral-50 hover:border-neutral-300 hover:opacity-80 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                        , class "block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium capitalize opacity-60 hover:border-neutral-300 hover:bg-neutral-50 hover:opacity-80"
                         ]
                         [ text path ]
                 )
                 routes
-                |> div [ class "relative pt-2 pb-3 space-y-1" ]
+                |> div [ class "relative space-y-1 pb-3 pt-2" ]
             , div
-                [ class "pt-4 pb-3 border-t border-neutral-800"
+                [ class "border-t border-neutral-800 pb-3 pt-4"
                 ]
               <|
                 if True then
-                    [ div [ class "flex justify-center mx-4" ]
+                    [ div [ class "mx-4 flex justify-center" ]
                         [ a
                             [ href <| Route.toString Route.Auth
-                            , class "flex-shrink-0 relative self-center inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white opacity-60 border border-white border-opacity-50 transition from-rose-500 to-fuchsia-500"
-                            , class "hover:opacity-100 hover:text-opacity-100 hover:border-fuchsia-500 hover:bg-gradient-to-tl"
-                            , class "focus:opacity-100 focus:text-opacity-100 focus:border-fuchsia-500 focus:bg-gradient-to-l focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-fuchsia-500"
+                            , class "relative inline-flex flex-shrink-0 items-center self-center rounded-md border border-white border-opacity-50 from-rose-500 to-fuchsia-500 px-4 py-2 text-sm font-medium text-white opacity-60 transition"
+                            , class "hover:border-fuchsia-500 hover:bg-gradient-to-tl hover:text-opacity-100 hover:opacity-100"
+                            , class "focus:border-fuchsia-500 focus:bg-gradient-to-l focus:text-opacity-100 focus:opacity-100 focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-black"
                             ]
                             [ text "Account" ]
                         ]
@@ -287,7 +287,7 @@ mobileMenu routes =
                             ]
                         , button
                             [ type_ "button"
-                            , class "ml-auto flex-shrink-0 bg-neutral-900 p-1 opacity-40 rounded-full hover:opacity-50 focus:ring-2 focus:ring-offset-2 focus:ring-fuchsia-500"
+                            , class "ml-auto flex-shrink-0 rounded-full bg-neutral-900 p-1 opacity-40 hover:opacity-50 focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2"
                             ]
                             [ span
                                 [ class "sr-only"
@@ -301,17 +301,17 @@ mobileMenu routes =
                         ]
                         [ a
                             [ href <| Route.toString Route.Index
-                            , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
+                            , class "block px-4 py-2 text-base font-medium opacity-50 hover:bg-opacity-10 hover:opacity-80"
                             ]
                             [ text "Your Profile" ]
                         , a
                             [ href <| Route.toString Route.Index
-                            , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
+                            , class "block px-4 py-2 text-base font-medium opacity-50 hover:bg-opacity-10 hover:opacity-80"
                             ]
                             [ text "Settings" ]
                         , a
                             [ href <| Route.toString Route.Index
-                            , class "block px-4 py-2 text-base font-medium opacity-50 hover:opacity-80 hover:bg-opacity-10"
+                            , class "block px-4 py-2 text-base font-medium opacity-50 hover:bg-opacity-10 hover:opacity-80"
                             ]
                             [ text "Sign out" ]
                         ]
@@ -323,10 +323,10 @@ mobileMenu routes =
 sidebar : Html msg
 sidebar =
     footer
-        [ class "sm:max-w-[4rem] sm:h-screen sm:w-auto sm:flex-col lg:max-w-sm min-w-max lg:min-w-auto"
-        , class "sticky inset-0 w-full flex justify-between overflow-x-auto overflow-y-hidden sm:overflow-hidden"
-        , class "bg-neutral-900 bg-opacity-75 backdrop-blur ring-1 ring-neutral-800"
-        , class "hover:text-opacity-100 text-opacity-70"
+        [ class "min-w-max sm:h-screen sm:w-auto sm:max-w-[4rem] sm:flex-col lg:min-w-[auto] lg:max-w-sm"
+        , class "sticky inset-0 flex w-full justify-between overflow-x-auto overflow-y-hidden sm:overflow-hidden"
+        , class "bg-neutral-900 bg-opacity-75 ring-1 ring-neutral-800 backdrop-blur"
+        , class "text-opacity-70 hover:text-opacity-100"
         ]
         [ [ ( Icon.outlineHome, "Dashboard", "/events/" )
           , ( Icon.outlineUserGroup, "Chats", "/chats/" )
@@ -339,17 +339,17 @@ sidebar =
                 (\( icon, txt, url ) ->
                     a
                         [ href url
-                        , class "p-5 lg:py-3 flex h-16 gap-x-4 items-center text-sm font-medium"
-                        , class "group focus:bg-opacity-5 hover:scale-105 active:scale-95 bg-white bg-opacity-0 transition"
+                        , class "flex h-16 items-center gap-x-4 p-5 text-sm font-medium lg:py-3"
+                        , class "group bg-white bg-opacity-0 transition hover:scale-105 focus:bg-opacity-5 active:scale-95"
                         ]
                         [ span
-                            [ class "text-2xl transition ease-out opacity-40 flex-grow flex-shrink-0 flex justify-center"
-                            , class "group-hover:opacity-100 group-hover:text-rose-500 group-active:text-white"
+                            [ class "flex flex-shrink-0 flex-grow justify-center text-2xl opacity-40 transition ease-out"
+                            , class "group-hover:text-rose-500 group-hover:opacity-100 group-active:text-white"
                             ]
                             [ icon ]
                         , span
-                            [ class "w-28 transition ease-out opacity-60 grow-[99999] hidden lg:inline"
-                            , class "group-hover:opacity-100 group-hover:text-fuchsia-500 group-active:text-white"
+                            [ class "hidden w-28 grow-[99999] opacity-60 transition ease-out lg:inline"
+                            , class "group-hover:text-fuchsia-500 group-hover:opacity-100 group-active:text-white"
                             ]
                             [ text txt ]
                         ]
@@ -358,17 +358,17 @@ sidebar =
                 (a
                     [ href <| Route.toString Route.Index
                     , class "group"
-                    , class "p-3 flex overflow-hidden h-16 sm:h-32 sm:aspect-video items-center hover:scale-105 active:scale-95 transition ease-out"
+                    , class "flex h-16 items-center overflow-hidden p-3 transition ease-out hover:scale-105 active:scale-95 sm:h-32"
                     ]
                     [ span
-                        [ class "h-[1.5em] flex items-center flex-wrap gap-y-64 text-2xl sm:text-3xl font-bold lg:mr-6 transition ease-out"
-                        , class "text-neutral-300 group-focus:text-white group-hover:text-transparent group-focus:text-transparent group-active:bg-gradient-to-t"
-                        , class "bg-clip-text bg-gradient-to-tl transition from-rose-500 to-fuchsia-500"
+                        [ class "flex h-[1.5em] flex-wrap items-center gap-y-64 text-2xl font-bold transition ease-out sm:text-3xl lg:mr-6"
+                        , class "text-neutral-300 group-hover:text-transparent group-focus:text-transparent group-focus:text-white group-active:bg-gradient-to-t"
+                        , class "bg-gradient-to-tl from-rose-500 to-fuchsia-500 bg-clip-text transition"
                         ]
                         [ img
                             [ src "/logo.svg"
                             , alt ""
-                            , class "ml-4 sm:m-2 transform transition scale-125"
+                            , class "ml-4 scale-125 transition sm:m-2"
                             , class "icon"
                             ]
                             []
@@ -379,16 +379,16 @@ sidebar =
                     ]
                 )
             |> nav
-                [ class "sticky top-0 flex sm:flex-col flex-none"
+                [ class "sticky top-0 flex flex-none sm:flex-col"
                 , attribute "aria-label" "Sidebar"
                 ]
         , a
             [ href <| Route.toString Route.Auth
-            , class "flex-shrink-0 flex sm:w-full group sticky bottom-0 right-0"
-            , class "sm:border-t border-neutral-900 p-5 bg-gradient-to-l from-black to-transparent bg-opacity-50 backdrop-blur"
+            , class "group sticky bottom-0 right-0 flex flex-shrink-0 sm:w-full"
+            , class "border-neutral-900 bg-opacity-50 bg-gradient-to-l from-black to-transparent p-5 backdrop-blur sm:border-t"
             ]
             [ div
-                [ class "flex justify-around items-center text-2xl"
+                [ class "flex items-center justify-around text-2xl"
                 ]
                 [ img
                     [ class "icon rounded-full"
@@ -396,8 +396,8 @@ sidebar =
                     , alt ""
                     ]
                     []
-                , div [ class "ml-3 hidden lg:flex flex-col" ]
-                    [ p [ class "text-sm font-medium opacity-80 h-[1.5em] overflow-hidden" ] [ text "Whitney Francis" ]
+                , div [ class "ml-3 hidden flex-col lg:flex" ]
+                    [ p [ class "h-[1.5em] overflow-hidden text-sm font-medium opacity-80" ] [ text "Whitney Francis" ]
                     , p [ class "text-xs font-medium opacity-60" ] [ text "View profile" ]
                     ]
                 ]

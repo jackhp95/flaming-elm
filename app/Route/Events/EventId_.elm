@@ -88,7 +88,7 @@ view maybeUrl sharedModel static =
 eventPage : Shared.Model -> SG.Event -> Html msg
 eventPage { time, zone } event =
     div
-        [ class "container mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8"
+        [ class "container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:px-8"
         ]
         [ {- Event details -}
           div
@@ -103,7 +103,7 @@ eventPage { time, zone } event =
                         (\item ->
                             a
                                 [ href <| String.fromInt item.id
-                                , class "font-medium opacity-50 hover:opacity-90 text-xs tracking-widest"
+                                , class "text-xs font-medium tracking-widest opacity-50 hover:opacity-90"
                                 ]
                                 [ item.name |> (\(SG.Up name) -> text name) ]
                         )
@@ -145,7 +145,7 @@ eventPage { time, zone } event =
                             event.datetimeLocal
                             |> text
                         ]
-                    , div [ class "ml-4 pl-4 border-l border-gray-300" ]
+                    , div [ class "ml-4 border-l border-gray-300 pl-4" ]
                         [ p
                             [ class "ml-2 text-sm opacity-50"
                             ]
@@ -170,9 +170,9 @@ eventPage { time, zone } event =
             ]
         , {- Event image -}
           div
-            [ class "mt-10 lg:mt-0 lg:col-start-2 lg:row-span-2 lg:self-center"
+            [ class "mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center"
             ]
-            [ div [ class "aspect-w-1 aspect-h-1 rounded-lg flex overflow-auto snap-x snap-mandatory" ]
+            [ div [ class "aspect-h-1 aspect-w-1 flex snap-x snap-mandatory overflow-auto rounded-lg" ]
                 (event.performers
                     |> List.filterMap
                         (\performer ->
@@ -181,7 +181,7 @@ eventPage { time, zone } event =
                                     img
                                         [ src image
                                         , alt performer.name
-                                        , class "w-full h-full snap-center flex-none object-center object-cover"
+                                        , class "h-full w-full flex-none snap-center object-cover object-center"
                                         ]
                                         []
                                 )
@@ -191,7 +191,7 @@ eventPage { time, zone } event =
             ]
         , {- Event form -}
           div
-            [ class "mt-10 lg:max-w-lg lg:col-start-1 lg:row-start-2 lg:self-start"
+            [ class "mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start"
             ]
             [ section
                 [ attribute "aria-labelledby" "options-heading"
@@ -219,7 +219,7 @@ eventPage { time, zone } event =
                                     |> List.map
                                         (\performer ->
                                             label
-                                                [ class "relative flex border border-white border-opacity-30 overflow-hidden rounded-lg cursor-pointer"
+                                                [ class "relative flex cursor-pointer overflow-hidden rounded-lg border border-white border-opacity-30"
                                                 , for <| String.fromInt performer.id
                                                 ]
                                                 [ input
@@ -236,7 +236,7 @@ eventPage { time, zone } event =
                                                         img
                                                             [ src image
                                                             , alt ""
-                                                            , class "h-full w-16 aspect-square object-cover object-center"
+                                                            , class "h-full w-16 object-cover object-center"
                                                             ]
                                                             []
                                                     )
@@ -298,7 +298,7 @@ eventPage { time, zone } event =
                     , div [ class "mt-10" ]
                         [ a
                             [ href event.url
-                            , class "w-full bg-white border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-neutral-900 hover:bg-opacity-80 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-fuchsia-500"
+                            , class "flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-neutral-900 hover:bg-opacity-80 focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                             ]
                             [ text "Buy Tickets" ]
                         ]

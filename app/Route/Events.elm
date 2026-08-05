@@ -97,36 +97,39 @@ view maybeUrl sharedModel static =
                     ]
 
         columnLayout =
-            List.map (eventCard sharedModel >> List.singleton >> li [ class "p-2 break-inside-avoid" ])
-                >> ol [ class "columns-2 sm:columns-[12rem] gap-0" ]
+            List.map (eventCard sharedModel >> List.singleton >> li [ class "break-inside-avoid p-2" ])
+                >> ol [ class "columns-2 gap-0 sm:columns-[12rem]" ]
     in
     { title = "Events in " ++ location ++ " | Flamingle"
     , body =
-        div [ class "flex flex-col mx-auto p-2 sm:p-4 md:p-6 lg:p-8 gap-2 sm:gap-4 md:gap-6 lg:gap-8 lg:max-w-7xl" ]
-            [ header [ class "relative flex flex-col p-2 sm:p-4 md:p-6 lg:p-8 group max-w-full" ]
-                [ h1 [ class "pt-2 sm:pt-4 md:pt-6 lg:pt-8 mx-4 text-2xl group-focus-within:-translate-y-1 transition-all duration-300 ease-out"
-                , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%] bg-clip-text text-white group-focus-within:text-transparent" ]
+        div [ class "mx-auto flex flex-col gap-2 p-2 sm:gap-4 sm:p-4 md:gap-6 md:p-6 lg:max-w-7xl lg:gap-8 lg:p-8" ]
+            [ header [ class "group relative flex max-w-full flex-col p-2 sm:p-4 md:p-6 lg:p-8" ]
+                [ h1
+                    [ class "mx-4 pt-2 text-2xl transition-all duration-300 ease-out group-focus-within:-translate-y-1 sm:pt-4 md:pt-6 lg:pt-8"
+                    , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%] bg-clip-text text-white group-focus-within:text-transparent"
+                    ]
                     [ text "Upcoming Events in "
                     , span [ class "sr-only" ] [ text location ]
                     ]
                 , Html.form
                     [ action "/events/"
-                    , class "flex h-14 text-sm relative w-full max-w-lg"
+                    , class "relative flex h-14 w-full max-w-lg text-sm"
                     , class "animate-move-bg bg-gradient-to-r from-rose-500 via-fuchsia-500 to-rose-500 bg-[length:400%]"
-                    , class "focus-within:rounded-lg rounded-md transition-all duration-300 ease-out"
+                    , class "rounded-md transition-all duration-300 ease-out focus-within:rounded-lg"
                     ]
                     [ label [ for "search", class "sr-only" ] [ text "Search" ]
                     , input
                         [ id "postal-code"
                         , name "zip"
                         , Attr.attribute "autocomplete" "postal-code"
-                        , class "!ring-0 bg-black !leading-none p-0 m-0 border-none absolute inset-0 outline-none transition-all duration-300 ease-out max-w-full"
-                        , class "placeholder-current focus:placeholder-transparent text-current block flex-auto text-5xl font-bold"
-                        , class "rounded-md focus:text-3xl focus:px-4 focus:py-3 focus:bg-neutral-900 focus:inset-0.5"
+                        , class "absolute inset-0 m-0 max-w-full border-none bg-black p-0 !leading-none outline-none !ring-0 transition-all duration-300 ease-out"
+                        , class "block flex-auto text-5xl font-bold text-current placeholder-current focus:placeholder-transparent"
+                        , class "rounded-md focus:inset-0.5 focus:bg-neutral-900 focus:px-4 focus:py-3 focus:text-3xl"
                         , placeholder location
                         , type_ "search"
                         ]
                         []
+
                     -- , button
                     --     [ class "absolute inset-y-0 right-0 font-bold whitespace-nowrap z-10 rounded-full flex items-center p-4"
                     --     , class "opacity-0 pointer-events-none transition-all duration-300 ease-out"
@@ -159,7 +162,7 @@ eventCard { time } event =
                                         (img
                                             [ src image
                                             , alt performer.name
-                                            , class "snap-center flex-none object-center object-cover"
+                                            , class "flex-none snap-center object-cover object-center"
                                             , width 280
                                             , height 210
                                             ]
@@ -172,14 +175,14 @@ eventCard { time } event =
     a
         [ href <| String.fromInt event.id
         , id <| String.fromInt event.id
-        , class "group relative focus:ring-2 transition-all sm:pb-0 ring-1 ring-white focus:ring-fuchsia-500 hover:ring-opacity-100 ring-opacity-10 sm:ring-opacity-20 rounded sm:rounded-lg flex flex-col overflow-hidden"
+        , class "group relative flex flex-col overflow-hidden rounded ring-1 ring-white ring-opacity-10 transition-all hover:ring-opacity-100 focus:ring-2 focus:ring-fuchsia-500 sm:rounded-lg sm:pb-0 sm:ring-opacity-20"
         , classList [ ( "row-span-2", (not << List.isEmpty) imageList ) ]
         ]
-        [ div [ class "bg-opacity-20 opacity-90 group-hover:opacity-100 overflow-x-scroll thin-scrollbar flex snap-x snap-mandatory" ] imageList
+        [ div [ class "thin-scrollbar flex snap-x snap-mandatory overflow-x-scroll bg-opacity-20 opacity-90 group-hover:opacity-100" ] imageList
         , div
-            [ class "flex-1 p-4 space-y-2 flex flex-col"
+            [ class "flex flex-1 flex-col space-y-2 p-4"
             ]
-            [ h3 [ class "font-medium opacity-90 text-sm" ] [ text event.shortTitle ]
+            [ h3 [ class "text-sm font-medium opacity-90" ] [ text event.shortTitle ]
 
             -- , div
             --     [ class "flex -space-x-2 relative z-0 overflow-hidden p-2"
@@ -194,7 +197,7 @@ eventCard { time } event =
             --         )
             --     )
             , div
-                [ class "flex-1 flex flex-col justify-end text-xs"
+                [ class "flex flex-1 flex-col justify-end text-xs"
                 ]
                 [ p [ class "italic opacity-50" ] [ text event.venue.name ]
                 , p [ class "font-medium opacity-70" ]
